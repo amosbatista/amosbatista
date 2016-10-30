@@ -1,0 +1,32 @@
+{
+  "name": "amosbatista",
+  "version": "0.0.0",
+  "description": "My personal blog",
+  "main": "gulpfile.js",
+  "dependencies": {
+    "gulp": "^3.9.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-less": "^3.1.0",
+    "gulp-pug": "^3.1.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/amosbatista/amosbatista.git"
+  },
+  "keywords": [
+    "blog",
+    "homepage",
+    "front-end"
+  ],
+  "author": "Amós Batista",
+  "license": "Propietary",
+  "bugs": {
+    "url": "https://github.com/amosbatista/amosbatista/issues"
+  },
+  "homepage": "https://github.com/amosbatista/amosbatista"
+}

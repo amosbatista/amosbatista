@@ -1,0 +1,22 @@
+Dia 30/10
+Comandos usados: 
+npm install gulp --save-dev
+npm install gulp-pug --save-dev
+npm install gulp-less --save-dev
+npm install --global gulp-cli - Instalar o gulp globalmente, para que eu pudesse executá-lo via comando. Ele não está abrindo.
+
+
+Tive problemas com o Git rodando em XP. Eu precisei voltar uma versão anterior.
+Instalei o gulp, criei um arquivo de teste e executei. Deu o erro na sintaze do pug (explicar onde estão os erros).
+Explicar :
+	- Detalhes de cada comanndo '|'-pipe e a importância da indentação.
+Depois de corrigido, executei a task. Ela gerou o arquivo HTML.
+Entrei no site do Google Fonts, peguei o link para a fonte Fjalla One
+Fiz um erro na tag de link. Gerou um erro no pug. Corrigir o erro.
+Criei a página:
+	Criei uma classe para os links, para que sejam como posição absoluta 
+		(Explicar o que é absolute e explicar que para funcionar, ele precisa estar dentro de um elemento do tipo 'relative'
+	Criei uma classe para todos os links, informando a posição de cada um deles
+	(Explicar como é programado o div dentro do pug)
+	Criei uma página básica. 
+	Formatei o link.

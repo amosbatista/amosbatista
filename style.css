@@ -1,0 +1,28 @@
+.main-link{
+	position: absolute;
+	font-size: 40px;
+	font-family: 'Fjalla One', sans-serif;
+	text-transform: uppercase;
+	color: black;
+	text-decoration: none;
+}
+
+#link-about{
+	top: 30px;
+	left: 30px;
+}
+
+#link-gallery{
+	top: 30px;
+	right: 30px;
+}
+
+#link-blog{
+	bottom: 30px;
+	right: 30px;
+}
+
+#link-portfolio{
+	bottom: 30px;
+	left: 30px;
+}
