@@ -20,3 +20,26 @@ Criei a página:
 	(Explicar como é programado o div dentro do pug)
 	Criei uma página básica. 
 	Formatei o link.
+
+
+Dia 31/10
+Criar as setas, redefinir o tamanho das fontes
+Usar o PageRuler para definir o tamanho dos elementos
+Decidi organizar os links por listas, já que fica fácil de posicioná-los quando eles estão em uma ordem.
+Utilizar ícones do font awesome
+
+Dia 02/11
+Recebi o email do Font Awesome
+	O servidor do Font Awesome caiu um pouco. Eu tenho que avisar que temporáriamente, estou baixando os fontes do site Font Awesome. A queda do servidor alerta que eu não posso depender de outros servidores.
+	Consegui implantar o ícone na página. Eu preciso 
+		Centralizar e aumentar o tamanho do ícone
+		Tirar o espaço da lista
+		Tirar as bolinhas marcadoras da lista
+	Vou tirar o espaço de todas as listas.
+	Para conferir o tipo de espaço que existe em algum elemento, eu posso entrar no Chrome, e passar o mouse em cima de um elemento no HTML, ou usar a ferramenta de seleção de elementos e selecionar o elemento desejado
+	Eu tive um problema ao definir o tamanho da font. A classe fa já tem uma definição de fonte. para equilibrar o tamanho da fonte com algum texto ao lado dela, a definição do tamanho é inherit, ou seja, ele pegará o tamanho do elemento pai. É possível burlar esta regra de definição, mas acho justo aproveitarmos esta definição que a font awesome deixou para nós. Eu deixo a definição de tamanho para o item da lista <li>
+	Para quem nunca perguntou o que é a tag i, antigamente, ela criava um texto itálico dentro dela. Hoje, ele define um conjunto de caracteres à parte do programado no restante da´página, permitindo a inclusão de caracteres especiais (como as fontes do font awesome;)
+	Tentando limpar o espaçamento do ícone, há duas coisa que preciso fazer.
+		- Ao passar o mouse sobre o li, não vejo nenhuma margem ou espaço. Este espaço é o espaço da linha- line-height. É possível ajustar este espaço na tag, deixando este valor como zero. Não se esqueça, o ícone, na verdade, é um caractere, e deve ser tratado como se fosse texto.
+		- O elemento body possui uma margem, como padrão. Esta margem é de 8px. Nós podemos eliminar este espaço no arquivo de estilos.
+		

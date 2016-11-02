@@ -3,12 +3,34 @@ html
 		title Teste
 		link(href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet")
 		link(href="../style.css" rel="stylesheet")
+		script(src="https://use.fontawesome.com/b3ecf99631.js")
 	body
+
 		a(class="main-link" id="link-about" href="#")
-			|About
+			ul
+				li.icone
+					i.fa.fa-arrow-up
+				li
+					|About
+
 		a(class="main-link" id="link-gallery" href="#")
-			|Gallery
+			ul
+				li.conteudo
+					|Gallery
+				li.icone
+					i.fa.fa-arrow-right
+
 		a.main-link#link-blog(href="#")
-			|Blog
+			ul
+				li.conteudo
+					|Blog
+				li.icone
+					i.fa.fa-arrow-down
+				
+			
 		a.main-link#link-portfolio(href="#")
-			|Portfolio
+			ul
+				li.icone
+					i.fa.fa-arrow-left
+				li.conteudo
+					|Portfolio
