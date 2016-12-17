@@ -42,4 +42,28 @@ Recebi o email do Font Awesome
 	Tentando limpar o espaçamento do ícone, há duas coisa que preciso fazer.
 		- Ao passar o mouse sobre o li, não vejo nenhuma margem ou espaço. Este espaço é o espaço da linha- line-height. É possível ajustar este espaço na tag, deixando este valor como zero. Não se esqueça, o ícone, na verdade, é um caractere, e deve ser tratado como se fosse texto.
 		- O elemento body possui uma margem, como padrão. Esta margem é de 8px. Nós podemos eliminar este espaço no arquivo de estilos.
-		
+
+Dia 17/12
+Preparei a pasta do projeto para SSH
+Para deixar o gulp rodando como automático, renomeei a tarefa como 'default'. Agora, só preciso rodar o comando gulp.
+Estou tentando organizar os elementos, sem precisar complicar o códiog (remover as listas)
+"Como eu sempre digo, deixe as listas para serem usadas em listas"
+Removendo as listas, eu deixo os elementos organizados dentro de um link, em que eu defino o posicionamento, e crio um elemento espan, um para o ícone, e outro para o texto.
+
+Para os links About e Blog, que devem ser organizados verticameklmten, eu defino a regra de estilo desta maneira:
+A classe conteúdo (que é o texto), eu defico a propriedade display como block, e assim, elemento vai agir como um bloco, como se fosse uma div. Isto permite que ele ocupe o espaço total do elemento.
+Para o ícone da classe about, eu informo a propriedade float: left, para que ele 'flutue' à esquerda, e fique nesta posição.
+
+Nos elementos hoorixzontaus, os links portfolio e gallery, eu defini assim:
+- No link, eu configuei o display como flex. (conteudo flexivel.)
+- No link, atribui a propriedade align-items como center;, em objetos flex, esta propriedade alinha todos os elementos, a partir da altuira dos elementos. Eu tive este resultado <imagem>
+Porém, estes 2 links ainda precisam de ajustes. Falta um espaço entre eles, e o flex não alinhou eles 100%. Isto por que o ícone que eu USO do Font Awesome tem um espaço. Veja <imagem>
+Preciso compensar este espaço. Veja como eu faço: 
+margin: 8px 5px 0 5px; (8 pixel de margem no topo, 4 à direita, 0 à esquerda, e 5 a esquerda)
+Eu seleciono os seletores 
+#link-portfolio .conteudo,
+#link-gallery .conteudo, que são apenas os elementos de portfolio e galeria que quero mexer.
+Tive o resultado <imagem>
+Hoje eu consegui finalizar a parte estática do site, No proximo texto, eu vou começar a criar a animação dentro da home.
+
+Referencias
