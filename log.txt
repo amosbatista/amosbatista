@@ -67,3 +67,6 @@ Tive o resultado <imagem>
 Hoje eu consegui finalizar a parte estática do site, No proximo texto, eu vou começar a criar a animação dentro da home.
 
 Referencias
+
+
+
