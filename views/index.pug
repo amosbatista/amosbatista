@@ -1,35 +1,32 @@
 html
 	head
 		title Amós Batista
-		link(href="https://fonts.googleapis.com/css?family=Source+Serif+Pro|Fjalla+One" rel="stylesheet")
-		link(href="../style.css" rel="stylesheet")
-		script(src="https://use.fontawesome.com/b3ecf99631.js")
 	body
 
 		// Links
-		a(class="main-link title-paragraph" id="link-about" href="#")
-			span.icone
+		a(class="main-link title-paragraph" id="linkAbout" href="#")
+			span.icon
 				i.fa.fa-arrow-up
-			span.conteudo
+			span.content
 				|About
 
 		a(class="main-link title-paragraph" id="link-gallery" href="#")
-			span.conteudo
+			span.content
 				|Gallery
-			span.icone
+			span.icon
 				i.fa.fa-arrow-right
 
 		a.title-paragraph.main-link#link-blog(href="#")
-			span.conteudo
+			span.content
 				|Blog
-			span.icone
+			span.icon
 				i.fa.fa-arrow-down
 				
 			
 		a.title-paragraph.main-link#link-portfolio(href="#")
-			span.icone
+			span.icon
 				i.fa.fa-arrow-left
-			span.conteudo
+			span.content
 				|Portfolio
 
 
@@ -38,9 +35,19 @@ html
 			p.license-info Cada página deste site possui uma licença de distribuição específica. Favor verificar, antes de compartilhar seu conteúdo. Em caso de dúvidas, entre em contato.
 
 			// Dinamic comment display
-			#codeCommentContainer.code-comment.comment-position-visual-basic
-				|'
+			//#codeCommentContainer.code-comment.comment-position-visual-basic
+			//	|'
+			//	br
+			//	|'
+
+			// Dinamic comment display
+			#codeCommentContainer.code-comment.comment-position-javascript
+				|/*
 				br
-				|'
+				|*/
 
 
+	link(href="https://fonts.googleapis.com/css?family=Source+Serif+Pro|Fjalla+One" rel="stylesheet")
+	link(href="../style.css" rel="stylesheet")
+	script(src="https://use.fontawesome.com/b3ecf99631.js")
+	script(src="../script.js")
