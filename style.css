@@ -1,19 +1,25 @@
-.main-link{
-	position: absolute;
+.title-paragraph{
 	font-family: 'Fjalla One', sans-serif;
 	text-transform: uppercase;
 	color: black;
 	text-decoration: none;
+}
+	
+
+.main-link{
+	position: absolute;
 	text-align: center;
 }
 
 #link-about{
 	top: 10px;
-	left: 30px;
+	/*left: 30px;*/
+	left: 10px;
 }
 
 #link-gallery{
-	top: 30px;
+	/*top: 30px;*/
+	top: 70px;
 	right: 10px;
 	display: flex;
 	align-items: center;
@@ -21,18 +27,21 @@
 
 #link-blog{
 	bottom: 10px;
-	right: 30px;
+	/*right: 30px;*/
+	right: 10px;
 }
 
 #link-portfolio{
-	bottom: 30px;
+	/*bottom: 30px;*/
+	bottom: 70px;
 	left: 10px;
 	display: flex;
 	align-items: center;
 }
 
 .icone{
-	font-size: 75px;
+	/*font-size: 75px;*/
+	font-size: 15px;
 	line-height: 0px;
 }
 
@@ -46,10 +55,122 @@ body{
 }
 
 #link-about .icone{
-	float: left;
+	/*float: left;*/
 }
 
 #link-portfolio .conteudo,
 #link-gallery .conteudo{
-	margin: 8px 5px 0 5px;
+	margin: 5px 10px 0 10px;
+}
+
+
+#page-title{
+	max-width: 34%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin: -70px 0px 0 -20%;
+}
+
+#page-title .license-info,
+#page-title .name{
+	/*margin: 0 0 0 40px;*/
+}
+
+
+#page-title .name{
+	font-size: 25px;
+	line-height: 1;
+}
+
+#page-title .license-info{
+	font-size: 15px;
+	display: none;
+	font-family: 'Source Serif Pro', sans-serif;
+}
+
+#page-title .code-comment{
+	font-size: 30px;
+	color: green;
+	position: absolute;
+	font-family: 'Fjalla One', sans-serif;
+}
+#page-title .comment-position-visual-basic{
+	left: -11px;
+	top: 22px;
+	line-height: 1;
+}
+
+@media screen and (min-width: 200px) and (max-width: 699px) {
+
+	#link-gallery{
+		top: 30px;
+		right: 10px;
+	}
+
+
+	#link-portfolio{
+		bottom: 30px;
+		left: 10px;
+	}
+}
+@media screen and (min-width: 400px) and (max-width: 699px) {
+
+	#page-title{
+		margin: -137px 0 0 -25.5%;
+	}
+
+	.icone{
+		font-size: 35px;
+	}
+}
+
+@media screen and (min-width: 700px) {
+
+	#page-title{
+		margin: -137px 0 0 -25.5%;
+	}
+
+	.icone{
+		font-size: 50px;
+	}
+
+	#link-about{
+		top: 20px;
+		left: 50px;
+	}
+
+	#link-gallery{
+		top: 50px;
+		right: 20px;
+	}
+
+	#link-blog{
+		bottom: 20px;
+		right: 50px;
+	}
+
+	#link-portfolio{
+		bottom: 50px;
+		left: 20px;
+	}
+}
+
+
+@media screen and (min-width: 400px){
+
+	#page-title .name{
+		font-size: 75px;
+		margin: 0px;
+	}
+
+	#page-title .license-info{
+		display: block;
+	}	
+
+	#page-title .code-comment{
+		font-size: 75px;
+		left: -25px;
+		top: 5px;
+	}
 }

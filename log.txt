@@ -69,4 +69,37 @@ Hoje eu consegui finalizar a parte estática do site, No proximo texto, eu vou c
 Referencias
 
 
+23/12 - Terça
 
+Vou começar a fazer o paragrafo
+Se algum bloco, ou página vai ficar muito dificil de fazer, planejo antes o que precisa fazer.
+- Vai ser uma div no meio da tela
+- Dentro da div, estarão 2 parágrafos, alinhados à esquerda.
+- Paragrafo de baixo só aparece quando a resolução da tela for menor que 400px.
+- Dentro desta div, haverá uma div. Ela será os caracteres verdes de comentários. Como o tipo de comentário será aleatório, a posição desta div mudará de acordo com o comentário. 
+	- Junto com esta div, eu criarei 4 classes, que serão configuradas de acordo com o comentário. A seleção do conteúdo do comebntario será definida via programação. A posição de cada comenrátio será definida pela classe de estilo.
+	- Eu vou definir 2 classes e 1 ID para este conteúdo
+		- O ID '#codeCommentContainer' vai ser usado para referênciado no código .
+		- A classe 'code-comment' é usada para formataçaõ geral de todos os códigos (apesar deles serem diferentes, eles terão algumas características que compartilham entre eles, como as cores e o tamanho. Como o CSS permite mais queu uma classe por elemento, posso criar uma classe em comum para eles.)
+		- A classe 'comment-position-?' será definida para cada elemento, na hora que a tela for carregada. Ela definirá a posição de cada ipo de comentário. NEs caso, a classe é 'comment-position-visual-basic', que configura a posição desta classe
+- Mostrar as definições do PUG. Eu posso definir os elementos resumidamente. Como definir a DIV e outros elementos.
+- Ao codificar o CSS, me preocupo em organizar a classe em 'hierarquia', isto é, todas as classes internas dentro da classe pai, o 'codeCommentContainer'. Caso haja uma outra classe com o nome 'name', ela não pegará os dados desta classe.
+- Para definir a ocultação em telas pequenas, eu oculto o parágrafo, usando:
+'display: none'
+- Para definir a regra, eu crio um bloco, chamado media rule. A ideia é simples: Tudo o que está neste bloco functionaŕa apenas de a condição de código for atingida. Veja:
+'@media screen and(max-width: 400px) {'
+}'
+Aqui, eu informo que, o código será executado se a página estiver  em telas convencvionais (screen), e caso a largura minimarseja de 400px (Pixels)
+- Para centralizar #page-title, horizontalmente, primeiramente, defino um tamanho máximo para este bloco.
+	- max-width: 500px; A diferença de width é que este bloco pode ficar menor, caso a dela fique menor que ele. É um grande recurso, para páginas responsivas.
+	- margin: auto, ou margin: 0: auto - o HTML calcula e define o espaço das márgens lateriais automaticamente. O segundo código permite que eu configure a margem para o topo e a base do bloco, case necessario.
+	Lembre-se, para functionar, eu preciso cokocar width ou marx-witdh
+
+margin 0 auto;
+
+
+para centralizar verticalmente, não existe uma propriedade especifica. Há algumas soluções na internet, entre elas, esta aqui que eu escolhi:
+	transform: translateY(50%);
+	Esta propriedade, na verdade, faz parte de diversas transformações possiveis, presentes na vesão 3 do CSS> Esta transformação moverá o bloco em 50% de seu eixo vertical, para biaxo.
+
+- Como eu compartilho as definições de classe, 
