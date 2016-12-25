@@ -202,3 +202,87 @@ linksDOMObjects[3].addEventListener("mouseleave", function (mouseEvent){
 	animationObj.stop();
 	fadeOtherLinks();
 });
+
+
+
+/* Canvas animation */
+var animatedBG = function(){
+	
+	/* Helpers*/
+	/* Receives: {
+		context: the context object,
+		point: the point coordinate
+		X: coordinate,
+		Y: coordinate
+	}*/
+	var drawPoint = function(paramethers){
+
+		// Drawing the shape
+		paramethers.context.beginPath();
+		paramethers.context.arc(paramethers.point.X, paramethers.point.Y, 1, 0,2*Math.PI);
+		paramethers.context.stroke();
+	};
+
+	// The point structure
+	var point = function (X, Y){
+		var _X = X;
+		var _Y = Y;
+
+		return {
+			X: _X,
+			Y: _Y
+		}
+	}
+
+	/* Main objects and constants*/
+	var theCanvas = document.getElementById("animatedBG");
+	var canvasContainer = document.getElementById("animatedBGContainer");
+	var context = theCanvas.getContext ("2d");
+
+	// Resizing the canvas to the container limits
+	var canvasWidth = canvasContainer.offsetWidth;
+	var canvasHeight = canvasContainer.offsetHeight;
+
+	theCanvas.width = canvasWidth;
+	theCanvas.height = canvasHeight;
+
+	// Creating the central point
+	var centralPoint = point(canvasWidth / 2, canvasHeight / 2);
+
+	// Draw it to the center
+	drawPoint({
+		context: context,
+		point: centralPoint
+	});
+
+	
+
+	/*var C_LIMITS = {
+		X: 500,
+		Y: 500
+	}
+
+	drawCircle ({
+		context: context,
+		X: 10,
+		Y: 20
+	});
+
+	drawCircle ({
+		context: context,
+		X: 10,
+		Y: 30
+	});
+
+	drawCircle ({
+		context: context,
+		X: 499,
+		Y: 499
+	});*/
+
+	
+
+};
+
+
+animatedBG();
