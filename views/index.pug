@@ -4,26 +4,26 @@ html
 	body
 
 		// Links
-		a(class="main-link title-paragraph" id="linkAbout" href="#")
+		a#linkAbout.main-link.title-paragraph(href="#")
 			span.icon
 				i.fa.fa-arrow-up
 			span.content
 				|About
 
-		a(class="main-link title-paragraph" id="link-gallery" href="#")
+		a(class="main-link title-paragraph" id="linkGallery" href="#")
 			span.content
 				|Gallery
 			span.icon
 				i.fa.fa-arrow-right
 
-		a.title-paragraph.main-link#link-blog(href="#")
+		a.title-paragraph.main-link#linkBlog(href="#")
 			span.content
 				|Blog
 			span.icon
 				i.fa.fa-arrow-down
 				
 			
-		a.title-paragraph.main-link#link-portfolio(href="#")
+		a.title-paragraph.main-link#linkPortfolio(href="#")
 			span.icon
 				i.fa.fa-arrow-left
 			span.content
@@ -33,12 +33,6 @@ html
 		#page-title
 			p.name.title-paragraph Amós Batista
 			p.license-info Cada página deste site possui uma licença de distribuição específica. Favor verificar, antes de compartilhar seu conteúdo. Em caso de dúvidas, entre em contato.
-
-			// Dinamic comment display
-			//#codeCommentContainer.code-comment.comment-position-visual-basic
-			//	|'
-			//	br
-			//	|'
 
 			// Dinamic comment display
 			#codeCommentContainer.code-comment.comment-position-javascript
