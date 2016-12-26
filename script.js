@@ -207,7 +207,16 @@ linksDOMObjects[3].addEventListener("mouseleave", function (mouseEvent){
 
 /* Canvas animation */
 var animatedBG = function(){
+	var theCanvas = document.getElementById("animatedBG");
+	var canvasContainer = document.getElementById("animatedBGContainer");
+	var context = theCanvas.getContext ("2d");
 	
+	// Resizing the canvas to the container limits
+	var limits = {
+		canvasWidth: canvasContainer.offsetWidth,
+		canvasHeight: canvasContainer.offsetHeight
+	}
+
 	/* Helpers*/
 	/* Receives: {
 		context: the context object,
@@ -224,7 +233,7 @@ var animatedBG = function(){
 	};
 
 	// The point structure
-	var point = function (X, Y){
+	var pointObj = function (X, Y){
 		var _X = X;
 		var _Y = Y;
 
@@ -232,28 +241,82 @@ var animatedBG = function(){
 			X: _X,
 			Y: _Y
 		}
+	};
+
+
+	// Function to generate a point, outside canvas
+	var generatePointToStart = function(limits){
+
+		var positionIndex = Math.ceil(Math.random() * 3);
+
+		switch (positionIndex){
+			case 0: //Up
+				var newPoint = pointObj( Math.floor( Math.random() * limits.canvasWidth) , 0); break;
+			case 1: //Down
+				var newPoint = pointObj( Math.floor(Math.random() * limits.canvasWidth) , limits.canvasHeight); break;
+			case 2: //Left
+				var newPoint = pointObj(0, Math.floor(Math.random() * limits.canvasHeight)); break;
+			case 3: // Right
+				var newPoint = pointObj(limits.canvasWidth, Math.floor(Math.random() * limits.canvasHeight)); break;
+		}
+		
+		return newPoint;
+
 	}
 
+	
+
 	/* Main objects and constants*/
-	var theCanvas = document.getElementById("animatedBG");
-	var canvasContainer = document.getElementById("animatedBGContainer");
-	var context = theCanvas.getContext ("2d");
-
-	// Resizing the canvas to the container limits
-	var canvasWidth = canvasContainer.offsetWidth;
-	var canvasHeight = canvasContainer.offsetHeight;
-
-	theCanvas.width = canvasWidth;
-	theCanvas.height = canvasHeight;
+	theCanvas.width = limits.canvasWidth;
+	theCanvas.height = limits.canvasHeight;
 
 	// Creating the central point
-	var centralPoint = point(canvasWidth / 2, canvasHeight / 2);
+	var centralPoint = pointObj(Math.floor(limits.canvasWidth / 2), Math.floor(limits.canvasHeight / 2));
 
 	// Draw it to the center
 	drawPoint({
 		context: context,
 		point: centralPoint
 	});
+
+	//Generate the points
+	var pointList = [];
+
+	pointList.push(generatePointToStart(limits));
+
+	// Start the interaction
+	animationID = setInterval( function(){
+
+		// Verify if the point has come to the destiny
+		pointList.forEach( function (point, index, theArray){
+
+			if (point.X == centralPoint.X && point.Y == centralPoint.Y){
+				var newPoint = generatePointToStart(limits);
+				point.X = newPoint.X;
+				point.Y = newPoint.Y;
+			}
+
+			drawPoint({
+				context: context,
+				point: point
+			});
+
+			// Recalculate the point
+			if(point.X > centralPoint.X)
+				point.X --;
+			if(point.X < centralPoint.X)
+				point.X ++;
+
+			if(point.Y > centralPoint.Y)
+				point.Y --;
+			if(point.Y < centralPoint.Y)
+				point.Y ++;
+
+		});
+
+	}, 5 );
+
+
 
 	
 
