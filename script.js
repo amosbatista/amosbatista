@@ -229,36 +229,43 @@ var animatedBG = function(){
 		// Drawing the shape
 		paramethers.context.beginPath();
 		paramethers.context.arc(paramethers.point.X, paramethers.point.Y, 1, 0,2*Math.PI);
+		paramethers.context.strokeStyle = paramethers.point.color;
 		paramethers.context.stroke();
 	};
 
 	// The point structure
-	var pointObj = function (X, Y){
+	var pointObj = function (X, Y, direction, color){
 		var _X = X;
 		var _Y = Y;
 
 		return {
 			X: _X,
-			Y: _Y
+			Y: _Y,
+			direction: direction,
+			color: color
 		}
 	};
 
 
 	// Function to generate a point, outside canvas
-	var generatePointToStart = function(limits){
+	var generatePointToStart = function(direction){
 
-		var positionIndex = Math.ceil(Math.random() * 3);
+		/* Generation color */
+		var color = 'hsl(' + Math.floor( Math.random() * 360 ) + ', 50%, 50%)';
 
-		switch (positionIndex){
-			case 0: //Up
-				var newPoint = pointObj( Math.floor( Math.random() * limits.canvasWidth) , 0); break;
-			case 1: //Down
-				var newPoint = pointObj( Math.floor(Math.random() * limits.canvasWidth) , limits.canvasHeight); break;
-			case 2: //Left
-				var newPoint = pointObj(0, Math.floor(Math.random() * limits.canvasHeight)); break;
-			case 3: // Right
-				var newPoint = pointObj(limits.canvasWidth, Math.floor(Math.random() * limits.canvasHeight)); break;
+		/*var positionIndex = Math.ceil(Math.random() * 3);*/
+
+		switch (direction){
+			case 'up': //Up
+				var newPoint = pointObj( Math.floor( Math.random() * limits.canvasWidth) , 0, direction, color); break;
+			case 'down': //Down
+				var newPoint = pointObj( Math.floor(Math.random() * limits.canvasWidth) , limits.canvasHeight , direction, color); break;
+			case 'left': //Left
+				var newPoint = pointObj(0, Math.floor(Math.random() * limits.canvasHeight), direction, color); break;
+			case 'right': // Right
+				var newPoint = pointObj(limits.canvasWidth, Math.floor(Math.random() * limits.canvasHeight), direction, color); break;
 		}
+
 		
 		return newPoint;
 
@@ -274,31 +281,35 @@ var animatedBG = function(){
 	var centralPoint = pointObj(Math.floor(limits.canvasWidth / 2), Math.floor(limits.canvasHeight / 2));
 
 	// Draw it to the center
-	drawPoint({
+	/*drawPoint({
 		context: context,
 		point: centralPoint
-	});
+	});*/
 
 	//Generate the points
 	var pointList = [];
 
-	pointList.push(generatePointToStart(limits));
+	pointList.push(generatePointToStart('up'));
+	pointList.push(generatePointToStart('down'));
+	pointList.push(generatePointToStart('left'));
+	pointList.push(generatePointToStart('right'));
 
 	// Start the interaction
 	animationID = setInterval( function(){
 
 		// Verify if the point has come to the destiny
-		pointList.forEach( function (point, index, theArray){
+		pointList.forEach( function (point){
 
 			if (point.X == centralPoint.X && point.Y == centralPoint.Y){
-				var newPoint = generatePointToStart(limits);
+				var newPoint = generatePointToStart(point.direction);
 				point.X = newPoint.X;
 				point.Y = newPoint.Y;
+				point.color = newPoint.color;
 			}
 
 			drawPoint({
 				context: context,
-				point: point
+				point: point,
 			});
 
 			// Recalculate the point
@@ -315,35 +326,6 @@ var animatedBG = function(){
 		});
 
 	}, 5 );
-
-
-
-	
-
-	/*var C_LIMITS = {
-		X: 500,
-		Y: 500
-	}
-
-	drawCircle ({
-		context: context,
-		X: 10,
-		Y: 20
-	});
-
-	drawCircle ({
-		context: context,
-		X: 10,
-		Y: 30
-	});
-
-	drawCircle ({
-		context: context,
-		X: 499,
-		Y: 499
-	});*/
-
-	
 
 };
 
