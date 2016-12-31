@@ -4,26 +4,26 @@ html
 	body
 
 		// Links
-		a#linkAbout.main-link.title-paragraph(href="#")
+		a#linkAbout.main-link.title-paragraph(href="")
 			span.icon
 				i.fa.fa-arrow-up
 			span.content
 				|About
 
-		a(class="main-link title-paragraph" id="linkGallery" href="#")
+		a(class="main-link title-paragraph" id="linkGallery" href="")
 			span.content
 				|Gallery
 			span.icon
 				i.fa.fa-arrow-right
 
-		a.title-paragraph.main-link#linkBlog(href="#")
+		a.title-paragraph.main-link#linkBlog(href="")
 			span.content
 				|Blog
 			span.icon
 				i.fa.fa-arrow-down
 				
 			
-		a.title-paragraph.main-link#linkPortfolio(href="#")
+		a.title-paragraph.main-link#linkPortfolio(href="")
 			span.icon
 				i.fa.fa-arrow-left
 			span.content
@@ -31,7 +31,10 @@ html
 
 
 		#page-title
-			p.name.title-paragraph Amós Batista
+			p.name.title-paragraph 
+				|Amós 
+				br
+				|Batista
 			p.license-info Cada página deste site possui uma licença de distribuição específica. Favor verificar, antes de compartilhar seu conteúdo. Em caso de dúvidas, entre em contato.
 
 			// Dinamic comment display
@@ -46,5 +49,6 @@ html
 
 	link(href="https://fonts.googleapis.com/css?family=Source+Serif+Pro|Fjalla+One" rel="stylesheet")
 	link(href="../style.css" rel="stylesheet")
-	script(src="https://use.fontawesome.com/b3ecf99631.js")
+	link(href="../node_modules/font-awesome/css/font-awesome.css" rel="stylesheet")
+	script(src="../node_modules/angular/angular.js")
 	script(src="../script.js")

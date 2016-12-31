@@ -1,0 +1,37 @@
+structure
+	\amosbatista
+		\src
+			\main
+				app.js
+				routes.js
+				main.less
+			\home
+				homeCtrl.js
+				homeSrv.js
+				homeDtv.js
+				home.less
+			\about
+				about.pug
+				aboutCtrl.js
+				aboutSrv.js
+				aboutDtv.js
+				about.less
+			\plugins
+				angular.js
+				...
+			index.pug
+
+		\dist
+
+
+
+			\main
+				app.js
+				style.css
+			
+			home.html
+			about.html
+			index.html
+
+
+
