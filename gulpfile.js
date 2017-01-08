@@ -4,16 +4,23 @@ var less = require ('gulp-less');
 var flatten = require('gulp-flatten');
 var concatCss = require('gulp-concat-css');
 var jsConcat = require('gulp-concat');
+var plumber = require('gulp-plumber');
 
 
 /* Paths */
 var pugOrigin = ["src/*.pug", "src/**/*.pug"];
 var lessMainOrigin = ["src/main/main.less"];
 var lessOrigin = ["src/**/*.less"];
+/*var pluginCSSOrigin = [
+	'node_modules/font-awesome/css/font-awesome.css'
+];*/
 var cssPostLessOrigin = ["cssProcess/*.css"];
 var jsOrigin = [
+	"node_modules/angular/angular.js",
+	"node_modules/angular-route/angular-route.js",
 	"src/plugins/*.js",
 	"src/main/main.js",
+	"src/main/routes.js",
 	"src/about/*.js",
 	"src/home/*.js",
 ];
@@ -24,6 +31,7 @@ Process to HTML and save to the same dest folder */
 gulp.task ('pug', function(){
 
 	return gulp.src(pugOrigin)
+		.pipe(plumber())
 		.pipe(pug())
   		.pipe(flatten())
 		.pipe(gulp.dest('dest'));
@@ -34,6 +42,7 @@ Concatenate all JS files from project and plugins*/
 gulp.task ('app', function(){
 
 	return gulp.src(jsOrigin)
+		.pipe(plumber())
   		.pipe(jsConcat('app.js'))
 		.pipe(gulp.dest('dest/main'));
 });
@@ -44,7 +53,16 @@ Convert the files to css folder*/
 gulp.task ('less', function(){
 
 	return gulp.src(lessMainOrigin)
+		.pipe(plumber())
 		.pipe(less())
+		.pipe(gulp.dest('cssProcess'));
+});
+
+/* Plugin 
+Copy the CSS folders to the processment*/
+gulp.task ('cssPlugin', function(){
+
+	return gulp.src(pluginCSSOrigin)
 		.pipe(gulp.dest('cssProcess'));
 });
 
@@ -53,6 +71,7 @@ gulp.task ('less', function(){
 gulp.task ('concatenateCSS', function(){
 
 	return gulp.src(cssPostLessOrigin)
+		.pipe(plumber())
 		.pipe(concatCss('/style.css'))
 		.pipe(gulp.dest('dest/main'));
 });
@@ -63,6 +82,7 @@ gulp.task ('concatenateCSS', function(){
 gulp.watch( pugOrigin, ['pug']);
 gulp.watch( lessOrigin, ['less']);
 gulp.watch( cssPostLessOrigin, ['concatenateCSS']);
+/*gulp.watch( pluginCSSOrigin, ['cssPlugin']);*/
 gulp.watch( jsOrigin, ['app']);
 
 

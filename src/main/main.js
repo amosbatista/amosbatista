@@ -1,1 +1,1 @@
-var x = "XXX";
+var appWebSite = angular.module("amosWebSite", ["ngRoute"]);

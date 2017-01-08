@@ -1,0 +1,256 @@
+#homeContainer{
+	
+	.title-paragraph{
+		font-family: 'Fjalla One', sans-serif;
+		text-transform: uppercase;
+		color: black;
+		text-decoration: none;
+	}
+		
+
+	.main-link{
+		position: absolute;
+		text-align: center;
+		overflow: hidden;
+		opacity: 1;
+		transition: opacity 0.7s ease-in;
+	}
+
+	#linkAbout{
+		top: 10px;
+		/*left: 30px;*/
+		left: 10px;
+	}
+
+	#linkGallery{
+		/*top: 30px;*/
+		top: 70px;
+		right: 10px;
+		display: flex;
+		align-items: center;
+	}
+
+	#linkBlog{
+		bottom: 10px;
+		/*right: 30px;*/
+		right: 10px;
+	}
+
+	#linkPortfolio{
+		/*bottom: 30px;*/
+		bottom: 70px;
+		left: 10px;
+		display: flex;
+		align-items: center;
+	}
+
+	.icon{
+		/*font-size: 75px;*/
+		font-size: 15px;
+		line-height: 0px;
+		display: block;
+	}
+
+	/* Mouse hover transition - To scroll the arrow */
+	/*#linkAbout:hover .icon{
+		
+		animation: iconScrollArrowUp 1s linear infinite;
+	}*/
+
+
+
+	body{
+		margin: 0;
+		overflow: hidden;
+	}
+
+	.content{
+		font-size: 20px;
+		display: block;
+	}
+
+	#linkAbout .icon{
+		/*float: left;*/
+	}
+
+	#linkPortfolio .content,
+	#linkGallery .content{
+		margin: 5px 10px 0 10px;
+	}
+
+
+	#page-title{
+		max-width: 30%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		margin: -60px 0px 0 -20%;
+	}
+
+	#page-title .license-info,
+	#page-title .name{
+		/*margin: 0 0 0 40px;*/
+	}
+
+
+	#page-title .name{
+		font-size: 25px;
+		line-height: 1;
+	}
+
+	#page-title .license-info{
+		font-size: 15px;
+		display: none;
+		font-family: 'Source Serif Pro', sans-serif;
+	}
+
+	#page-title .code-comment{
+		font-size: 30px;
+		color: green;
+		position: absolute;
+		font-family: 'Fjalla One', sans-serif;
+		opacity: 0;
+	}
+	#page-title .comment-position-visual-basic{
+		left: -11px;
+		top: 22px;
+		line-height: 1;
+	}
+
+	#page-title .comment-position-javascript{
+		left: -20px;
+		top: -35px;
+		line-height: 3;
+	}
+
+	#page-title .show-comment-animated{
+		animation: commentShow 1s ease-out 0.1s;
+		opacity: 1;
+	}
+
+	@media screen and (min-width: 200px) and (max-width: 699px) {
+
+		#linkGallery{
+			top: 30px;
+			right: 10px;
+		}
+
+
+		#linkPortfolio{
+			bottom: 30px;
+			left: 10px;
+		}
+	}
+	@media screen and (min-width: 400px) and (max-width: 699px) {
+
+		#page-title{
+			margin: -110px 0 0 -25.5%;
+		}
+
+		.icon{
+			font-size: 35px;
+		}
+
+	}
+
+	@media screen and (min-width: 700px) {
+
+		#page-title{
+			margin: -100px 0 0 -25.5%;
+		}
+
+		.icon{
+			font-size: 50px;
+		}
+
+		#linkAbout{
+			top: 20px;
+			left: 50px;
+		}
+
+		#linkGallery{
+			top: 50px;
+			right: 20px;
+		}
+
+		#linkBlog{
+			bottom: 20px;
+			right: 50px;
+		}
+
+		#linkPortfolio{
+			bottom: 50px;
+			left: 20px;
+		}
+	}
+
+
+	@media screen and (min-width: 400px){
+
+		#page-title .name{
+			font-size: 75px;
+			margin: 0px;
+		}
+
+		#page-title .license-info{
+			display: block;
+		}	
+
+		#page-title .code-comment{
+			font-size: 75px;
+			left: -25px;
+			top: 5px;
+		}
+
+		#page-title .comment-position-javascript{
+			left: -70px;
+			top: -145px;
+			line-height: 3;
+		}
+	}
+
+
+	/* Animation */
+	@keyframes commentShow{
+		0% {
+			opacity: 0;
+		}
+		5% {
+			opacity: 0.9;
+		}
+		10% {
+			opacity: 0.1;
+		}
+		20% {
+			opacity: 0.8;
+		}
+		30% {
+			opacity: 0.2;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+
+	.home-fade-to-white{
+		opacity: 0.3;
+		transition: opacity 0.9s ease-out;
+	}
+
+
+	#animatedBGContainer{
+		/*border: 1px solid black;*/
+		position: absolute;
+		z-index: -1;
+		top: 0;
+		right: 0;
+		width: 75%;
+		height: 100%;
+		opacity: 0.3;
+	}
+
+	.animatedBGContainer #animatedBG{
+
+	}
+}
+	

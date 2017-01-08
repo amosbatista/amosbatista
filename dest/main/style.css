@@ -1,7 +1,248 @@
-.cssasa {
-  border: 1px solid red;
+#homeContainer {
+  /* Mouse hover transition - To scroll the arrow */
+  /*#linkAbout:hover .icon{
+		
+		animation: iconScrollArrowUp 1s linear infinite;
+	}*/
+  /* Animation */
 }
 
-.a {
-  border: 1px solid black;
+#homeContainer .title-paragraph {
+  font-family: 'Fjalla One', sans-serif;
+  text-transform: uppercase;
+  color: black;
+  text-decoration: none;
+}
+
+#homeContainer .main-link {
+  position: absolute;
+  text-align: center;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity 0.7s ease-in;
+}
+
+#homeContainer #linkAbout {
+  top: 10px;
+  /*left: 30px;*/
+  left: 10px;
+}
+
+#homeContainer #linkGallery {
+  /*top: 30px;*/
+  top: 70px;
+  right: 10px;
+  display: flex;
+  align-items: center;
+}
+
+#homeContainer #linkBlog {
+  bottom: 10px;
+  /*right: 30px;*/
+  right: 10px;
+}
+
+#homeContainer #linkPortfolio {
+  /*bottom: 30px;*/
+  bottom: 70px;
+  left: 10px;
+  display: flex;
+  align-items: center;
+}
+
+#homeContainer .icon {
+  /*font-size: 75px;*/
+  font-size: 15px;
+  line-height: 0px;
+  display: block;
+}
+
+#homeContainer body {
+  margin: 0;
+  overflow: hidden;
+}
+
+#homeContainer .content {
+  font-size: 20px;
+  display: block;
+}
+
+#homeContainer #linkAbout .icon {
+  /*float: left;*/
+}
+
+#homeContainer #linkPortfolio .content,
+#homeContainer #linkGallery .content {
+  margin: 5px 10px 0 10px;
+}
+
+#homeContainer #page-title {
+  max-width: 30%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: -60px 0px 0 -20%;
+}
+
+#homeContainer #page-title .license-info,
+#homeContainer #page-title .name {
+  /*margin: 0 0 0 40px;*/
+}
+
+#homeContainer #page-title .name {
+  font-size: 25px;
+  line-height: 1;
+}
+
+#homeContainer #page-title .license-info {
+  font-size: 15px;
+  display: none;
+  font-family: 'Source Serif Pro', sans-serif;
+}
+
+#homeContainer #page-title .code-comment {
+  font-size: 30px;
+  color: green;
+  position: absolute;
+  font-family: 'Fjalla One', sans-serif;
+  opacity: 0;
+}
+
+#homeContainer #page-title .comment-position-visual-basic {
+  left: -11px;
+  top: 22px;
+  line-height: 1;
+}
+
+#homeContainer #page-title .comment-position-javascript {
+  left: -20px;
+  top: -35px;
+  line-height: 3;
+}
+
+#homeContainer #page-title .show-comment-animated {
+  animation: commentShow 1s ease-out 0.1s;
+  opacity: 1;
+}
+
+@media screen and (min-width: 200px) and (max-width: 699px) {
+  #homeContainer #linkGallery {
+    top: 30px;
+    right: 10px;
+  }
+
+  #homeContainer #linkPortfolio {
+    bottom: 30px;
+    left: 10px;
+  }
+}
+
+@media screen and (min-width: 400px) and (max-width: 699px) {
+  #homeContainer #page-title {
+    margin: -110px 0 0 -25.5%;
+  }
+
+  #homeContainer .icon {
+    font-size: 35px;
+  }
+}
+
+@media screen and (min-width: 700px) {
+  #homeContainer #page-title {
+    margin: -100px 0 0 -25.5%;
+  }
+
+  #homeContainer .icon {
+    font-size: 50px;
+  }
+
+  #homeContainer #linkAbout {
+    top: 20px;
+    left: 50px;
+  }
+
+  #homeContainer #linkGallery {
+    top: 50px;
+    right: 20px;
+  }
+
+  #homeContainer #linkBlog {
+    bottom: 20px;
+    right: 50px;
+  }
+
+  #homeContainer #linkPortfolio {
+    bottom: 50px;
+    left: 20px;
+  }
+}
+
+@media screen and (min-width: 400px) {
+  #homeContainer #page-title .name {
+    font-size: 75px;
+    margin: 0px;
+  }
+
+  #homeContainer #page-title .license-info {
+    display: block;
+  }
+
+  #homeContainer #page-title .code-comment {
+    font-size: 75px;
+    left: -25px;
+    top: 5px;
+  }
+
+  #homeContainer #page-title .comment-position-javascript {
+    left: -70px;
+    top: -145px;
+    line-height: 3;
+  }
+}
+
+@keyframes commentShow {
+  0% {
+    opacity: 0;
+  }
+
+  5% {
+    opacity: 0.9;
+  }
+
+  10% {
+    opacity: 0.1;
+  }
+
+  20% {
+    opacity: 0.8;
+  }
+
+  30% {
+    opacity: 0.2;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+#homeContainer .home-fade-to-white {
+  opacity: 0.3;
+  transition: opacity 0.9s ease-out;
+}
+
+#homeContainer #animatedBGContainer {
+  /*border: 1px solid black;*/
+  position: absolute;
+  z-index: -1;
+  top: 0;
+  right: 0;
+  width: 75%;
+  height: 100%;
+  opacity: 0.3;
+}
+
+body {
+  margin: 0;
+  overflow: hidden;
 }
