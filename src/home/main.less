@@ -1,13 +1,5 @@
 #homeContainer{
 	
-	.title-paragraph{
-		font-family: 'Fjalla One', sans-serif;
-		text-transform: uppercase;
-		color: black;
-		text-decoration: none;
-	}
-		
-
 	.main-link{
 		position: absolute;
 		text-align: center;
@@ -15,7 +7,13 @@
 		opacity: 1;
 		transition: opacity 0.7s ease-in;
 	}
-
+	
+	.title-paragraph{
+		font-family: @fontFamily_Titles;
+		text-transform: uppercase;
+		color: black;
+		text-decoration: none;
+	}
 	#linkAbout{
 		top: 10px;
 		/*left: 30px;*/
@@ -44,25 +42,11 @@
 		align-items: center;
 	}
 
-	.icon{
-		/*font-size: 75px;*/
-		font-size: 15px;
-		line-height: 0px;
-		display: block;
-	}
-
 	/* Mouse hover transition - To scroll the arrow */
 	/*#linkAbout:hover .icon{
 		
 		animation: iconScrollArrowUp 1s linear infinite;
 	}*/
-
-
-
-	body{
-		margin: 0;
-		overflow: hidden;
-	}
 
 	.content{
 		font-size: 20px;
@@ -101,14 +85,14 @@
 	#page-title .license-info{
 		font-size: 15px;
 		display: none;
-		font-family: 'Source Serif Pro', sans-serif;
+		font-family: @fontFamily_Default;
 	}
 
 	#page-title .code-comment{
 		font-size: 30px;
 		color: green;
 		position: absolute;
-		font-family: 'Fjalla One', sans-serif;
+		font-family: @fontFamily_Titles;
 		opacity: 0;
 	}
 	#page-title .comment-position-visual-basic{
@@ -237,20 +221,53 @@
 		transition: opacity 0.9s ease-out;
 	}
 
-
-	#animatedBGContainer{
-		/*border: 1px solid black;*/
+	.white-gradient{
 		position: absolute;
 		z-index: -1;
 		top: 0;
 		right: 0;
+		width: 100%;
+		height: 100%;
+		background: -moz-linear-gradient(left, rgba(255,255,255,1) 1%, rgba(255,255,255,1) 25%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(left, rgba(255,255,255,1) 1%,rgba(255,255,255,1) 25%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(to right, rgba(255,255,255,1) 1%,rgba(255,255,255,1) 25%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 );
+	}
+
+	#animatedBGContainer{
+		/*border: 1px solid black;*/
+		position: absolute;
+		z-index: -2;
+		top: 0;
+		right: 0;
 		width: 75%;
 		height: 100%;
-		opacity: 0.3;
-	}
+		opacity: 0.9;
+		
+	}	
+	
 
 	.animatedBGContainer #animatedBG{
 
+	}
+
+	.icon{
+		font-size: 15px;
+	}
+
+
+
+	@media screen and (min-width: 400px) and (max-width: 699px) {
+		.icon{
+			font-size: 35px;
+		}
+	}
+
+
+	@media screen and (min-width: 700px) {
+		.icon{
+			font-size: 50px;
+		}
 	}
 }
 	

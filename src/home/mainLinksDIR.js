@@ -6,7 +6,8 @@ appWebSite.directive('mainLink', ['$timeout', function(timeout){
 		templateUrl: '_mainLink.html',
 		restrict: "E",
 		scope: {
-			linkName: '@'
+			linkName: '@',
+			linkAction: '&'
 		},
 		
 
@@ -152,7 +153,11 @@ appWebSite.directive('mainLink', ['$timeout', function(timeout){
 				});
 			});
 
-
+			/* Function to execute the process insert into the directive*/
+			scope.executeAction = function(){
+				/*element[0].preventDefault();*/
+				scope.linkAction();
+			}
 		}
 	}
 }]);

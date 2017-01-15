@@ -1,1 +1,35 @@
-abput.pug
+//Left header
+.about-bg
+
+.header
+	a.link-home.icon(ng-click="goHome()" href="")
+		i.fa.fa-home
+		span.title-paragraph
+			|Main
+
+	a.link-portfolio.icon(ng-click="goHome()" href="")
+		i.fa.fa-arrow-left
+		span.title-paragraph
+			|Portfolio
+
+	a.link-blog.icon(ng-click="goHome()" href="")
+		i.fa.fa-arrow-down
+		span.title-paragraph
+			|Blog
+
+	a.link-gallery.icon(ng-click="goHome()" href="")
+		i.fa.fa-arrow-right
+		span.title-paragraph
+			|Gallery
+
+.top-history(easy-scroll-top)
+	h1.main-title
+		|About
+
+	p.intro-history
+		|A página é dividida em duas partes. Na primeira, você pode conhecer um pouco sobre a minha trajetória de vida. 
+		br
+		Na segunda parte, poderá ver mais detalhes sobre a construção desta página. 
+
+a.start-scroll(href="" easy-scroll)
+	i.fa.fa-angle-double-down

@@ -1,8 +1,13 @@
 appWebSite.controller('homeCtrl', [
 	'$scope',
+	'$location',
 	function(
-		scope
-	){
+		scope,
+		location
 
+	){
+		scope.goToAboutPage = function(){
+			location.path('/about');
+		}
 	}
 ])

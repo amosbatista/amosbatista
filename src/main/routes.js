@@ -8,5 +8,10 @@ appWebSite.config( [
 				templateUrl: "home.html",
 				controller: "homeCtrl"
 			})
+
+			.when('/about', {
+				templateUrl: "about.html",
+				controller: "aboutCtrl"
+			})	
 	}
 ])
