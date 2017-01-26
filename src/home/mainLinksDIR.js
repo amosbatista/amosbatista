@@ -158,6 +158,11 @@ appWebSite.directive('mainLink', ['$timeout', function(timeout){
 				/*element[0].preventDefault();*/
 				scope.linkAction();
 			}
+
+			scope.$on("$destroy", function(event){
+				clearInterval(animationID);
+				animationID = undefined;
+			});
 		}
 	}
 }]);

@@ -26,6 +26,10 @@ appWebSite.directive('animatedBg', ['$timeout', function(timeout){
 				animation.start();
 			});
 
+			scope.$on("$destroy", function(event){
+				animation.stopAndClear();
+			});
+
 			var pointsToCenter = function(container, theCanvas, context){
 				
 				var animationID = undefined;
