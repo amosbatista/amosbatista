@@ -34218,12 +34218,32 @@ appWebSite.config( [
 
 
 
-
-appWebSite.directive('body', ['$timeout', function(timeout){
+// Directive controlls the body style
+appWebSite.directive('body', [
+	'$timeout',
+	'$location',
+	function(
+		timeout,
+		location
+	){
 
 	return {
 		restrict: "E",
 		link: function(scope, element){
+
+			scope.$on('$locationChangeSuccess', function (){
+
+				// According the page href, change the body style
+				switch (location.path()){
+					case '/about':
+						element[0].className = 'body-about-page';
+						break;
+					default:
+						element[0].className = 'body-home-page';
+						break;
+				}
+			});
+			
 		}
 	}
 }]);
@@ -34251,11 +34271,8 @@ appWebSite.directive('easyScrollContentLink', [ function(){
 	// The function process to show the link
 	var scrollAndShowProcessFunction = function(scope, element, animation){
 		var showElement = true;
-		var linkOpacity = 0;
-		var animation;
-		
+		var linkOpacity = 0;	
 
-		// Clear the animation, if there's some activated
 		clearInterval (animation);
 
 		element[0].style.display = 'block';
@@ -34267,6 +34284,7 @@ appWebSite.directive('easyScrollContentLink', [ function(){
 			if(linkOpacity > 1 ){
 				linkOpacity = 1;
 				clearInterval (animation);
+				animation = null;
 			}
 
 			// Setup transition
@@ -34285,7 +34303,6 @@ appWebSite.directive('easyScrollContentLink', [ function(){
 		var showElement = true;
 		var linkOpacity = 1;
 		
-
 		// Clear the animation, if there's some activated
 		clearInterval (animation);
 
@@ -34297,6 +34314,7 @@ appWebSite.directive('easyScrollContentLink', [ function(){
 				linkOpacity = 0;
 				element[0].style.display = 'none';
 				clearInterval (animation);
+				animation = null;
 			}
 
 			// Setup transition
@@ -34314,14 +34332,23 @@ appWebSite.directive('easyScrollContentLink', [ function(){
 		restrict: "A",
 		link: function(scope, element){
 
-			var animation;
+			var animation = null;
 
 			// Activate the transition into this directive when receive the event
 			scope.$on ("easyScrollDown", function(){
+				// Do not end the last animation
+				if( animation != null)
+					return;
+
 				scrollAndHideProcessFunction(scope, element, animation);
 			});
 
 			scope.$on ("easyScrollUp", function(){
+
+				// Do not end the last animation
+				if( animation != null)
+					return;
+
 				scrollAndShowProcessFunction(scope, element, animation);
 			});
 
@@ -34334,57 +34361,6 @@ appWebSite.directive('easyScrollContentLink', [ function(){
 	}
 }]);
 
-/*appWebSite.directive('easyScrollTopLink', [ function(){
-
-	// The function process to hide the link
-	var scrollAndShowProcessFunction = function(scope, element){
-		var showElement = true;
-		var linkOpacity = 0;
-		var animation;
-		
-
-		// Clear the animation, if there's some activated
-		clearInterval (animation);
-
-		element[0].style.display = 'block';
-
-		// Hide the link
-		animation = setInterval(function (){
-
-			// Animation end
-			if(linkOpacity > 1 ){
-				linkOpacity = 1;
-				clearInterval (animation);
-			}
-
-			// Setup transition
-			else{
-				linkOpacity = Number((linkOpacity + 0.2).toFixed(2));
-			}
-
-			element[0].children[0].style.opacity = linkOpacity;
-
-		}, 25);
-		
-	}
-
-	return {
-		restrict: "A",
-		link: function(scope, element){
-
-			// Activate the transition into this directive when receive the event
-			scope.$on ("easyScrollDown", function(){
-				scrollAndShowProcessFunction(scope, element);
-			});
-
-			// Emit the event at click, to activate to another directives
-			element.bind("click", function(clickEvent){
-				scope.$emit ('easyScrollUp');
-			});
-			
-		}
-	}
-}]);*/
 
 
 
@@ -34395,13 +34371,19 @@ appWebSite.directive('easyScrollTop', function(){
 		restrict: "A",
 		link: function(scope, element){
 
+			var animation = null; 
+
 			scope.$on ("easyScrollDown", function(){
 				var translateY = 1;
 				//var translateYLimit = window.innerHeight
 				var translateYLimit = 200;
 				var translateOpac = 0.9;
 
-				var animation; 
+				
+				if( animation != null)
+					return;
+
+				clearInterval (animation);
 
 				animation = setInterval(function (){
 
@@ -34409,7 +34391,7 @@ appWebSite.directive('easyScrollTop', function(){
 					if(translateY >= translateYLimit){
 						translateY = translateYLimit;
 						clearInterval (animation);
-						animation = undefined;
+						animation = null;
 					}
 
 					// Process the values
@@ -34428,15 +34410,19 @@ appWebSite.directive('easyScrollTop', function(){
 				var translateYLimit = 1;
 				var translateOpac = 0;
 			
-				var animation; 
+				if( animation != null)
+					return;
+				
+				clearInterval (animation);
 
 				animation = setInterval(function (){
 
 					// End of animation
 					if(translateY <= translateYLimit){
 						translateY = translateYLimit;
+						translateOpac = 1;
 						clearInterval (animation);
-						animation = undefined;
+						animation = null;
 					}
 
 					// Process the values
@@ -34461,10 +34447,17 @@ appWebSite.directive('easyScrollContent', function(){
 		restrict: "A",
 		link: function(scope, element){
 			
+			var animation = null; 
+
 			scope.$on ("easyScrollDown", function(){
-				var animation; 
+				
 				var translateOpac = 0.1;
 				var translateY = 175;
+
+				if( animation != null)
+					return;
+
+				clearInterval (animation);
 
 				animation = setInterval(function (){
 
@@ -34473,12 +34466,12 @@ appWebSite.directive('easyScrollContent', function(){
 						translateOpac = 1;
 						/*translateY = 0;*/
 						clearInterval(animation);
-						animation = undefined;
+						animation = null;
 					}
 
 					// Animation process
 					else{
-						translateOpac = translateOpac + 0.4;
+						translateOpac = translateOpac + 0.2;
 						translateY = translateY - 50;
 					}
 
@@ -34490,23 +34483,28 @@ appWebSite.directive('easyScrollContent', function(){
 			});
 
 			scope.$on ("easyScrollUp", function(){
-				var animation; 
+				
 				var translateOpac = 1;
 				var translateY = 0;
+
+				if( animation != null)
+					return;
+
+				clearInterval (animation);
 
 				animation = setInterval(function (){
 
 					// Animation end
 					if( translateY >= 175 ){
-						translateOpac = 0;
+						translateOpac = 0.1;
 						/*translateY = 0;*/
 						clearInterval(animation);
-						animation = undefined;
+						animation = null;
 					}
 
 					// Animation process
 					else{
-						translateOpac = translateOpac - 0.4;
+						translateOpac = translateOpac - 0.2;
 						translateY = translateY + 50;
 					}
 
@@ -34537,7 +34535,7 @@ appWebSite.directive('easyScroll', function(){
 				if(document.body.scrollTop > lastScrollPosition){ // Down
 
 					if( document.body.scrollTop <= 10 ){
-						document.scrollTop = 40;
+						document.body.scrollTop = 60;
 						scope.$emit ('easyScrollDown');
 					}
 
@@ -34547,7 +34545,7 @@ appWebSite.directive('easyScroll', function(){
 					if(document.body.scrollTop < lastScrollPosition){ // U
 
 						if( document.body.scrollTop <= 20 ){
-							document.scrollTop = 0;
+							document.body.scrollTop = 0;
 							scope.$emit ('easyScrollUp');
 						}
 
@@ -34559,9 +34557,18 @@ appWebSite.directive('easyScroll', function(){
 
 			}
 
+			// Event to scroll down the page when happen the scroll down
+			scope.$on('easyScrollDown', function(){
+				document.body.scrollTop = 60;
+			});
+
+			scope.$on('easyScrollUp', function(){
+				document.body.scrollTop = 0;
+			});
+
 			// When load the page, force the scroll to the top
 			/*document.removeEventListener("scroll", easyScrollEvent);*/
-			document.scrollTop = 0;
+			document.body.scrollTop = 0;
 
 			document.addEventListener("scroll", easyScrollEvent, true);
 
