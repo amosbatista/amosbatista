@@ -1,3 +1,5 @@
+/* For space in bottom, for the footer */
+
 #homeContainer {
   /* Mouse hover transition - To scroll the arrow */
   /*#linkAbout:hover .icon{
@@ -13,13 +15,6 @@
   overflow: hidden;
   opacity: 1;
   transition: opacity 0.7s ease-in;
-}
-
-#homeContainer .title-paragraph {
-  font-family: 'Fjalla One', sans-serif;
-  text-transform: uppercase;
-  color: black;
-  text-decoration: none;
 }
 
 #homeContainer #linkAbout {
@@ -274,66 +269,6 @@
 	z-index: -1;*/
 }
 
-.header {
-  position: fixed;
-  width: 100%;
-  height: 90px;
-  padding: 10px;
-  top: 0;
-  left: 0;
-  background-color: #ffffff;
-  margin: 0;
-  z-index: 2;
-}
-
-.header .link-home,
-.header .link-portfolio,
-.header .link-blog,
-.header .link-gallery {
-  list-style: none;
-  position: absolute;
-  margin: 0 10px 0 0;
-  font-size: 30px;
-}
-
-.header .link-home .fa,
-.header .link-portfolio .fa,
-.header .link-blog .fa,
-.header .link-gallery .fa {
-  margin: 0 10px 0 0;
-}
-
-.header .link-home .title-paragraph,
-.header .link-portfolio .title-paragraph,
-.header .link-blog .title-paragraph,
-.header .link-gallery .title-paragraph {
-  font-family: 'Fjalla One', sans-serif;
-  text-transform: uppercase;
-  color: black;
-  text-decoration: none;
-  font-size: 15px;
-}
-
-.header .link-home {
-  top: 10px;
-  left: 10px;
-}
-
-.header .link-portfolio {
-  bottom: 10px;
-  left: 10px;
-}
-
-.header .link-blog {
-  bottom: 10px;
-  right: 20px;
-}
-
-.header .link-gallery {
-  top: 10px;
-  right: 20px;
-}
-
 .page-content {
   width: 100%;
 }
@@ -436,6 +371,80 @@
   }
 }
 
+@media screen and (orientation: landscape) {
+  .page-content .top-history {
+    margin: 115px 0 0 0;
+  }
+
+  .page-content .page-content-subpart {
+    width: 60%;
+  }
+}
+
+/*body{
+	
+}*/
+
+.header {
+  position: fixed;
+  width: 100%;
+  height: 90px;
+  padding: 10px;
+  top: 0;
+  left: 0;
+  background-color: #ffffff;
+  margin: 0;
+  z-index: 2;
+}
+
+.header .link-home,
+.header .link-portfolio,
+.header .link-blog,
+.header .link-gallery {
+  list-style: none;
+  position: absolute;
+  margin: 0 10px 0 0;
+  font-size: 30px;
+}
+
+.header .link-home .fa,
+.header .link-portfolio .fa,
+.header .link-blog .fa,
+.header .link-gallery .fa {
+  margin: 0 10px 0 0;
+}
+
+.header .link-home .title-paragraph,
+.header .link-portfolio .title-paragraph,
+.header .link-blog .title-paragraph,
+.header .link-gallery .title-paragraph {
+  font-family: 'Fjalla One', sans-serif;
+  text-transform: uppercase;
+  color: black;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.header .link-home {
+  top: 10px;
+  left: 10px;
+}
+
+.header .link-portfolio {
+  bottom: 10px;
+  left: 10px;
+}
+
+.header .link-blog {
+  bottom: 10px;
+  right: 20px;
+}
+
+.header .link-gallery {
+  top: 10px;
+  right: 20px;
+}
+
 @media screen and (min-width: 475px) {
   .header {
     height: auto;
@@ -503,19 +512,86 @@
   .header .link-home {
     margin: 0 0 35px 0;
   }
-
-  .page-content .top-history {
-    margin: 115px 0 0 0;
-  }
-
-  .page-content .page-content-subpart {
-    width: 60%;
-  }
 }
 
-/*body{
-	
-}*/
+/* Container to hold the template content */
+
+.footer-container {
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  margin: 0;
+}
+
+.footer-container .footer {
+  margin: 0 auto;
+  width: 85%;
+  background-color: #ffffff;
+  position: relative;
+  display: block;
+  height: 200px;
+}
+
+.footer-container .footer .page-title {
+  position: absolute;
+  top: 40px;
+  left: 20px;
+  width: 30%;
+  font-size: 17px;
+  margin: 0;
+}
+
+.footer-container .footer .link-bar {
+  width: 90%;
+  position: absolute;
+  bottom: 10px;
+  left: 15px;
+}
+
+.footer-container .footer .link-bar .link {
+  float: left;
+  clear: right;
+  font-size: 20px;
+  margin: 10px 0;
+  /* Move 2 of links to the right side*/
+}
+
+.footer-container .footer .link-bar .link:nth-of-type(2),
+.footer-container .footer .link-bar .link:nth-of-type(4) {
+  float: right;
+  margin: 10px 0;
+}
+
+@media screen and (orientation: landscape) {
+  .footer-container .footer {
+    height: 150px;
+  }
+
+  .footer-container .footer .page-title {
+    top: 45px;
+    left: 25px;
+  }
+
+  .footer-container .footer .link-bar .link {
+    float: right;
+    font-size: 20px;
+    margin: 0 0 0 10px;
+    clear: none;
+    /*The home link will be at left*/
+    /* Clear style of default declaration*/
+  }
+
+  .footer-container .footer .link-bar .link:nth-of-type(1) {
+    float: left;
+    margin: 0;
+  }
+
+  .footer-container .footer .link-bar .link:nth-of-type(2),
+  .footer-container .footer .link-bar .link:nth-of-type(4) {
+    margin: 0 0 0 10px;
+  }
+}
 
 /* Body classes, to be user to the body directive */
 
@@ -534,9 +610,18 @@ body {
   background-color: #081109;
 }
 
+/* Styles*/
+
 .icon {
   line-height: 0px;
   display: inline-block;
+  color: black;
+  text-decoration: none;
+}
+
+.title-paragraph {
+  font-family: 'Fjalla One', sans-serif;
+  text-transform: uppercase;
   color: black;
   text-decoration: none;
 }

@@ -1,0 +1,12 @@
+footer.footer-container
+	.footer
+		p.page-title.title-paragraph
+			|Amós
+			br
+			|Batista
+
+		.link-bar
+			a.link.icon(ng-repeat="linkElement in linkToShow" ng-click="linkElement.linkFunction()" href="")
+				i.fa(ng-class="linkElement.iconClass")
+				span.title-paragraph
+					|{{linkElement.name}}

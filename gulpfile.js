@@ -26,6 +26,15 @@ var jsOrigin = [
 	"src/home/*.js",
 ];
 
+/* Font awesome */
+var fontAwesomeOrigin = {
+	root: 'node_modules/font-awesome',
+	css: '/css/font-awesome.css',
+	fonts: '/fonts/*.*'
+}
+
+var destinationFolder = "dest";
+
 
 /* Pug
 Process to HTML and save to the same dest folder */
@@ -35,7 +44,7 @@ gulp.task ('pug', function(){
 		.pipe(plumber())
 		.pipe(pug())
   		.pipe(flatten())
-		.pipe(gulp.dest('dest'));
+		.pipe(gulp.dest(destinationFolder));
 });
 
 /* Application
@@ -45,7 +54,7 @@ gulp.task ('app', function(){
 	return gulp.src(jsOrigin)
 		.pipe(plumber())
   		.pipe(jsConcat('app.js'))
-		.pipe(gulp.dest('dest/main'));
+		.pipe(gulp.dest(destinationFolder + '/main'));
 });
 
 
@@ -68,13 +77,28 @@ gulp.task ('cssPlugin', function(){
 });
 
 
+/* Font awesome process to copy files to the destin */
+gulp.task ('fontAwesome_CSS', function(){
+
+	return gulp.src(pluginCSSOrigin.root + pluginCSSOrigin.css)
+		.pipe(gulp.dest('cssProcess'));
+});
+
+gulp.task ('fontAwesome_Fonts', function(){
+
+	return gulp.src(pluginCSSOrigin.root + pluginCSSOrigin.fonts)
+		.pipe(gulp.dest(destinationFolder + "/fonts"));
+});
+
+
+
 /* Concatenate CSS. Unify all css, after copy project style and plugins to the same folder*/
 gulp.task ('concatenateCSS', function(){
 
 	return gulp.src(cssPostLessOrigin)
 		.pipe(plumber())
 		.pipe(concatCss('/style.css'))
-		.pipe(gulp.dest('dest/main'));
+		.pipe(gulp.dest(destinationFolder + '/main'));
 });
 
 

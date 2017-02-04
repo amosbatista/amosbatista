@@ -34231,9 +34231,38 @@ appWebSite.directive('body', [
 		restrict: "E",
 		link: function(scope, element){
 
+			var scrollDirection;
+			var isOccourFirstScroll = false;
+
+			/* Class to hold and detect scroll direction */
+			var _scrollDirection = function(initialPosition){
+
+				/*var initialPosition = initialPosition;*/
+
+				return function(currentValue){
+
+					var valueToReturn = '';
+
+					/* Scroll direction */
+					if(currentValue > initialPosition) 
+						valueToReturn = "down";
+					else{
+
+						if(currentValue < initialPosition)
+							valueToReturn = "up";
+						else
+							valueToReturn = "stead";
+					}
+
+					initialPosition = currentValue;
+					return valueToReturn;
+				}
+			}
+
+
+			/* According the page href, change the body style */
 			scope.$on('$locationChangeSuccess', function (){
 
-				// According the page href, change the body style
 				switch (location.path()){
 					case '/about':
 						element[0].className = 'body-about-page';
@@ -34243,6 +34272,95 @@ appWebSite.directive('body', [
 						break;
 				}
 			});
+
+
+
+
+
+			/* Manipulation of page scroll events */
+			var easyScrollEvent = function(scrollEvent){
+
+				scrollDirection = scrollDirection || new _scrollDirection(element[0].scrollTop);
+
+				/* Scroll direction */
+				var direction = scrollDirection(element[0].scrollTop);
+
+				switch (direction){
+					case "down":
+						if( element[0].scrollTop <= 10 ){
+							element[0].scrollTop = 60;
+							scope.$broadcast ('easyScrollDown');
+						}
+						break;
+
+					case "up":
+						if( element[0].scrollTop <= 5 ){
+							element[0].scrollTop = 0;
+							scope.$broadcast ('easyScrollUp');
+						}
+						break;
+				}
+			}
+
+			// Event to scroll down the page when happen the scroll down
+			scope.$on('easyScrollDown', function(){
+				element[0].scrollTop = 60;
+			});
+
+			scope.$on('easyScrollUp', function(){
+				element[0].scrollTop = 0;
+			});
+
+			
+
+			/* Header and Footer behavior */
+			var footerAndHeaderEvent = function (scrollEvent){
+
+				/* Scroll direction */
+				var direction = scrollDirection(element[0].scrollTop);
+
+				switch (direction){
+					case "down":
+
+						if( (element[0].scrollHeight - element[0].scrollTop) - 10 >= element[0].clientHeight ){
+							console.log('Bottom');
+						}
+						break;
+
+					case "up":
+						if( (element[0].scrollHeight - element[0].scrollTop) - 10 >= element[0].clientHeight ){
+							console.log('Rose');
+						}
+						break;
+				}
+			}
+
+			var eventProcessor = function(scrollEvent){
+
+				if(isOccourFirstScroll == false)
+					isOccourFirstScroll = true;
+				else{
+					easyScrollEvent(scrollEvent);
+					footerAndHeaderEvent(scrollEvent);
+				}
+			};
+
+			timeout(function(){
+				
+				/*window.scroll(0,0);*/
+				element[0].scrollTop = 0;
+
+				/* The scroll event listener */
+				// document.addEventListener("scroll", eventProcessor);
+
+			});
+
+			// When load the page, force the scroll to the top
+			// document.removeEventListener("scroll", eventProcessor);
+
+			
+
+			
 			
 		}
 	}
@@ -34517,66 +34635,98 @@ appWebSite.directive('easyScrollContent', function(){
 		}
 	}
 });
+/* The footer directive*/
+appWebSite.directive("myFooter", [
+	'$location',
+	function(
+		locationObj
+	){
+		return {
+			restrict: "A",
+			templateUrl: "_footer.html",
+			replace: true,
+			link: function (scope, element){
 
-
-// The directive that hold a trigger to activate the easy scroll
-appWebSite.directive('easyScroll', function(){
-
-	
-
-	return {
-		restrict: "A",
-		link: function(scope, element){
-			var lastScrollPosition = 0;
-
-			var easyScrollEvent = function(scrollEvent){
-
-				/* Scroll direction */
-				if(document.body.scrollTop > lastScrollPosition){ // Down
-
-					if( document.body.scrollTop <= 10 ){
-						document.body.scrollTop = 60;
-						scope.$emit ('easyScrollDown');
-					}
-
+				/* Links redirects*/
+				var footerLinkToHome = function(){
+					console.log("Go Home");
+					locationObj.path('/');
 				}
-				else{
 
-					if(document.body.scrollTop < lastScrollPosition){ // U
-
-						if( document.body.scrollTop <= 20 ){
-							document.body.scrollTop = 0;
-							scope.$emit ('easyScrollUp');
-						}
-
-					}
+				var linkList = [
+					{
+						name: 'Home',
+						location: '/',
+						iconClass: 'fa-home',
+						linkFunction: footerLinkToHome
+					},
+					{
+						name: 'About',
+						location: '/about',
+						iconClass: 'fa-arrow-up',
+						linkFunction: footerLinkToHome
+					},
+					{
+						name: 'Gallery',
+						location: '/gallery',
+						iconClass: 'fa-arrow-right',
+						linkFunction: footerLinkToHome
+					},
+					{
+						name: 'Portfolio',
+						location: '/portfolio',
+						iconClass: 'fa-arrow-left',
+						linkFunction: footerLinkToHome
+					},
+					{
+						name: 'Blog',
+						location: '/blog',
+						iconClass: 'fa-arrow-down',
+						linkFunction: footerLinkToHome
+					},
 					
-				}
+					
+				];
 
-				lastScrollPosition = document.body.scrollTop;
+				// Set all links to show (remove the link of current page)
+				scope.linkToShow = linkList.filter( function (link ){
+					return link.location != locationObj.path();
+				});
 
 			}
-
-			// Event to scroll down the page when happen the scroll down
-			scope.$on('easyScrollDown', function(){
-				document.body.scrollTop = 60;
-			});
-
-			scope.$on('easyScrollUp', function(){
-				document.body.scrollTop = 0;
-			});
-
-			// When load the page, force the scroll to the top
-			/*document.removeEventListener("scroll", easyScrollEvent);*/
-			document.body.scrollTop = 0;
-
-			document.addEventListener("scroll", easyScrollEvent, true);
-
-			
-
 		}
 	}
-});
+]);
+/*appWebSite.config("internalConfig", function (){
+	links: [
+		{
+			name: 'About',
+			location: '/about',
+			iconClass: 'fa-arrow-up'
+		},
+		{
+			name: 'Gallery',
+			location: '/gallery',
+			iconClass: 'fa-arrow-right'
+		},
+		{
+			name: 'Portfolio',
+			location: '/portfolio',
+			iconClass: 'fa-arrow-left'
+		},
+		{
+			name: 'Blog',
+			location: '/blog',
+			iconClass: 'fa-arrow-down'
+		},
+		{
+			name: 'Home',
+			location: '/',
+			iconClass: 'fa-home'
+		},
+		
+	]
+});*/
 // Directive to set a random animated background
 appWebSite.directive('animatedBg', ['$timeout', function(timeout){
 
