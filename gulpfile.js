@@ -2,7 +2,7 @@ var gulp = require('gulp');
 var pug	= require('gulp-pug');
 var less = require ('gulp-less');
 var flatten = require('gulp-flatten');
-var concatCss = require('gulp-concat-css');
+var concatCss = require('gulp-concat');
 var jsConcat = require('gulp-concat');
 var plumber = require('gulp-plumber');
 
@@ -80,13 +80,13 @@ gulp.task ('cssPlugin', function(){
 /* Font awesome process to copy files to the destin */
 gulp.task ('fontAwesome_CSS', function(){
 
-	return gulp.src(pluginCSSOrigin.root + pluginCSSOrigin.css)
+	return gulp.src(fontAwesomeOrigin.root + fontAwesomeOrigin.css)
 		.pipe(gulp.dest('cssProcess'));
 });
 
 gulp.task ('fontAwesome_Fonts', function(){
 
-	return gulp.src(pluginCSSOrigin.root + pluginCSSOrigin.fonts)
+	return gulp.src(fontAwesomeOrigin.root + fontAwesomeOrigin.fonts)
 		.pipe(gulp.dest(destinationFolder + "/fonts"));
 });
 
@@ -114,4 +114,4 @@ gulp.watch( jsOrigin, ['app']);
 
 // Main task
 /*gulp.task ('default', ['less', 'pug', 'jsScript', 'cssConcat']);*/
-gulp.task ('default', ['pug', 'less', 'concatenateCSS', 'app']);
+gulp.task ('default', ['pug', 'less', 'concatenateCSS', 'app', 'fontAwesome_CSS', 'fontAwesome_Fonts']);

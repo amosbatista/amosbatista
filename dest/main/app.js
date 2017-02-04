@@ -34351,9 +34351,9 @@ appWebSite.directive('body', [
 				element[0].scrollTop = 0;
 
 				/* The scroll event listener */
-				// document.addEventListener("scroll", eventProcessor);
+				document.addEventListener("scroll", eventProcessor);
 
-			});
+			}, 500);
 
 			// When load the page, force the scroll to the top
 			// document.removeEventListener("scroll", eventProcessor);
