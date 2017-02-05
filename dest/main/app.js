@@ -34234,6 +34234,7 @@ appWebSite.directive('body', [
 			var scrollDirection;
 			var isOccourFirstScroll = false;
 
+
 			/* Class to hold and detect scroll direction */
 			var _scrollDirection = function(initialPosition){
 
@@ -34278,12 +34279,7 @@ appWebSite.directive('body', [
 
 
 			/* Manipulation of page scroll events */
-			var easyScrollEvent = function(scrollEvent){
-
-				scrollDirection = scrollDirection || new _scrollDirection(element[0].scrollTop);
-
-				/* Scroll direction */
-				var direction = scrollDirection(element[0].scrollTop);
+			var easyScrollEvent = function(direction){
 
 				switch (direction){
 					case "down":
@@ -34312,36 +34308,34 @@ appWebSite.directive('body', [
 			});
 
 			
-
 			/* Header and Footer behavior */
-			var footerAndHeaderEvent = function (scrollEvent){
+			var footerAndHeaderEvent = function (direction){
 
-				/* Scroll direction */
-				var direction = scrollDirection(element[0].scrollTop);
+				// Indicate to bring the foot upper or not, if user reached the bottom of the screen
+				if ((element[0].scrollHeight - element[0].scrollTop == element[0].clientHeight) == true)
+					scope.$broadcast ('footerIsRising');
+				else{
 
-				switch (direction){
-					case "down":
-
-						if( (element[0].scrollHeight - element[0].scrollTop) - 10 >= element[0].clientHeight ){
-							console.log('Bottom');
-						}
-						break;
-
-					case "up":
-						if( (element[0].scrollHeight - element[0].scrollTop) - 10 >= element[0].clientHeight ){
-							console.log('Rose');
-						}
-						break;
+					if(direction == "up")
+						scope.$broadcast ('footerIsHiding');
 				}
+
 			}
 
 			var eventProcessor = function(scrollEvent){
 
-				if(isOccourFirstScroll == false)
+				scrollDirection = scrollDirection || new _scrollDirection(element[0].scrollTop);
+
+				if(isOccourFirstScroll == false){
 					isOccourFirstScroll = true;
+				}
 				else{
-					easyScrollEvent(scrollEvent);
-					footerAndHeaderEvent(scrollEvent);
+
+					/* Scroll direction */
+					var direction = scrollDirection(element[0].scrollTop);
+
+					easyScrollEvent(direction);
+					footerAndHeaderEvent(direction);
 				}
 			};
 
@@ -34353,14 +34347,7 @@ appWebSite.directive('body', [
 				/* The scroll event listener */
 				document.addEventListener("scroll", eventProcessor);
 
-			}, 500);
-
-			// When load the page, force the scroll to the top
-			// document.removeEventListener("scroll", eventProcessor);
-
-			
-
-			
+			}, 500);		
 			
 		}
 	}
@@ -34647,9 +34634,15 @@ appWebSite.directive("myFooter", [
 			replace: true,
 			link: function (scope, element){
 
+				/* Control the animation behavior*/
+				var isBrigingFooterUp = false;				
+				var footerAnimation = null;
+				var footerAnimationLimits = 0;
+				var footerAnimationCurrentTop = 0;
+				var pageOrientation = '';
+
 				/* Links redirects*/
 				var footerLinkToHome = function(){
-					console.log("Go Home");
 					locationObj.path('/');
 				}
 
@@ -34685,13 +34678,104 @@ appWebSite.directive("myFooter", [
 						linkFunction: footerLinkToHome
 					},
 					
-					
 				];
 
 				// Set all links to show (remove the link of current page)
 				scope.linkToShow = linkList.filter( function (link ){
 					return link.location != locationObj.path();
 				});
+
+
+
+				/* Event to detect the apperance of footer */
+				scope.$on("footerIsRising", function(){
+					isBrigingFooterUp = true;
+
+					if(footerAnimation == null){
+						animationProcess();	
+					}
+					
+				});
+				scope.$on("footerIsHiding", function(){
+					isBrigingFooterUp = false;
+
+					if(footerAnimation == null){
+						animationProcess();	
+					}
+				});
+
+
+				/* Page orientation detection */
+				var detectOrientation = function (){
+
+					if(window.innerWidth <= window.innerHeight)
+						return "portrait";
+					else
+						return "landscape";
+				};
+
+				pageOrientation = detectOrientation();
+
+				document.addEventListener("resize", function(){
+					pageOrientation = detectOrientation();
+				});
+
+
+				/* Before any animation, set the footer limits*/
+				if(pageOrientation == "portrait"){
+					footerAnimationLimits = 200;
+				}
+				else{
+					footerAnimationLimits = 150;
+				}
+
+				/* Set the initial transition*/
+				/*element[0].style.transform = 'translate(0px, ' + footerAnimationLimits + 'px)';*/
+
+
+				/* Animation process to footer transition */
+				var animationProcess = function(){
+					if(isBrigingFooterUp == true)
+						console.log("Calling footer bring up");
+					else
+						console.log("Calling footer bring down");
+
+					footerAnimation = setInterval(function(){
+
+						// Limits of animation, according orientation and scroll position
+						// Bringing footer up
+						if(isBrigingFooterUp == true){
+
+							if(footerAnimationCurrentTop >= footerAnimationLimits){
+								footerAnimationCurrentTop = footerAnimationLimits;
+								clearInterval(footerAnimation);
+								footerAnimation = null;
+							}
+							else{
+								footerAnimationCurrentTop = footerAnimationCurrentTop + 10;	
+							}
+
+							
+						}
+						
+						// Bringing footer down
+						else{
+
+							if( footerAnimationCurrentTop <= 0){
+								footerAnimationCurrentTop = 0;
+								clearInterval(footerAnimation);
+								footerAnimation = null;
+							}
+							else{
+								footerAnimationCurrentTop = footerAnimationCurrentTop - 10;	
+							}
+						}
+
+						element[0].style.transform = 'translate(0px, ' + (footerAnimationLimits - footerAnimationCurrentTop) + 'px)';
+
+					}, 25);
+				}
+				
 
 			}
 		}

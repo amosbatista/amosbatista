@@ -16,6 +16,7 @@ appWebSite.directive('body', [
 			var scrollDirection;
 			var isOccourFirstScroll = false;
 
+
 			/* Class to hold and detect scroll direction */
 			var _scrollDirection = function(initialPosition){
 
@@ -60,12 +61,7 @@ appWebSite.directive('body', [
 
 
 			/* Manipulation of page scroll events */
-			var easyScrollEvent = function(scrollEvent){
-
-				scrollDirection = scrollDirection || new _scrollDirection(element[0].scrollTop);
-
-				/* Scroll direction */
-				var direction = scrollDirection(element[0].scrollTop);
+			var easyScrollEvent = function(direction){
 
 				switch (direction){
 					case "down":
@@ -94,36 +90,34 @@ appWebSite.directive('body', [
 			});
 
 			
-
 			/* Header and Footer behavior */
-			var footerAndHeaderEvent = function (scrollEvent){
+			var footerAndHeaderEvent = function (direction){
 
-				/* Scroll direction */
-				var direction = scrollDirection(element[0].scrollTop);
+				// Indicate to bring the foot upper or not, if user reached the bottom of the screen
+				if ((element[0].scrollHeight - element[0].scrollTop == element[0].clientHeight) == true)
+					scope.$broadcast ('footerIsRising');
+				else{
 
-				switch (direction){
-					case "down":
-
-						if( (element[0].scrollHeight - element[0].scrollTop) - 10 >= element[0].clientHeight ){
-							console.log('Bottom');
-						}
-						break;
-
-					case "up":
-						if( (element[0].scrollHeight - element[0].scrollTop) - 10 >= element[0].clientHeight ){
-							console.log('Rose');
-						}
-						break;
+					if(direction == "up")
+						scope.$broadcast ('footerIsHiding');
 				}
+
 			}
 
 			var eventProcessor = function(scrollEvent){
 
-				if(isOccourFirstScroll == false)
+				scrollDirection = scrollDirection || new _scrollDirection(element[0].scrollTop);
+
+				if(isOccourFirstScroll == false){
 					isOccourFirstScroll = true;
+				}
 				else{
-					easyScrollEvent(scrollEvent);
-					footerAndHeaderEvent(scrollEvent);
+
+					/* Scroll direction */
+					var direction = scrollDirection(element[0].scrollTop);
+
+					easyScrollEvent(direction);
+					footerAndHeaderEvent(direction);
 				}
 			};
 
@@ -135,14 +129,7 @@ appWebSite.directive('body', [
 				/* The scroll event listener */
 				document.addEventListener("scroll", eventProcessor);
 
-			}, 500);
-
-			// When load the page, force the scroll to the top
-			// document.removeEventListener("scroll", eventProcessor);
-
-			
-
-			
+			}, 500);		
 			
 		}
 	}

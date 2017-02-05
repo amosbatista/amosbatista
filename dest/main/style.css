@@ -2775,6 +2775,7 @@
   bottom: 0;
   left: 0;
   margin: 0;
+  transform: translate(0px, 200px);
 }
 .footer-container .footer {
   margin: 0 auto;
@@ -2811,6 +2812,9 @@
   margin: 10px 0;
 }
 @media screen and (orientation: landscape) {
+  .footer-container {
+    transform: translate(0px, 150px);
+  }
   .footer-container .footer {
     height: 150px;
   }
