@@ -94,6 +94,10 @@ appWebSite.directive("myFooter", [
 
 				document.addEventListener("resize", function(){
 					pageOrientation = detectOrientation();
+
+					/* Force translation fix*/
+					/*if(isBrigingFooterUp == false && footerAnimation == null && pageOrientation == "portrait")
+						element[0].style.transform = 'translate(0px, 200px)';*/
 				});
 
 
@@ -111,10 +115,6 @@ appWebSite.directive("myFooter", [
 
 				/* Animation process to footer transition */
 				var animationProcess = function(){
-					if(isBrigingFooterUp == true)
-						console.log("Calling footer bring up");
-					else
-						console.log("Calling footer bring down");
 
 					footerAnimation = setInterval(function(){
 
@@ -122,13 +122,13 @@ appWebSite.directive("myFooter", [
 						// Bringing footer up
 						if(isBrigingFooterUp == true){
 
-							if(footerAnimationCurrentTop >= footerAnimationLimits){
+							if(footerAnimationCurrentTop >= footerAnimationLimits - 20){
 								footerAnimationCurrentTop = footerAnimationLimits;
 								clearInterval(footerAnimation);
 								footerAnimation = null;
 							}
 							else{
-								footerAnimationCurrentTop = footerAnimationCurrentTop + 10;	
+								footerAnimationCurrentTop = footerAnimationCurrentTop + 20;	
 							}
 
 							
@@ -138,18 +138,18 @@ appWebSite.directive("myFooter", [
 						else{
 
 							if( footerAnimationCurrentTop <= 0){
-								footerAnimationCurrentTop = 0;
+								footerAnimationCurrentTop = -5;
 								clearInterval(footerAnimation);
 								footerAnimation = null;
 							}
 							else{
-								footerAnimationCurrentTop = footerAnimationCurrentTop - 10;	
+								footerAnimationCurrentTop = footerAnimationCurrentTop - 20;	
 							}
 						}
 
 						element[0].style.transform = 'translate(0px, ' + (footerAnimationLimits - footerAnimationCurrentTop) + 'px)';
 
-					}, 25);
+					}, 30);
 				}
 				
 

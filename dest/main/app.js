@@ -34239,24 +34239,29 @@ appWebSite.directive('body', [
 			var _scrollDirection = function(initialPosition){
 
 				/*var initialPosition = initialPosition;*/
+				return{
+					getLastPosition: function(){
+						return initialPosition;
+					},
 
-				return function(currentValue){
+					setDirection: function(currentValue){
+						var valueToReturn = '';	
 
-					var valueToReturn = '';
+						/* Scroll direction */
+						if(currentValue > initialPosition) 
+							valueToReturn = "down";
+						else{
 
-					/* Scroll direction */
-					if(currentValue > initialPosition) 
-						valueToReturn = "down";
-					else{
+							if(currentValue < initialPosition)
+								valueToReturn = "up";
+							else
+								valueToReturn = "stead";
+						}
 
-						if(currentValue < initialPosition)
-							valueToReturn = "up";
-						else
-							valueToReturn = "stead";
+						initialPosition = currentValue;
+
+						return valueToReturn;
 					}
-
-					initialPosition = currentValue;
-					return valueToReturn;
 				}
 			}
 
@@ -34309,14 +34314,15 @@ appWebSite.directive('body', [
 
 			
 			/* Header and Footer behavior */
-			var footerAndHeaderEvent = function (direction){
+			var footerAndHeaderEvent = function (direction, lastPosition){
 
 				// Indicate to bring the foot upper or not, if user reached the bottom of the screen
 				if ((element[0].scrollHeight - element[0].scrollTop == element[0].clientHeight) == true)
 					scope.$broadcast ('footerIsRising');
 				else{
 
-					if(direction == "up")
+					// If direction is up and last position was the bottom
+					if(direction == "up" && ((element[0].scrollHeight - lastPosition == element[0].clientHeight) == true))
 						scope.$broadcast ('footerIsHiding');
 				}
 
@@ -34332,10 +34338,11 @@ appWebSite.directive('body', [
 				else{
 
 					/* Scroll direction */
-					var direction = scrollDirection(element[0].scrollTop);
+					var lastPosition = scrollDirection.getLastPosition();
+					var direction = scrollDirection.setDirection(element[0].scrollTop);
 
 					easyScrollEvent(direction);
-					footerAndHeaderEvent(direction);
+					footerAndHeaderEvent(direction, lastPosition);
 				}
 			};
 
@@ -34346,6 +34353,7 @@ appWebSite.directive('body', [
 
 				/* The scroll event listener */
 				document.addEventListener("scroll", eventProcessor);
+				element[0].addEventListener("resize", eventProcessor);
 
 			}, 500);		
 			
@@ -34718,6 +34726,10 @@ appWebSite.directive("myFooter", [
 
 				document.addEventListener("resize", function(){
 					pageOrientation = detectOrientation();
+
+					/* Force translation fix*/
+					/*if(isBrigingFooterUp == false && footerAnimation == null && pageOrientation == "portrait")
+						element[0].style.transform = 'translate(0px, 200px)';*/
 				});
 
 
@@ -34735,10 +34747,6 @@ appWebSite.directive("myFooter", [
 
 				/* Animation process to footer transition */
 				var animationProcess = function(){
-					if(isBrigingFooterUp == true)
-						console.log("Calling footer bring up");
-					else
-						console.log("Calling footer bring down");
 
 					footerAnimation = setInterval(function(){
 
@@ -34746,13 +34754,13 @@ appWebSite.directive("myFooter", [
 						// Bringing footer up
 						if(isBrigingFooterUp == true){
 
-							if(footerAnimationCurrentTop >= footerAnimationLimits){
+							if(footerAnimationCurrentTop >= footerAnimationLimits - 20){
 								footerAnimationCurrentTop = footerAnimationLimits;
 								clearInterval(footerAnimation);
 								footerAnimation = null;
 							}
 							else{
-								footerAnimationCurrentTop = footerAnimationCurrentTop + 10;	
+								footerAnimationCurrentTop = footerAnimationCurrentTop + 20;	
 							}
 
 							
@@ -34762,21 +34770,179 @@ appWebSite.directive("myFooter", [
 						else{
 
 							if( footerAnimationCurrentTop <= 0){
-								footerAnimationCurrentTop = 0;
+								footerAnimationCurrentTop = -5;
 								clearInterval(footerAnimation);
 								footerAnimation = null;
 							}
 							else{
-								footerAnimationCurrentTop = footerAnimationCurrentTop - 10;	
+								footerAnimationCurrentTop = footerAnimationCurrentTop - 20;	
 							}
 						}
 
 						element[0].style.transform = 'translate(0px, ' + (footerAnimationLimits - footerAnimationCurrentTop) + 'px)';
 
-					}, 25);
+					}, 30);
 				}
 				
 
+			}
+		}
+	}
+]);
+appWebSite.directive("myHeader", [
+	'$timeout',
+	'$location',
+	function(
+		timeout,
+		locationObj
+	){
+		return {
+			restrict: "A",
+			templateUrl: "_header.html",
+			replace: true,
+			link: function (scope, element){
+
+				var headerAnimation = null;
+				var headerAnimationLimits = 0;
+				var headerTransictionFactor = 0;
+				var headerAnimationCurrentTop = 0;
+
+				/* Links redirects*/
+				var headerLinkToHome = function(){
+					locationObj.path('/');
+				}
+
+				var headerLinkList = [
+					{
+						name: 'Home',
+						location: '/',
+						iconClass: 'fa-home',
+						linkFunction: headerLinkToHome,
+						linkClass: 'link-home'
+					},
+					{
+						name: 'About',
+						location: '/about',
+						iconClass: 'fa-arrow-up',
+						linkFunction: headerLinkToHome,
+						linkClass: 'link-about'
+					},
+					{
+						name: 'Gallery',
+						location: '/gallery',
+						iconClass: 'fa-arrow-right',
+						linkFunction: headerLinkToHome,
+						linkClass: 'link-gallery'
+					},
+					{
+						name: 'Portfolio',
+						location: '/portfolio',
+						iconClass: 'fa-arrow-left',
+						linkFunction: headerLinkToHome,
+						linkClass: 'link-portfolio'
+					},
+					{
+						name: 'Blog',
+						location: '/blog',
+						iconClass: 'fa-arrow-down',
+						linkFunction: headerLinkToHome,
+						linkClass: 'link-blog'
+					},
+					
+				];
+
+				// Set all links to show (remove the link of current page)
+				scope.hederLinkToShow = headerLinkList.filter( function (link ){
+					return link.location != locationObj.path();
+				});
+
+
+				/* Header behavior with the footer. Header hides, when footers shows and vice-versa */
+				/* Event to detect the apperance of footer */
+				scope.$on("footerIsRising", function(){
+					isBrigingFooterUp = true;
+
+					if(headerAnimation == null){
+						animationProcess();	
+					}
+					
+				});
+				scope.$on("footerIsHiding", function(){
+					isBrigingFooterUp = false;
+
+					if(headerAnimation == null){
+						animationProcess();	
+					}
+				});
+
+
+				/* Page orientation detection */
+				var detectOrientation = function (){
+
+					if(window.innerWidth <= window.innerHeight){
+						headerAnimationLimits = 200;
+						headerTransictionFactor = 20;
+						return "portrait";
+					}
+					else{
+						headerAnimationLimits = 430; // Header top + header size
+						headerTransictionFactor = 40;
+						return "landscape";
+					}
+				};
+
+				var pageOrientation = detectOrientation();
+
+				document.addEventListener("resize", function(){
+					pageOrientation = detectOrientation();
+				});
+
+				
+
+				headerAnimationCurrentTop = headerAnimationLimits;
+
+				/* Animation process to footer transition */
+				var animationProcess = function(){
+
+					headerAnimation = setInterval(function(){
+
+						// Limits of animation, according orientation and scroll position
+						// Bringing footer up
+						if(isBrigingFooterUp == true){
+
+							
+							if( headerAnimationCurrentTop <= 0){
+								headerAnimationCurrentTop = 0;
+								clearInterval(headerAnimation);
+								headerAnimation = null;
+							}
+							else{
+								headerAnimationCurrentTop = headerAnimationCurrentTop - headerTransictionFactor;	
+							}
+							
+						}
+						
+						// Bringing footer down
+						else{
+
+							if(headerAnimationCurrentTop >= headerAnimationLimits){
+								headerAnimationCurrentTop = headerAnimationLimits;
+								clearInterval(headerAnimation);
+								headerAnimation = null;
+							}
+							else{
+								headerAnimationCurrentTop = headerAnimationCurrentTop + headerTransictionFactor;	
+							}
+
+							
+
+							
+						}
+
+						element[0].style.transform = 'translate(0px, -' + (headerAnimationLimits - headerAnimationCurrentTop) + 'px)';
+
+					}, 30);
+				}
 			}
 		}
 	}

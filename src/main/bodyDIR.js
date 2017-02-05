@@ -21,24 +21,29 @@ appWebSite.directive('body', [
 			var _scrollDirection = function(initialPosition){
 
 				/*var initialPosition = initialPosition;*/
+				return{
+					getLastPosition: function(){
+						return initialPosition;
+					},
 
-				return function(currentValue){
+					setDirection: function(currentValue){
+						var valueToReturn = '';	
 
-					var valueToReturn = '';
+						/* Scroll direction */
+						if(currentValue > initialPosition) 
+							valueToReturn = "down";
+						else{
 
-					/* Scroll direction */
-					if(currentValue > initialPosition) 
-						valueToReturn = "down";
-					else{
+							if(currentValue < initialPosition)
+								valueToReturn = "up";
+							else
+								valueToReturn = "stead";
+						}
 
-						if(currentValue < initialPosition)
-							valueToReturn = "up";
-						else
-							valueToReturn = "stead";
+						initialPosition = currentValue;
+
+						return valueToReturn;
 					}
-
-					initialPosition = currentValue;
-					return valueToReturn;
 				}
 			}
 
@@ -91,14 +96,15 @@ appWebSite.directive('body', [
 
 			
 			/* Header and Footer behavior */
-			var footerAndHeaderEvent = function (direction){
+			var footerAndHeaderEvent = function (direction, lastPosition){
 
 				// Indicate to bring the foot upper or not, if user reached the bottom of the screen
 				if ((element[0].scrollHeight - element[0].scrollTop == element[0].clientHeight) == true)
 					scope.$broadcast ('footerIsRising');
 				else{
 
-					if(direction == "up")
+					// If direction is up and last position was the bottom
+					if(direction == "up" && ((element[0].scrollHeight - lastPosition == element[0].clientHeight) == true))
 						scope.$broadcast ('footerIsHiding');
 				}
 
@@ -114,10 +120,11 @@ appWebSite.directive('body', [
 				else{
 
 					/* Scroll direction */
-					var direction = scrollDirection(element[0].scrollTop);
+					var lastPosition = scrollDirection.getLastPosition();
+					var direction = scrollDirection.setDirection(element[0].scrollTop);
 
 					easyScrollEvent(direction);
-					footerAndHeaderEvent(direction);
+					footerAndHeaderEvent(direction, lastPosition);
 				}
 			};
 
@@ -128,6 +135,7 @@ appWebSite.directive('body', [
 
 				/* The scroll event listener */
 				document.addEventListener("scroll", eventProcessor);
+				element[0].addEventListener("resize", eventProcessor);
 
 			}, 500);		
 			
