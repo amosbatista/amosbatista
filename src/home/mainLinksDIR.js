@@ -1,5 +1,5 @@
 // Directive to set the transition animation to the icon, at mouse over
-appWebSite.directive('mainLink', ['$timeout', function(timeout){
+angular.module('site.home').directive('mainLink', ['$timeout', function(timeout){
 
 
 	return {

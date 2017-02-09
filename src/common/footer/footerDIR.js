@@ -1,5 +1,7 @@
 /* The footer directive*/
-appWebSite.directive("myFooter", [
+angular.module('common.footer', []);
+
+angular.module('common.footer').directive("myFooter", [
 	'$location',
 	function(
 		locationObj

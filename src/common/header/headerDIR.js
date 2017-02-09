@@ -1,4 +1,6 @@
-appWebSite.directive("myHeader", [
+angular.module('common.header', []);
+
+angular.module('common.header').directive("myHeader", [
 	'$timeout',
 	'$location',
 	function(

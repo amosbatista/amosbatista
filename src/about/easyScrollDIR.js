@@ -4,7 +4,7 @@
  easyScrollUp - When user scroll up
 */
 
-appWebSite.directive('easyScrollContentLink', [ function(){
+angular.module('site.about').directive('easyScrollContentLink', [ function(){
 
 	// The function process to show the link
 	var scrollAndShowProcessFunction = function(scope, element, animation){
@@ -103,7 +103,7 @@ appWebSite.directive('easyScrollContentLink', [ function(){
 
 
 // The page header directive. When receives the 'easyScrollDown', scroll, to hide the element
-appWebSite.directive('easyScrollTop', function(){
+angular.module('site.about').directive('easyScrollTop', function(){
 
 	return {
 		restrict: "A",
@@ -179,7 +179,7 @@ appWebSite.directive('easyScrollTop', function(){
 
 
 // The page content directive. When receives the 'easyScrollDown', scroll and show the element
-appWebSite.directive('easyScrollContent', function(){
+angular.module('site.about').directive('easyScrollContent', function(){
 
 	return {
 		restrict: "A",

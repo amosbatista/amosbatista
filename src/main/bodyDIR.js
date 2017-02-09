@@ -1,7 +1,7 @@
 
 
 // Directive controlls the body style
-appWebSite.directive('body', [
+angular.module("site").directive('body', [
 	'$timeout',
 	'$location',
 	function(

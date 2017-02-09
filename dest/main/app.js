@@ -34197,599 +34197,9 @@ function ngViewFillContentFactory($compile, $controller, $route) {
 
 })(window, window.angular);
 
-var appWebSite = angular.module("amosWebSite", ["ngRoute"]);
-appWebSite.config( [
-	'$routeProvider',
-	function(
-		router
-	){
-		router
-			.when('/',{
-				templateUrl: "home.html",
-				controller: "homeCtrl"
-			})
+angular.module('common.header', []);
 
-			.when('/about', {
-				templateUrl: "about.html",
-				controller: "aboutCtrl"
-			})	
-	}
-])
-
-
-
-// Directive controlls the body style
-appWebSite.directive('body', [
-	'$timeout',
-	'$location',
-	function(
-		timeout,
-		location
-	){
-
-	return {
-		restrict: "E",
-		link: function(scope, element){
-
-			var scrollDirection;
-			var isOccourFirstScroll = false;
-
-
-			/* Class to hold and detect scroll direction */
-			var _scrollDirection = function(initialPosition){
-
-				/*var initialPosition = initialPosition;*/
-				return{
-					getLastPosition: function(){
-						return initialPosition;
-					},
-
-					setDirection: function(currentValue){
-						var valueToReturn = '';	
-
-						/* Scroll direction */
-						if(currentValue > initialPosition) 
-							valueToReturn = "down";
-						else{
-
-							if(currentValue < initialPosition)
-								valueToReturn = "up";
-							else
-								valueToReturn = "stead";
-						}
-
-						initialPosition = currentValue;
-
-						return valueToReturn;
-					}
-				}
-			}
-
-
-			/* According the page href, change the body style */
-			scope.$on('$locationChangeSuccess', function (){
-
-				switch (location.path()){
-					case '/about':
-						element[0].className = 'body-about-page';
-						break;
-					default:
-						element[0].className = 'body-home-page';
-						break;
-				}
-			});
-
-
-
-
-
-			/* Manipulation of page scroll events */
-			var easyScrollEvent = function(direction){
-
-				switch (direction){
-					case "down":
-						if( element[0].scrollTop <= 10 ){
-							element[0].scrollTop = 60;
-							scope.$broadcast ('easyScrollDown');
-						}
-						break;
-
-					case "up":
-						if( element[0].scrollTop <= 5 ){
-							element[0].scrollTop = 0;
-							scope.$broadcast ('easyScrollUp');
-						}
-						break;
-				}
-			}
-
-			// Event to scroll down the page when happen the scroll down
-			scope.$on('easyScrollDown', function(){
-				element[0].scrollTop = 60;
-			});
-
-			scope.$on('easyScrollUp', function(){
-				element[0].scrollTop = 0;
-			});
-
-			
-			/* Header and Footer behavior */
-			var footerAndHeaderEvent = function (direction, lastPosition){
-
-				// Indicate to bring the foot upper or not, if user reached the bottom of the screen
-				if ((element[0].scrollHeight - element[0].scrollTop == element[0].clientHeight) == true)
-					scope.$broadcast ('footerIsRising');
-				else{
-
-					// If direction is up and last position was the bottom
-					if(direction == "up" && ((element[0].scrollHeight - lastPosition == element[0].clientHeight) == true))
-						scope.$broadcast ('footerIsHiding');
-				}
-
-			}
-
-			var eventProcessor = function(scrollEvent){
-
-				scrollDirection = scrollDirection || new _scrollDirection(element[0].scrollTop);
-
-				if(isOccourFirstScroll == false){
-					isOccourFirstScroll = true;
-				}
-				else{
-
-					/* Scroll direction */
-					var lastPosition = scrollDirection.getLastPosition();
-					var direction = scrollDirection.setDirection(element[0].scrollTop);
-
-					easyScrollEvent(direction);
-					footerAndHeaderEvent(direction, lastPosition);
-				}
-			};
-
-			timeout(function(){
-				
-				/*window.scroll(0,0);*/
-				element[0].scrollTop = 0;
-
-				/* The scroll event listener */
-				document.addEventListener("scroll", eventProcessor);
-				element[0].addEventListener("resize", eventProcessor);
-
-			}, 500);		
-			
-		}
-	}
-}]);
-appWebSite.controller('aboutCtrl', [
-	'$scope',
-	'$location',
-	function(
-		scope,
-		location
-
-	){
-		scope.goHome = function(){
-			location.path('/');
-		}
-	}
-])
-/* The directive that set the footer link scroll animation
- Angular events:
- easyScrollDown - When user scroll the page down 
- easyScrollUp - When user scroll up
-*/
-
-appWebSite.directive('easyScrollContentLink', [ function(){
-
-	// The function process to show the link
-	var scrollAndShowProcessFunction = function(scope, element, animation){
-		var showElement = true;
-		var linkOpacity = 0;	
-
-		clearInterval (animation);
-
-		element[0].style.display = 'block';
-
-		// Hide the link
-		animation = setInterval(function (){
-
-			// Animation end
-			if(linkOpacity > 1 ){
-				linkOpacity = 1;
-				clearInterval (animation);
-				animation = null;
-			}
-
-			// Setup transition
-			else{
-				linkOpacity = Number((linkOpacity + 0.2).toFixed(2));
-			}
-
-			element[0].children[0].style.opacity = linkOpacity;
-
-		}, 25);
-	}
-
-
-	// The function process to hide the link
-	var scrollAndHideProcessFunction = function(scope, element, animation){
-		var showElement = true;
-		var linkOpacity = 1;
-		
-		// Clear the animation, if there's some activated
-		clearInterval (animation);
-
-		// Hide the link
-		animation = setInterval(function (){
-
-			// Animation end
-			if(linkOpacity <= 0 ){
-				linkOpacity = 0;
-				element[0].style.display = 'none';
-				clearInterval (animation);
-				animation = null;
-			}
-
-			// Setup transition
-			else{
-				linkOpacity = (linkOpacity - 0.2).toFixed(2);
-			}
-
-			element[0].children[0].style.opacity = linkOpacity;
-
-		}, 25);
-		
-	}
-
-	return {
-		restrict: "A",
-		link: function(scope, element){
-
-			var animation = null;
-
-			// Activate the transition into this directive when receive the event
-			scope.$on ("easyScrollDown", function(){
-				// Do not end the last animation
-				if( animation != null)
-					return;
-
-				scrollAndHideProcessFunction(scope, element, animation);
-			});
-
-			scope.$on ("easyScrollUp", function(){
-
-				// Do not end the last animation
-				if( animation != null)
-					return;
-
-				scrollAndShowProcessFunction(scope, element, animation);
-			});
-
-			// Emit the event at click, to activate to another directives
-			element.bind("click", function(clickEvent){
-				scope.$emit ('easyScrollDown');
-			});
-			
-		}
-	}
-}]);
-
-
-
-
-// The page header directive. When receives the 'easyScrollDown', scroll, to hide the element
-appWebSite.directive('easyScrollTop', function(){
-
-	return {
-		restrict: "A",
-		link: function(scope, element){
-
-			var animation = null; 
-
-			scope.$on ("easyScrollDown", function(){
-				var translateY = 1;
-				//var translateYLimit = window.innerHeight
-				var translateYLimit = 200;
-				var translateOpac = 0.9;
-
-				
-				if( animation != null)
-					return;
-
-				clearInterval (animation);
-
-				animation = setInterval(function (){
-
-					// End of animation
-					if(translateY >= translateYLimit){
-						translateY = translateYLimit;
-						clearInterval (animation);
-						animation = null;
-					}
-
-					// Process the values
-					else{
-						translateY = translateY * 1.2 + 5;
-						translateOpac = translateOpac - 0.07;
-					}
-
-					element[0].style.transform = 'translate(0px, -' + translateY + 'px)';
-					element[0].style.opacity = translateOpac;
-				}, 20);
-			});
-
-			scope.$on ("easyScrollUp", function(){
-				var translateY = 200;
-				var translateYLimit = 1;
-				var translateOpac = 0;
-			
-				if( animation != null)
-					return;
-				
-				clearInterval (animation);
-
-				animation = setInterval(function (){
-
-					// End of animation
-					if(translateY <= translateYLimit){
-						translateY = translateYLimit;
-						translateOpac = 1;
-						clearInterval (animation);
-						animation = null;
-					}
-
-					// Process the values
-					else{
-						translateY = translateY / 1.2 - 5;
-						translateOpac = translateOpac + 0.07;
-					}
-
-					element[0].style.transform = 'translate(0px, -' + translateY + 'px)';
-					element[0].style.opacity = translateOpac;
-				}, 20);
-			});
-		}
-	}
-});
-
-
-// The page content directive. When receives the 'easyScrollDown', scroll and show the element
-appWebSite.directive('easyScrollContent', function(){
-
-	return {
-		restrict: "A",
-		link: function(scope, element){
-			
-			var animation = null; 
-
-			scope.$on ("easyScrollDown", function(){
-				
-				var translateOpac = 0.1;
-				var translateY = 175;
-
-				if( animation != null)
-					return;
-
-				clearInterval (animation);
-
-				animation = setInterval(function (){
-
-					// Animation end
-					if( translateY <= -75 ){
-						translateOpac = 1;
-						/*translateY = 0;*/
-						clearInterval(animation);
-						animation = null;
-					}
-
-					// Animation process
-					else{
-						translateOpac = translateOpac + 0.2;
-						translateY = translateY - 50;
-					}
-
-					// Transition set
-					element[0].style.transform = 'translateY(' + translateY + 'px)';
-					element[0].style.opacity = translateOpac;
-
-				}, 50);
-			});
-
-			scope.$on ("easyScrollUp", function(){
-				
-				var translateOpac = 1;
-				var translateY = 0;
-
-				if( animation != null)
-					return;
-
-				clearInterval (animation);
-
-				animation = setInterval(function (){
-
-					// Animation end
-					if( translateY >= 175 ){
-						translateOpac = 0.1;
-						/*translateY = 0;*/
-						clearInterval(animation);
-						animation = null;
-					}
-
-					// Animation process
-					else{
-						translateOpac = translateOpac - 0.2;
-						translateY = translateY + 50;
-					}
-
-					// Transition set
-					element[0].style.transform = 'translateY(' + translateY + 'px)';
-					element[0].style.opacity = translateOpac;
-
-				}, 50);
-			});
-		}
-	}
-});
-/* The footer directive*/
-appWebSite.directive("myFooter", [
-	'$location',
-	function(
-		locationObj
-	){
-		return {
-			restrict: "A",
-			templateUrl: "_footer.html",
-			replace: true,
-			link: function (scope, element){
-
-				/* Control the animation behavior*/
-				var isBrigingFooterUp = false;				
-				var footerAnimation = null;
-				var footerAnimationLimits = 0;
-				var footerAnimationCurrentTop = 0;
-				var pageOrientation = '';
-
-				/* Links redirects*/
-				var footerLinkToHome = function(){
-					locationObj.path('/');
-				}
-
-				var linkList = [
-					{
-						name: 'Home',
-						location: '/',
-						iconClass: 'fa-home',
-						linkFunction: footerLinkToHome
-					},
-					{
-						name: 'About',
-						location: '/about',
-						iconClass: 'fa-arrow-up',
-						linkFunction: footerLinkToHome
-					},
-					{
-						name: 'Gallery',
-						location: '/gallery',
-						iconClass: 'fa-arrow-right',
-						linkFunction: footerLinkToHome
-					},
-					{
-						name: 'Portfolio',
-						location: '/portfolio',
-						iconClass: 'fa-arrow-left',
-						linkFunction: footerLinkToHome
-					},
-					{
-						name: 'Blog',
-						location: '/blog',
-						iconClass: 'fa-arrow-down',
-						linkFunction: footerLinkToHome
-					},
-					
-				];
-
-				// Set all links to show (remove the link of current page)
-				scope.linkToShow = linkList.filter( function (link ){
-					return link.location != locationObj.path();
-				});
-
-
-
-				/* Event to detect the apperance of footer */
-				scope.$on("footerIsRising", function(){
-					isBrigingFooterUp = true;
-
-					if(footerAnimation == null){
-						animationProcess();	
-					}
-					
-				});
-				scope.$on("footerIsHiding", function(){
-					isBrigingFooterUp = false;
-
-					if(footerAnimation == null){
-						animationProcess();	
-					}
-				});
-
-
-				/* Page orientation detection */
-				var detectOrientation = function (){
-
-					if(window.innerWidth <= window.innerHeight)
-						return "portrait";
-					else
-						return "landscape";
-				};
-
-				pageOrientation = detectOrientation();
-
-				document.addEventListener("resize", function(){
-					pageOrientation = detectOrientation();
-
-					/* Force translation fix*/
-					/*if(isBrigingFooterUp == false && footerAnimation == null && pageOrientation == "portrait")
-						element[0].style.transform = 'translate(0px, 200px)';*/
-				});
-
-
-				/* Before any animation, set the footer limits*/
-				if(pageOrientation == "portrait"){
-					footerAnimationLimits = 200;
-				}
-				else{
-					footerAnimationLimits = 150;
-				}
-
-				/* Set the initial transition*/
-				/*element[0].style.transform = 'translate(0px, ' + footerAnimationLimits + 'px)';*/
-
-
-				/* Animation process to footer transition */
-				var animationProcess = function(){
-
-					footerAnimation = setInterval(function(){
-
-						// Limits of animation, according orientation and scroll position
-						// Bringing footer up
-						if(isBrigingFooterUp == true){
-
-							if(footerAnimationCurrentTop >= footerAnimationLimits - 20){
-								footerAnimationCurrentTop = footerAnimationLimits;
-								clearInterval(footerAnimation);
-								footerAnimation = null;
-							}
-							else{
-								footerAnimationCurrentTop = footerAnimationCurrentTop + 20;	
-							}
-
-							
-						}
-						
-						// Bringing footer down
-						else{
-
-							if( footerAnimationCurrentTop <= 0){
-								footerAnimationCurrentTop = -5;
-								clearInterval(footerAnimation);
-								footerAnimation = null;
-							}
-							else{
-								footerAnimationCurrentTop = footerAnimationCurrentTop - 20;	
-							}
-						}
-
-						element[0].style.transform = 'translate(0px, ' + (footerAnimationLimits - footerAnimationCurrentTop) + 'px)';
-
-					}, 30);
-				}
-				
-
-			}
-		}
-	}
-]);
-appWebSite.directive("myHeader", [
+angular.module('common.header').directive("myHeader", [
 	'$timeout',
 	'$location',
 	function(
@@ -34947,6 +34357,438 @@ appWebSite.directive("myHeader", [
 		}
 	}
 ]);
+/* The footer directive*/
+angular.module('common.footer', []);
+
+angular.module('common.footer').directive("myFooter", [
+	'$location',
+	function(
+		locationObj
+	){
+		return {
+			restrict: "A",
+			templateUrl: "_footer.html",
+			replace: true,
+			link: function (scope, element){
+
+				/* Control the animation behavior*/
+				var isBrigingFooterUp = false;				
+				var footerAnimation = null;
+				var footerAnimationLimits = 0;
+				var footerAnimationCurrentTop = 0;
+				var pageOrientation = '';
+
+				/* Links redirects*/
+				var footerLinkToHome = function(){
+					locationObj.path('/');
+				}
+
+				var linkList = [
+					{
+						name: 'Home',
+						location: '/',
+						iconClass: 'fa-home',
+						linkFunction: footerLinkToHome
+					},
+					{
+						name: 'About',
+						location: '/about',
+						iconClass: 'fa-arrow-up',
+						linkFunction: footerLinkToHome
+					},
+					{
+						name: 'Gallery',
+						location: '/gallery',
+						iconClass: 'fa-arrow-right',
+						linkFunction: footerLinkToHome
+					},
+					{
+						name: 'Portfolio',
+						location: '/portfolio',
+						iconClass: 'fa-arrow-left',
+						linkFunction: footerLinkToHome
+					},
+					{
+						name: 'Blog',
+						location: '/blog',
+						iconClass: 'fa-arrow-down',
+						linkFunction: footerLinkToHome
+					},
+					
+				];
+
+				// Set all links to show (remove the link of current page)
+				scope.linkToShow = linkList.filter( function (link ){
+					return link.location != locationObj.path();
+				});
+
+
+
+				/* Event to detect the apperance of footer */
+				scope.$on("footerIsRising", function(){
+					isBrigingFooterUp = true;
+
+					if(footerAnimation == null){
+						animationProcess();	
+					}
+					
+				});
+				scope.$on("footerIsHiding", function(){
+					isBrigingFooterUp = false;
+
+					if(footerAnimation == null){
+						animationProcess();	
+					}
+				});
+
+
+				/* Page orientation detection */
+				var detectOrientation = function (){
+
+					if(window.innerWidth <= window.innerHeight)
+						return "portrait";
+					else
+						return "landscape";
+				};
+
+				pageOrientation = detectOrientation();
+
+				document.addEventListener("resize", function(){
+					pageOrientation = detectOrientation();
+
+					/* Force translation fix*/
+					/*if(isBrigingFooterUp == false && footerAnimation == null && pageOrientation == "portrait")
+						element[0].style.transform = 'translate(0px, 200px)';*/
+				});
+
+
+				/* Before any animation, set the footer limits*/
+				if(pageOrientation == "portrait"){
+					footerAnimationLimits = 200;
+				}
+				else{
+					footerAnimationLimits = 150;
+				}
+
+				/* Set the initial transition*/
+				/*element[0].style.transform = 'translate(0px, ' + footerAnimationLimits + 'px)';*/
+
+
+				/* Animation process to footer transition */
+				var animationProcess = function(){
+
+					footerAnimation = setInterval(function(){
+
+						// Limits of animation, according orientation and scroll position
+						// Bringing footer up
+						if(isBrigingFooterUp == true){
+
+							if(footerAnimationCurrentTop >= footerAnimationLimits - 20){
+								footerAnimationCurrentTop = footerAnimationLimits;
+								clearInterval(footerAnimation);
+								footerAnimation = null;
+							}
+							else{
+								footerAnimationCurrentTop = footerAnimationCurrentTop + 20;	
+							}
+
+							
+						}
+						
+						// Bringing footer down
+						else{
+
+							if( footerAnimationCurrentTop <= 0){
+								footerAnimationCurrentTop = -5;
+								clearInterval(footerAnimation);
+								footerAnimation = null;
+							}
+							else{
+								footerAnimationCurrentTop = footerAnimationCurrentTop - 20;	
+							}
+						}
+
+						element[0].style.transform = 'translate(0px, ' + (footerAnimationLimits - footerAnimationCurrentTop) + 'px)';
+
+					}, 30);
+				}
+				
+
+			}
+		}
+	}
+]);
+angular.module("site.about", []);
+angular.module('site.about').controller('aboutCtrl', [
+	'$scope',
+	'$location',
+	function(
+		scope,
+		location
+
+	){
+		scope.goHome = function(){
+			location.path('/');
+		}
+	}
+])
+/* The directive that set the footer link scroll animation
+ Angular events:
+ easyScrollDown - When user scroll the page down 
+ easyScrollUp - When user scroll up
+*/
+
+angular.module('site.about').directive('easyScrollContentLink', [ function(){
+
+	// The function process to show the link
+	var scrollAndShowProcessFunction = function(scope, element, animation){
+		var showElement = true;
+		var linkOpacity = 0;	
+
+		clearInterval (animation);
+
+		element[0].style.display = 'block';
+
+		// Hide the link
+		animation = setInterval(function (){
+
+			// Animation end
+			if(linkOpacity > 1 ){
+				linkOpacity = 1;
+				clearInterval (animation);
+				animation = null;
+			}
+
+			// Setup transition
+			else{
+				linkOpacity = Number((linkOpacity + 0.2).toFixed(2));
+			}
+
+			element[0].children[0].style.opacity = linkOpacity;
+
+		}, 25);
+	}
+
+
+	// The function process to hide the link
+	var scrollAndHideProcessFunction = function(scope, element, animation){
+		var showElement = true;
+		var linkOpacity = 1;
+		
+		// Clear the animation, if there's some activated
+		clearInterval (animation);
+
+		// Hide the link
+		animation = setInterval(function (){
+
+			// Animation end
+			if(linkOpacity <= 0 ){
+				linkOpacity = 0;
+				element[0].style.display = 'none';
+				clearInterval (animation);
+				animation = null;
+			}
+
+			// Setup transition
+			else{
+				linkOpacity = (linkOpacity - 0.2).toFixed(2);
+			}
+
+			element[0].children[0].style.opacity = linkOpacity;
+
+		}, 25);
+		
+	}
+
+	return {
+		restrict: "A",
+		link: function(scope, element){
+
+			var animation = null;
+
+			// Activate the transition into this directive when receive the event
+			scope.$on ("easyScrollDown", function(){
+				// Do not end the last animation
+				if( animation != null)
+					return;
+
+				scrollAndHideProcessFunction(scope, element, animation);
+			});
+
+			scope.$on ("easyScrollUp", function(){
+
+				// Do not end the last animation
+				if( animation != null)
+					return;
+
+				scrollAndShowProcessFunction(scope, element, animation);
+			});
+
+			// Emit the event at click, to activate to another directives
+			element.bind("click", function(clickEvent){
+				scope.$emit ('easyScrollDown');
+			});
+			
+		}
+	}
+}]);
+
+
+
+
+// The page header directive. When receives the 'easyScrollDown', scroll, to hide the element
+angular.module('site.about').directive('easyScrollTop', function(){
+
+	return {
+		restrict: "A",
+		link: function(scope, element){
+
+			var animation = null; 
+
+			scope.$on ("easyScrollDown", function(){
+				var translateY = 1;
+				//var translateYLimit = window.innerHeight
+				var translateYLimit = 200;
+				var translateOpac = 0.9;
+
+				
+				if( animation != null)
+					return;
+
+				clearInterval (animation);
+
+				animation = setInterval(function (){
+
+					// End of animation
+					if(translateY >= translateYLimit){
+						translateY = translateYLimit;
+						clearInterval (animation);
+						animation = null;
+					}
+
+					// Process the values
+					else{
+						translateY = translateY * 1.2 + 5;
+						translateOpac = translateOpac - 0.07;
+					}
+
+					element[0].style.transform = 'translate(0px, -' + translateY + 'px)';
+					element[0].style.opacity = translateOpac;
+				}, 20);
+			});
+
+			scope.$on ("easyScrollUp", function(){
+				var translateY = 200;
+				var translateYLimit = 1;
+				var translateOpac = 0;
+			
+				if( animation != null)
+					return;
+				
+				clearInterval (animation);
+
+				animation = setInterval(function (){
+
+					// End of animation
+					if(translateY <= translateYLimit){
+						translateY = translateYLimit;
+						translateOpac = 1;
+						clearInterval (animation);
+						animation = null;
+					}
+
+					// Process the values
+					else{
+						translateY = translateY / 1.2 - 5;
+						translateOpac = translateOpac + 0.07;
+					}
+
+					element[0].style.transform = 'translate(0px, -' + translateY + 'px)';
+					element[0].style.opacity = translateOpac;
+				}, 20);
+			});
+		}
+	}
+});
+
+
+// The page content directive. When receives the 'easyScrollDown', scroll and show the element
+angular.module('site.about').directive('easyScrollContent', function(){
+
+	return {
+		restrict: "A",
+		link: function(scope, element){
+			
+			var animation = null; 
+
+			scope.$on ("easyScrollDown", function(){
+				
+				var translateOpac = 0.1;
+				var translateY = 175;
+
+				if( animation != null)
+					return;
+
+				clearInterval (animation);
+
+				animation = setInterval(function (){
+
+					// Animation end
+					if( translateY <= -75 ){
+						translateOpac = 1;
+						/*translateY = 0;*/
+						clearInterval(animation);
+						animation = null;
+					}
+
+					// Animation process
+					else{
+						translateOpac = translateOpac + 0.2;
+						translateY = translateY - 50;
+					}
+
+					// Transition set
+					element[0].style.transform = 'translateY(' + translateY + 'px)';
+					element[0].style.opacity = translateOpac;
+
+				}, 50);
+			});
+
+			scope.$on ("easyScrollUp", function(){
+				
+				var translateOpac = 1;
+				var translateY = 0;
+
+				if( animation != null)
+					return;
+
+				clearInterval (animation);
+
+				animation = setInterval(function (){
+
+					// Animation end
+					if( translateY >= 175 ){
+						translateOpac = 0.1;
+						/*translateY = 0;*/
+						clearInterval(animation);
+						animation = null;
+					}
+
+					// Animation process
+					else{
+						translateOpac = translateOpac - 0.2;
+						translateY = translateY + 50;
+					}
+
+					// Transition set
+					element[0].style.transform = 'translateY(' + translateY + 'px)';
+					element[0].style.opacity = translateOpac;
+
+				}, 50);
+			});
+		}
+	}
+});
 /*appWebSite.config("internalConfig", function (){
 	links: [
 		{
@@ -34977,8 +34819,9 @@ appWebSite.directive("myHeader", [
 		
 	]
 });*/
+angular.module("site.home", []);
 // Directive to set a random animated background
-appWebSite.directive('animatedBg', ['$timeout', function(timeout){
+angular.module('site.home').directive('animatedBg', ['$timeout', function(timeout){
 
 	return{
 		
@@ -35152,7 +34995,7 @@ appWebSite.directive('animatedBg', ['$timeout', function(timeout){
 
 }]);
 // Directive to set an animation transition, and load a 'comment-like' character group, into the home
-appWebSite.directive('commentAnimation', ['$timeout', function(timeout){
+angular.module('site.home').directive('commentAnimation', ['$timeout', function(timeout){
 	
 	return{
 		
@@ -35185,7 +35028,7 @@ appWebSite.directive('commentAnimation', ['$timeout', function(timeout){
 	}
 	
 }]);
-appWebSite.controller('homeCtrl', [
+angular.module('site.home').controller('homeCtrl', [
 	'$scope',
 	'$location',
 	function(
@@ -35199,7 +35042,7 @@ appWebSite.controller('homeCtrl', [
 	}
 ])
 // Directive to set the transition animation to the icon, at mouse over
-appWebSite.directive('mainLink', ['$timeout', function(timeout){
+angular.module('site.home').directive('mainLink', ['$timeout', function(timeout){
 
 
 	return {
@@ -35366,3 +35209,176 @@ appWebSite.directive('mainLink', ['$timeout', function(timeout){
 		}
 	}
 }]);
+angular.module("site", [
+	"ngRoute",
+	'common.header',
+	'common.footer',
+	'site.home',
+	'site.about'
+]);
+
+
+// Directive controlls the body style
+angular.module("site").directive('body', [
+	'$timeout',
+	'$location',
+	function(
+		timeout,
+		location
+	){
+
+	return {
+		restrict: "E",
+		link: function(scope, element){
+
+			var scrollDirection;
+			var isOccourFirstScroll = false;
+
+
+			/* Class to hold and detect scroll direction */
+			var _scrollDirection = function(initialPosition){
+
+				/*var initialPosition = initialPosition;*/
+				return{
+					getLastPosition: function(){
+						return initialPosition;
+					},
+
+					setDirection: function(currentValue){
+						var valueToReturn = '';	
+
+						/* Scroll direction */
+						if(currentValue > initialPosition) 
+							valueToReturn = "down";
+						else{
+
+							if(currentValue < initialPosition)
+								valueToReturn = "up";
+							else
+								valueToReturn = "stead";
+						}
+
+						initialPosition = currentValue;
+
+						return valueToReturn;
+					}
+				}
+			}
+
+
+			/* According the page href, change the body style */
+			scope.$on('$locationChangeSuccess', function (){
+
+				switch (location.path()){
+					case '/about':
+						element[0].className = 'body-about-page';
+						break;
+					default:
+						element[0].className = 'body-home-page';
+						break;
+				}
+			});
+
+
+
+
+
+			/* Manipulation of page scroll events */
+			var easyScrollEvent = function(direction){
+
+				switch (direction){
+					case "down":
+						if( element[0].scrollTop <= 10 ){
+							element[0].scrollTop = 60;
+							scope.$broadcast ('easyScrollDown');
+						}
+						break;
+
+					case "up":
+						if( element[0].scrollTop <= 5 ){
+							element[0].scrollTop = 0;
+							scope.$broadcast ('easyScrollUp');
+						}
+						break;
+				}
+			}
+
+			// Event to scroll down the page when happen the scroll down
+			scope.$on('easyScrollDown', function(){
+				element[0].scrollTop = 60;
+			});
+
+			scope.$on('easyScrollUp', function(){
+				element[0].scrollTop = 0;
+			});
+
+			
+			/* Header and Footer behavior */
+			var footerAndHeaderEvent = function (direction, lastPosition){
+
+				// Indicate to bring the foot upper or not, if user reached the bottom of the screen
+				if ((element[0].scrollHeight - element[0].scrollTop == element[0].clientHeight) == true)
+					scope.$broadcast ('footerIsRising');
+				else{
+
+					// If direction is up and last position was the bottom
+					if(direction == "up" && ((element[0].scrollHeight - lastPosition == element[0].clientHeight) == true))
+						scope.$broadcast ('footerIsHiding');
+				}
+
+			}
+
+			var eventProcessor = function(scrollEvent){
+
+				scrollDirection = scrollDirection || new _scrollDirection(element[0].scrollTop);
+
+				if(isOccourFirstScroll == false){
+					isOccourFirstScroll = true;
+				}
+				else{
+
+					/* Scroll direction */
+					var lastPosition = scrollDirection.getLastPosition();
+					var direction = scrollDirection.setDirection(element[0].scrollTop);
+
+					easyScrollEvent(direction);
+					footerAndHeaderEvent(direction, lastPosition);
+				}
+			};
+
+			timeout(function(){
+				
+				/*window.scroll(0,0);*/
+				element[0].scrollTop = 0;
+
+				/* The scroll event listener */
+				document.addEventListener("scroll", eventProcessor);
+				element[0].addEventListener("resize", eventProcessor);
+
+			}, 500);		
+			
+		}
+	}
+}]);
+angular.module("site").config( [
+	'$routeProvider',
+	function(
+		router
+	){
+		router
+			.when('/',{
+				templateUrl: "home.html",
+				controller: "homeCtrl"
+			})
+
+			.when('/about', {
+				templateUrl: "about.html",
+				controller: "aboutCtrl"
+			})	
+
+			.when('/portfolio', {
+				templateUrl: "portfolio.html",
+				controller: "portfolioCtrl"
+			})	
+	}
+])

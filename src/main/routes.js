@@ -1,4 +1,4 @@
-appWebSite.config( [
+angular.module("site").config( [
 	'$routeProvider',
 	function(
 		router
@@ -12,6 +12,11 @@ appWebSite.config( [
 			.when('/about', {
 				templateUrl: "about.html",
 				controller: "aboutCtrl"
+			})	
+
+			.when('/portfolio', {
+				templateUrl: "portfolio.html",
+				controller: "portfolioCtrl"
 			})	
 	}
 ])

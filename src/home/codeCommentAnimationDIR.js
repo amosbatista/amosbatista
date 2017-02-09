@@ -1,5 +1,5 @@
 // Directive to set an animation transition, and load a 'comment-like' character group, into the home
-appWebSite.directive('commentAnimation', ['$timeout', function(timeout){
+angular.module('site.home').directive('commentAnimation', ['$timeout', function(timeout){
 	
 	return{
 		

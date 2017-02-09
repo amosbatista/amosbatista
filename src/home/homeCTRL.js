@@ -1,4 +1,4 @@
-appWebSite.controller('homeCtrl', [
+angular.module('site.home').controller('homeCtrl', [
 	'$scope',
 	'$location',
 	function(

@@ -1,5 +1,5 @@
 // Directive to set a random animated background
-appWebSite.directive('animatedBg', ['$timeout', function(timeout){
+angular.module('site.home').directive('animatedBg', ['$timeout', function(timeout){
 
 	return{
 		

@@ -19,11 +19,12 @@ var jsOrigin = [
 	"node_modules/angular/angular.js",
 	"node_modules/angular-route/angular-route.js",
 	"src/plugins/*.js",
-	"src/main/main.js",
-	"src/main/routes.js",
-	"src/main/bodyDIR.js",
+	"src/common/header/*.js",
+	"src/common/footer/*.js",
 	"src/about/*.js",
 	"src/home/*.js",
+	"src/portfolio/*.js",
+	"src/main/*.js",
 ];
 
 /* Font awesome */
