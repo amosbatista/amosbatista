@@ -3,5 +3,6 @@ angular.module("site", [
 	'common.header',
 	'common.footer',
 	'site.home',
-	'site.about'
+	'site.about',
+	'site.portfolio',
 ]);

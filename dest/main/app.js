@@ -35039,6 +35039,10 @@ angular.module('site.home').controller('homeCtrl', [
 		scope.goToAboutPage = function(){
 			location.path('/about');
 		}
+
+		scope.goToPortfolio = function(){
+			location.path('/portfolio');
+		}
 	}
 ])
 // Directive to set the transition animation to the icon, at mouse over
@@ -35209,12 +35213,17 @@ angular.module('site.home').directive('mainLink', ['$timeout', function(timeout)
 		}
 	}
 }]);
+angular.module('site.portfolio', []);
+angular.module('site.portfolio').controller('portfolioCtrl', function(){
+	
+})
 angular.module("site", [
 	"ngRoute",
 	'common.header',
 	'common.footer',
 	'site.home',
-	'site.about'
+	'site.about',
+	'site.portfolio',
 ]);
 
 

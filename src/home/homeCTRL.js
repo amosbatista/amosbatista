@@ -9,5 +9,9 @@ angular.module('site.home').controller('homeCtrl', [
 		scope.goToAboutPage = function(){
 			location.path('/about');
 		}
+
+		scope.goToPortfolio = function(){
+			location.path('/portfolio');
+		}
 	}
 ])
