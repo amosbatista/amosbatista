@@ -34,6 +34,9 @@ var fontAwesomeOrigin = {
 	fonts: '/fonts/*.*'
 }
 
+//  Image
+var imageSource = ['img/*.*'];
+
 var destinationFolder = "dest";
 
 
@@ -77,6 +80,13 @@ gulp.task ('cssPlugin', function(){
 		.pipe(gulp.dest('cssProcess'));
 });
 
+// Image copy
+gulp.task ('image', function(){
+
+	return gulp.src(imageSource)
+		.pipe(gulp.dest(destinationFolder + '/img'));
+});
+
 
 /* Font awesome process to copy files to the destin */
 gulp.task ('fontAwesome_CSS', function(){
@@ -108,11 +118,10 @@ gulp.task ('concatenateCSS', function(){
 gulp.watch( pugOrigin, ['pug']);
 gulp.watch( lessOrigin, ['less']);
 gulp.watch( cssPostLessOrigin, ['concatenateCSS']);
-/*gulp.watch( pluginCSSOrigin, ['cssPlugin']);*/
 gulp.watch( jsOrigin, ['app']);
+gulp.watch( imageSource, ['image']);
 
 
 
 // Main task
-/*gulp.task ('default', ['less', 'pug', 'jsScript', 'cssConcat']);*/
-gulp.task ('default', ['pug', 'less', 'concatenateCSS', 'app', 'fontAwesome_CSS', 'fontAwesome_Fonts']);
+gulp.task ('default', ['pug', 'less', 'concatenateCSS', 'app', 'fontAwesome_CSS', 'fontAwesome_Fonts', 'image']);

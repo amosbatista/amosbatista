@@ -2839,6 +2839,23 @@
 /*body{
 	
 }*/
+.breadcrumb {
+  font-family: 'Source Serif Pro', sans-serif;
+  margin: 100px 0 0 0;
+}
+.breadcrumb .item {
+  color: #d9d9d9;
+  list-style: none;
+  margin: 0 20px 0 0;
+  float: left;
+}
+.breadcrumb .current {
+  color: #5eba95;
+  font-style: italic;
+}
+.page-content {
+  width: 100%;
+}
 /* Body classes, to be user to the body directive */
 body {
   font-size: 22px;
