@@ -1,6 +1,51 @@
 .page-content{
 	width: 100%;
+	padding: @headerHeight 0 0 0;
+	font-family: @fontFamily_Default;
+	margin: 0 0 @footerHeight 0;
+	float: left;
 
 
-	
+	.case-list{
+		width: 90%;
+		margin: 0 auto;
+
+		.case{
+			width: 100%;
+			float: left;
+			margin: 0 0 50px 0;
+
+			.case-image{
+				float: left;
+				max-width: 80px;
+				max-height: 125px;
+			}
+
+			.case-detail{
+				float: right;
+				width: 75%;
+
+				.case-title,
+				.case-type,
+				.case-description{
+					margin: 0;
+				}
+
+				.case-title{
+					text-transform: uppercase;
+					font-size: 25px;
+				}
+
+				.case-type{
+					color: hsl(100, 0%, 45%);
+					font-size: 16px;
+				}
+
+				.case-description{
+					font-size: 18px;
+					color: hsl(100, 0%, 5%);
+				}
+			}
+		}
+	}
 }

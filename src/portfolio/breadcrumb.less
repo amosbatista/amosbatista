@@ -1,17 +1,28 @@
 .breadcrumb{
 
 	font-family: @fontFamily_Default;
-	margin: 100px 0 0 0;
+	margin: 80px 0 30px;
+	float: left;
 
 	.item{
 		color: hsl(100, 0%, 85%);
 		list-style: none;
 		margin: 0 20px 0 0;
 		float: left;
+		font-size: 18px;
+
+		a{
+			text-decoration: none;
+
+			&:visited{
+				color: hsl(100, 0%, 85%);
+			}
+		}
 	}
 
 	.current{
 		color: hsl(156, 40%, 55%);
 		font-style: italic;
+		font-size: inherit;
 	}
 }

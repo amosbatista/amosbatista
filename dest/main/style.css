@@ -2351,7 +2351,8 @@
 .header .link-home,
 .header .link-portfolio,
 .header .link-blog,
-.header .link-gallery {
+.header .link-gallery,
+.header .link-about {
   list-style: none;
   position: absolute;
   margin: 0 10px 0 0;
@@ -2360,13 +2361,15 @@
 .header .link-home .fa,
 .header .link-portfolio .fa,
 .header .link-blog .fa,
-.header .link-gallery .fa {
+.header .link-gallery .fa,
+.header .link-about .fa {
   margin: 0 10px 0 0;
 }
 .header .link-home .title-paragraph,
 .header .link-portfolio .title-paragraph,
 .header .link-blog .title-paragraph,
-.header .link-gallery .title-paragraph {
+.header .link-gallery .title-paragraph,
+.header .link-about .title-paragraph {
   font-family: 'Fjalla One', sans-serif;
   text-transform: uppercase;
   color: black;
@@ -2377,7 +2380,8 @@
   top: 10px;
   left: 10px;
 }
-.header .link-portfolio {
+.header .link-portfolio,
+.header .link-about {
   bottom: 10px;
   left: 10px;
 }
@@ -2398,7 +2402,8 @@
   .header .link-home,
   .header .link-portfolio,
   .header .link-blog,
-  .header .link-gallery {
+  .header .link-gallery,
+  .header .link-about {
     position: relative;
     float: right;
   }
@@ -2430,7 +2435,8 @@
   .header .link-home,
   .header .link-portfolio,
   .header .link-blog,
-  .header .link-gallery {
+  .header .link-gallery,
+  .header .link-about {
     float: none;
     width: 100%;
     text-align: center;
@@ -2439,7 +2445,8 @@
   .header .link-home .fa,
   .header .link-portfolio .fa,
   .header .link-blog .fa,
-  .header .link-gallery .fa {
+  .header .link-gallery .fa,
+  .header .link-about .fa {
     width: 100%;
     line-height: 50px;
     margin: 0;
@@ -2841,20 +2848,68 @@
 }*/
 .breadcrumb {
   font-family: 'Source Serif Pro', sans-serif;
-  margin: 100px 0 0 0;
+  margin: 80px 0 30px;
+  float: left;
 }
 .breadcrumb .item {
   color: #d9d9d9;
   list-style: none;
   margin: 0 20px 0 0;
   float: left;
+  font-size: 18px;
+}
+.breadcrumb .item a {
+  text-decoration: none;
+}
+.breadcrumb .item a:visited {
+  color: #d9d9d9;
 }
 .breadcrumb .current {
   color: #5eba95;
   font-style: italic;
+  font-size: inherit;
 }
 .page-content {
   width: 100%;
+  padding: 90px 0 0 0;
+  font-family: 'Source Serif Pro', sans-serif;
+  margin: 0 0 200px 0;
+  float: left;
+}
+.page-content .case-list {
+  width: 90%;
+  margin: 0 auto;
+}
+.page-content .case-list .case {
+  width: 100%;
+  float: left;
+  margin: 0 0 50px 0;
+}
+.page-content .case-list .case .case-image {
+  float: left;
+  max-width: 80px;
+  max-height: 125px;
+}
+.page-content .case-list .case .case-detail {
+  float: right;
+  width: 75%;
+}
+.page-content .case-list .case .case-detail .case-title,
+.page-content .case-list .case .case-detail .case-type,
+.page-content .case-list .case .case-detail .case-description {
+  margin: 0;
+}
+.page-content .case-list .case .case-detail .case-title {
+  text-transform: uppercase;
+  font-size: 25px;
+}
+.page-content .case-list .case .case-detail .case-type {
+  color: #737373;
+  font-size: 16px;
+}
+.page-content .case-list .case .case-detail .case-description {
+  font-size: 18px;
+  color: #0d0d0d;
 }
 /* Body classes, to be user to the body directive */
 body {

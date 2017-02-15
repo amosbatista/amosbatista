@@ -1,7 +1,7 @@
 .header{
 	position: fixed;
 	width: 100%;
-	height: 90px;
+	height: @headerHeight;
 	padding: 10px;
 	top: 0;
 	left: 0;
@@ -12,7 +12,8 @@
 	.link-home,
 	.link-portfolio,
 	.link-blog,
-	.link-gallery
+	.link-gallery,
+	.link-about
 	{
 		list-style: none;
 		position: absolute;
@@ -37,7 +38,8 @@
 		left: 10px;
 	}
 
-	.link-portfolio{
+	.link-portfolio,
+	.link-about{
 		bottom: 10px;
 		left: 10px;
 	}
@@ -65,7 +67,8 @@
 		.link-home,
 		.link-portfolio,
 		.link-blog,
-		.link-gallery{
+		.link-gallery,
+		.link-about{
 			position: relative;
 			float: right;
 		}
@@ -108,7 +111,8 @@
 		.link-home,
 		.link-portfolio,
 		.link-blog,
-		.link-gallery
+		.link-gallery,
+		.link-about
 		{
 			float: none;
 			width: 100%;
