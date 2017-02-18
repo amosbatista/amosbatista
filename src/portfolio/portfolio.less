@@ -16,19 +16,20 @@
 			margin: 0 0 50px 0;
 
 			.case-image{
-				float: left;
-				max-width: 80px;
-				max-height: 125px;
+				width: 100%;
+    			max-width: 200px;
+    			margin: 0 auto 10px auto;
+    			display: block;
 			}
 
 			.case-detail{
-				float: right;
-				width: 75%;
+				width: 100%;
 
 				.case-title,
 				.case-type,
 				.case-description{
 					margin: 0;
+					text-align: center;
 				}
 
 				.case-title{
@@ -44,6 +45,41 @@
 				.case-description{
 					font-size: 18px;
 					color: hsl(100, 0%, 5%);
+				}
+			}
+		}
+	}
+}
+
+
+
+@media screen and (orientation: landscape){
+
+	.page-content{
+		padding: 50px 0 0 0;
+
+		.case-list{
+			width: 100%;
+    		float: left;
+
+    		.case{
+				max-width: 35%;
+				margin: 0 30px 30px 0px;
+
+				&:nth-child(2n-1){
+					margin: 0 30px 30px 130px;	
+				}
+    			
+				.case-image{
+					margin: 0 0 10px 0;
+				}
+
+				.case-detail{
+					.case-title,
+					.case-type,
+					.case-description{
+						text-align: left;
+					}
 				}
 			}
 		}

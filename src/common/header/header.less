@@ -1,3 +1,5 @@
+
+
 .header{
 	position: fixed;
 	width: 100%;
@@ -8,6 +10,7 @@
 	background-color: hsl(142, 0%, 100%);
 	margin: 0;
 	z-index: 2;
+	box-shadow: 10px 1px 6px 0px @corSombraHeaderFooter;
 
 	.link-home,
 	.link-portfolio,
@@ -94,6 +97,13 @@
 			right: initial;
 		}
 
+		.link-about{
+			bottom: initial;
+    		left: initial;
+		}
+
+
+
 	}
 
 	
@@ -107,6 +117,7 @@
 		top: @topSpacing_Landscape;
 		left: 0;
 		width: 65px;
+		box-shadow: 2px 2px 8px 0px @corSombraHeaderFooter;
 
 		.link-home,
 		.link-portfolio,

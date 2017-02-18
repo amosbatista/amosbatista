@@ -2347,6 +2347,7 @@
   background-color: #ffffff;
   margin: 0;
   z-index: 2;
+  box-shadow: 10px 1px 6px 0px #4b774b;
 }
 .header .link-home,
 .header .link-portfolio,
@@ -2424,6 +2425,10 @@
     top: initial;
     right: initial;
   }
+  .header .link-about {
+    bottom: initial;
+    left: initial;
+  }
 }
 @media screen and (orientation: landscape) {
   .header {
@@ -2431,6 +2436,7 @@
     top: 115px;
     left: 0;
     width: 65px;
+    box-shadow: 2px 2px 8px 0px #4b774b;
   }
   .header .link-home,
   .header .link-portfolio,
@@ -2471,6 +2477,7 @@
   position: relative;
   display: block;
   height: 200px;
+  box-shadow: 3px -3px 5px 0px #4b774b;
 }
 .footer-container .footer .page-title {
   position: absolute;
@@ -2848,7 +2855,7 @@
 }*/
 .breadcrumb {
   font-family: 'Source Serif Pro', sans-serif;
-  margin: 80px 0 30px;
+  margin: 30px 0 30px;
   float: left;
 }
 .breadcrumb .item {
@@ -2869,6 +2876,11 @@
   font-style: italic;
   font-size: inherit;
 }
+@media screen and (orientation: landscape) {
+  .breadcrumb {
+    margin: 0px 0 38px 60px;
+  }
+}
 .page-content {
   width: 100%;
   padding: 90px 0 0 0;
@@ -2886,18 +2898,19 @@
   margin: 0 0 50px 0;
 }
 .page-content .case-list .case .case-image {
-  float: left;
-  max-width: 80px;
-  max-height: 125px;
+  width: 100%;
+  max-width: 200px;
+  margin: 0 auto 10px auto;
+  display: block;
 }
 .page-content .case-list .case .case-detail {
-  float: right;
-  width: 75%;
+  width: 100%;
 }
 .page-content .case-list .case .case-detail .case-title,
 .page-content .case-list .case .case-detail .case-type,
 .page-content .case-list .case .case-detail .case-description {
   margin: 0;
+  text-align: center;
 }
 .page-content .case-list .case .case-detail .case-title {
   text-transform: uppercase;
@@ -2910,6 +2923,30 @@
 .page-content .case-list .case .case-detail .case-description {
   font-size: 18px;
   color: #0d0d0d;
+}
+@media screen and (orientation: landscape) {
+  .page-content {
+    padding: 50px 0 0 0;
+  }
+  .page-content .case-list {
+    width: 100%;
+    float: left;
+  }
+  .page-content .case-list .case {
+    max-width: 35%;
+    margin: 0 30px 30px 0px;
+  }
+  .page-content .case-list .case:nth-child(2n-1) {
+    margin: 0 30px 30px 130px;
+  }
+  .page-content .case-list .case .case-image {
+    margin: 0 0 10px 0;
+  }
+  .page-content .case-list .case .case-detail .case-title,
+  .page-content .case-list .case .case-detail .case-type,
+  .page-content .case-list .case .case-detail .case-description {
+    text-align: left;
+  }
 }
 /* Body classes, to be user to the body directive */
 body {
