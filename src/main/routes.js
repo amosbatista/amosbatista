@@ -17,6 +17,16 @@ angular.module("site").config( [
 			.when('/portfolio', {
 				templateUrl: "portfolio.html",
 				controller: "portfolioCtrl"
-			})	
+			})
+
+			.when('/portfolio/masterrow', {
+				templateUrl: "masterrow.html",
+				controller: "masterrowCtrl"
+			})
+
+			.otherwise({
+				templateUrl: "home.html",
+				controller: "homeCtrl"
+			})
 	}
 ])

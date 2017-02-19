@@ -4,20 +4,21 @@ div(my-header)
 
 	ul.breadcrumb
 		li.item 
-			a(href="#/") Home
+			a(href="#!/") Home
 		li.item.current Portfólio
 
 	.case-list
 		.case
-			img.case-image(src="img/logo.png")
+			a(href="#!/portfolio/masterrow")
+				img.case-image(src="img/logo.png")
 
-			.case-detail
-				h2.case-title 
-					| Masterow
-				p.case-type
-					| Plug-in
-				p.case-description
-					| Uma ferramenta para criação de tabelas dinâmicas, para projetos em JavaScript.
+				.case-detail
+					h2.case-title 
+						| Masterow
+					p.case-type
+						| Plug-in
+					p.case-description
+						| Uma ferramenta para criação de tabelas dinâmicas, para projetos em JavaScript.
 
 		.case
 			img.case-image(src="img/logo.png")

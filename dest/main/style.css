@@ -2924,6 +2924,11 @@
   font-size: 18px;
   color: #0d0d0d;
 }
+.page-content .smallTabs {
+  width: 90%;
+  margin: 0 auto;
+  border: 1px solid green;
+}
 @media screen and (orientation: landscape) {
   .page-content {
     padding: 50px 0 0 0;
@@ -2937,7 +2942,7 @@
     margin: 0 30px 30px 0px;
   }
   .page-content .case-list .case:nth-child(2n-1) {
-    margin: 0 30px 30px 130px;
+    margin: 0 30px 30px 22%;
   }
   .page-content .case-list .case .case-image {
     margin: 0 0 10px 0;
@@ -2947,6 +2952,35 @@
   .page-content .case-list .case .case-detail .case-description {
     text-align: left;
   }
+}
+.small-tabs {
+  /* Tab colors */
+}
+.small-tabs .current-tab {
+  width: 100%;
+  float: left;
+  padding: 10px;
+  color: #79b2ec;
+}
+.small-tabs .current-tab h2 {
+  margin: 0;
+}
+.small-tabs .small-tab-list {
+  width: 100%;
+  float: left;
+  list-style: none;
+  padding: 0;
+  margin: 5px 0;
+}
+.small-tabs .small-tab-list .small-tabs-list-item {
+  float: left;
+  margin: 0 10px;
+}
+.small-tabs .before-current {
+  color: #d67a5c;
+}
+.small-tabs .after-current {
+  color: #99e69d;
 }
 /* Body classes, to be user to the body directive */
 body {
@@ -2960,6 +2994,11 @@ body {
 .body-about-page {
   overflow: auto;
   background-color: #081109;
+}
+/* Default style of all links*/
+a {
+  text-decoration: none;
+  color: inherit;
 }
 /* Styles*/
 .icon {

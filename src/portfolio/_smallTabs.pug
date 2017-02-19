@@ -1,0 +1,17 @@
+.small-tabs
+	.current-tab
+		h2 
+			|{{currentTabName}}
+	
+	ul.small-tab-list.before-current(ng-hide="tabList_Before.length <= 0")
+		li.small-tabs-list-item(ng-repeat="tab in tabList_Before" )
+			tab-link(tab-name="{{tab.tabName}}")
+	ul.small-tab-list.after-current(ng-hide="tabList_After.length <= 0")
+		li.small-tabs-list-item(ng-repeat="tab in tabList_After" )
+			tab-link(tab-name="{{tab.tabName}}")
+
+	//- ul.small-tabs-tab-list
+		//- li.small-tabs-list-item(ng-repeat="tab in tabList")
+			//- tab-link(tab-name="{{tab.tabName}}")
+	
+	div(ng-transclude)
