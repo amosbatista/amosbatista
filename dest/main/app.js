@@ -35313,23 +35313,17 @@ angular.module('site.portfolio').directive('tabLink', function(){
 angular.module('site.portfolio').directive('tab', function(){
 
 	return {
-		/*templateURL: '_tab.html',*/
+		templateUrl: '_tab.html',
 		restrict: 'E',
 		require: "^smallTabs",
+		transclude: true,
+		replace: true,
 		scope: {
 			tabName: "@"
 		},
 
 		link: function (scope, element, attrs, ctrl){
-
 			ctrl.addTab(scope);
-
-			/*element.bind('click', function (event){
-				ctrl.closeAll();
-				scope.$apply(function (){
-					scope.active = !scope.active;
-				})
-			})*/
 		}
 	}
 });

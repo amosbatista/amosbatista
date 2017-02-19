@@ -2925,9 +2925,8 @@
   color: #0d0d0d;
 }
 .page-content .smallTabs {
-  width: 90%;
-  margin: 0 auto;
-  border: 1px solid green;
+  width: 100%;
+  float: left;
 }
 @media screen and (orientation: landscape) {
   .page-content {
@@ -2951,6 +2950,9 @@
   .page-content .case-list .case .case-detail .case-type,
   .page-content .case-list .case .case-detail .case-description {
     text-align: left;
+  }
+  .smallTabs {
+    margin: 0 0 0 160px;
   }
 }
 .small-tabs {
@@ -2981,6 +2983,20 @@
 }
 .small-tabs .after-current {
   color: #99e69d;
+}
+.small-tabs .tab {
+  width: 100%;
+  padding: 10px;
+  float: left;
+}
+@media screen and (orientation: landscape) {
+  .small-tabs .current-tab {
+    width: 22%;
+  }
+  .small-tabs .small-tab-list {
+    width: 75%;
+    float: right;
+  }
 }
 /* Body classes, to be user to the body directive */
 body {
