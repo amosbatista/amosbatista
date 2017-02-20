@@ -2951,7 +2951,8 @@
   .page-content .case-list .case .case-detail .case-description {
     text-align: left;
   }
-  .smallTabs {
+  .page-content .smallTabs {
+    width: 75%;
     margin: 0 0 0 160px;
   }
 }
@@ -2991,10 +2992,10 @@
 }
 @media screen and (orientation: landscape) {
   .small-tabs .current-tab {
-    width: 22%;
+    width: 23%;
   }
   .small-tabs .small-tab-list {
-    width: 75%;
+    width: 73%;
     float: right;
   }
 }
