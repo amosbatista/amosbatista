@@ -4,7 +4,6 @@ angular.module('site.home').controller('homeCtrl', [
 	function(
 		scope,
 		location
-
 	){
 		scope.goToAboutPage = function(){
 			location.path('/about');
@@ -12,6 +11,10 @@ angular.module('site.home').controller('homeCtrl', [
 
 		scope.goToPortfolio = function(){
 			location.path('/portfolio');
+		}
+
+		scope.goToBlog = function(){
+			location.path('/blog');
 		}
 	}
 ])

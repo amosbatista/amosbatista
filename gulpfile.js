@@ -17,6 +17,7 @@ var lessOrigin = ["src/**/*.less"];
 var cssPostLessOrigin = ["cssProcess/*.css"];
 var jsOrigin = [
 	"node_modules/angular/angular.js",
+	"node_modules/angular-resource/angular-resource.js",
 	"node_modules/angular-route/angular-route.js",
 	"src/plugins/*.js",
 	"src/common/header/*.js",
@@ -24,8 +25,12 @@ var jsOrigin = [
 	"src/about/*.js",
 	"src/home/*.js",
 	"src/portfolio/*.js",
+	"src/blog/*.js",
 	"src/main/*.js",
+	"!src/env.js" // Excluding environment config
 ];
+
+var envScriptFile = 'src/env.js';
 
 /* Font awesome */
 var fontAwesomeOrigin = {
@@ -58,6 +63,15 @@ gulp.task ('app', function(){
 	return gulp.src(jsOrigin)
 		.pipe(plumber())
   		.pipe(jsConcat('app.js'))
+		.pipe(gulp.dest(destinationFolder + '/main'));
+});
+
+
+// Process the config scriot
+gulp.task ('env', function(){
+
+	return gulp.src(envScriptFile)
+		.pipe(plumber())
 		.pipe(gulp.dest(destinationFolder + '/main'));
 });
 
@@ -119,9 +133,10 @@ gulp.watch( pugOrigin, ['pug']);
 gulp.watch( lessOrigin, ['less']);
 gulp.watch( cssPostLessOrigin, ['concatenateCSS']);
 gulp.watch( jsOrigin, ['app']);
+gulp.watch( envScriptFile, ['env']);
 gulp.watch( imageSource, ['image']);
 
 
 
 // Main task
-gulp.task ('default', ['pug', 'less', 'concatenateCSS', 'app', 'fontAwesome_CSS', 'fontAwesome_Fonts', 'image']);
+gulp.task ('default', ['pug', 'less', 'concatenateCSS', 'app', 'env', 'fontAwesome_CSS', 'fontAwesome_Fonts', 'image']);

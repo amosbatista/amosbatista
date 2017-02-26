@@ -3,10 +3,14 @@ html(ng-app="site",lang="pt-br")
 		meta(charset="utf-8")
 		title
 			|Amós Batista
+
+		script(src="main/env.js")
 		script(src="main/app.js")
+
+
 		link(href="main/style.css" rel="stylesheet")
 		link(href="https://fonts.googleapis.com/css?family=Source+Serif+Pro|Fjalla+One" rel="stylesheet")
-		// script(src="https://use.fontawesome.com/6b4eb3094e.js")
+		
 
 	body
 		.main-container(ng-view)
