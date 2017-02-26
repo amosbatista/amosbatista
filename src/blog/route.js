@@ -1,13 +1,14 @@
 angular.module("site.blog").config([
-	'$routeProvider',
+	'$stateProvider',
 	function(
-		router
+		state
 	){
-		router
-			
-			.when('/blog', {
+		state
+
+			.state('blog', {
 				templateUrl: "blog.html",
-				controller: "blogCtrl"
+				controller: "blogCtrl",
+				url: '/blog'
 			})
 	}
 ])

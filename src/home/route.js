@@ -1,17 +1,19 @@
 angular.module("site.home").config( [
-	'$routeProvider',
+	'$stateProvider',
+	'$urlRouterProvider',
 	function(
-		router
-	){
-		router
-			.when('/',{
-				templateUrl: "home.html",
-				controller: "homeCtrl"
-			})
+		stateProvider,
+		urlRouter
+	){	
+		
+		urlRouter.otherwise('/home');
 
-			.otherwise({
+		stateProvider
+
+			.state('home', {
 				templateUrl: "home.html",
-				controller: "homeCtrl"
+				controller: "homeCtrl",
+				url: '/home'
 			})
 	}
 ])

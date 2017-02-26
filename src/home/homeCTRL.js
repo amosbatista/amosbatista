@@ -1,20 +1,20 @@
 angular.module('site.home').controller('homeCtrl', [
 	'$scope',
-	'$location',
+	'$state',
 	function(
 		scope,
-		location
+		state
 	){
 		scope.goToAboutPage = function(){
-			location.path('/about');
+			state.go('about');
 		}
 
 		scope.goToPortfolio = function(){
-			location.path('/portfolio');
+			state.go('portfolio');
 		}
 
 		scope.goToBlog = function(){
-			location.path('/blog');
+			state.go('blog');
 		}
 	}
 ])

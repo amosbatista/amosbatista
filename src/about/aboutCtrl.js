@@ -1,13 +1,13 @@
 angular.module('site.about').controller('aboutCtrl', [
 	'$scope',
-	'$location',
+	'$state',
 	function(
 		scope,
-		location
+		state
 
 	){
 		scope.goHome = function(){
-			location.path('/');
+			state.go('home');
 		}
 	}
 ])

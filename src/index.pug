@@ -1,4 +1,5 @@
-html(ng-app="site",lang="pt-br")
+doctype html
+html(ng-app="site")
 	head
 		meta(charset="utf-8")
 		title
@@ -13,7 +14,8 @@ html(ng-app="site",lang="pt-br")
 		
 
 	body
-		.main-container(ng-view)
+		.main-container
+			ui-view
 		
 	
 

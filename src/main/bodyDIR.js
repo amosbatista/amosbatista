@@ -3,10 +3,10 @@
 // Directive controlls the body style
 angular.module("site").directive('body', [
 	'$timeout',
-	'$location',
+	'$state',
 	function(
 		timeout,
-		location
+		state
 	){
 
 	return {
@@ -49,13 +49,12 @@ angular.module("site").directive('body', [
 
 
 			/* According the page href, change the body style */
-			scope.$on('$locationChangeSuccess', function (){
-
-				switch (location.path()){
-					case '/about':
+			scope.$on('$stateChangeSuccess', function (){
+				switch (state.current.name){
+					case 'about':
 						element[0].className = 'body-about-page';
 						break;
-					case '/portfolio':
+					case 'portfolio':
 						element[0].className = 'body-portfolio-page';
 						break;
 					default:

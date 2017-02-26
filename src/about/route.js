@@ -1,13 +1,16 @@
+
 angular.module("site.about").config( [
-	'$routeProvider',
+	'$stateProvider',
 	function(
-		router
-	){
-		router
-			
-			.when('/about', {
+		stateProvider
+	){	
+		stateProvider
+
+			.state('about', {
 				templateUrl: "about.html",
-				controller: "aboutCtrl"
-			})	
+				controller: "aboutCtrl",
+				url: '/about'
+			})
+
 	}
 ])

@@ -1,18 +1,22 @@
 angular.module('site.portfolio').config( [
-	'$routeProvider',
+	'$stateProvider',
 	function(
-		router
+		state
 	){
-		router
-			
-			.when('/portfolio', {
+
+		state
+
+			.state('portfolio', {
 				templateUrl: "portfolio.html",
-				controller: "portfolioCtrl"
+				controller: "portfolioCtrl",
+				url: '/portfolio'
 			})
 
-			.when('/portfolio/masterrow', {
+			.state('portfolio.masterrow', {
 				templateUrl: "masterrow.html",
-				controller: "masterrowCtrl"
+				controller: "masterrowCtrl",
+				url: '/masterrow'
 			})
+
 	}
 ])
