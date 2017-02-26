@@ -8,7 +8,13 @@ angular.module("site.blog").config([
 			.state('blog', {
 				templateUrl: "blog.html",
 				controller: "blogCtrl",
-				url: '/blog'
+				url: '/blog',
+				resolve: {
+					postListService: 'postListSRV',
+					postlist: ['postListService', function(service){
+						return service.getList();
+					}]
+				}
 			})
 	}
 ])

@@ -1,10 +1,9 @@
 angular.module("site.blog").controller("blogCtrl", [
-	'generalSRV',
+	'postlist',
 	function(
-		service
+		postList
 	){
-		service.response().then(function(data){
-			console.log('Response of Wordpress', data);
-		});
+		console.log('Response of Wordpress from route', postList);
+	
 	}
 ])

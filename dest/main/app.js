@@ -39709,25 +39709,41 @@ angular.module('site.portfolio').directive('tab', function(){
 });
 angular.module("site.blog", []);
 angular.module("site.blog").controller("blogCtrl", [
-	'generalSRV',
+	'postlist',
 	function(
-		service
+		postList
 	){
-		service.response().then(function(data){
-			console.log('Response of Wordpress', data);
-		});
+		console.log('Response of Wordpress from route', postList);
+	
 	}
 ])
-angular.module("site.blog").factory('generalSRV',[
-	'wpGeneralResource',
+angular.module("site.blog").factory("postListResource", [
+	'$resource',
+	'env',
+	function(
+		resource,
+		env
+	){
+		return resource(env.config.wordPressAPIURL + env.config.postList,
+		{},
+		{
+			list: {
+				method: 'GET',
+				isArray: true
+			}
+		});
+	}
+]);
+angular.module("site.blog").factory('postListSRV',[
+	'postListResource',
 	function(
 		resource
 	){
 		return {
-			response: function(){
+			getList: function(){
 
 				return new Promise (function(resolve, reject){
-					resource.get(
+					resource.list(
 						{},
 						function(dataReturn){
 							resolve(dataReturn);
@@ -39758,11 +39774,37 @@ angular.module("site.blog").config([
 			.state('blog', {
 				templateUrl: "blog.html",
 				controller: "blogCtrl",
-				url: '/blog'
+				url: '/blog',
+				resolve: {
+					postListService: 'postListSRV',
+					postlist: ['postListService', function(service){
+						return service.getList();
+					}]
+				}
 			})
 	}
 ])
 
+angular.module("site.blog").factory('generalSRV',[
+	'wpGeneralResource',
+	function(
+		resource
+	){
+		return {
+			response: function(){
+
+				return new Promise (function(resolve, reject){
+					resource.get(
+						{},
+						function(dataReturn){
+							resolve(dataReturn);
+						}
+					);
+				});
+			}
+		}
+	}
+])
 angular.module("site", [
 	'ui.router',
 	'ngResource',
