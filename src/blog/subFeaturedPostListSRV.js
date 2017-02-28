@@ -23,7 +23,8 @@ angular.module("site.blog").factory('subFeaturedPostListSRV',[
 
 					resource.list(
 						{
-							tags: tagList
+							tags: tagList,
+							'_embed': 1 // Bring all media and another embed data into response
 						},
 						function(dataReturn){
 							resolve(dataReturn);

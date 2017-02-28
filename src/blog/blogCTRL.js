@@ -1,18 +1,22 @@
 angular.module("site.blog").controller("blogCtrl", [
+	'$scope',
 	'postlist',
 	'featuredPosts',
-	'tags',
 	'subFeaturedPosts',
 	function(
+		scope,
 		postList,
 		featured,
-		tags,
-		subFeatured
+		subFeatureds
 	){
 		console.log('Response of Wordpress from route', postList);
 		console.log('Featured', featured);
-		console.log('Sub-Featured', subFeatured);
-		console.log('Tags', tags);
-	
+		console.log('Sub-Featured', subFeatureds);
+
+		scope.featured = featured;
+		scope.subFeatured_1 = subFeatureds[1];	
+		scope.subFeatured_2 = subFeatureds[2];	
+
+		scope.postList = postList;
 	}
 ])

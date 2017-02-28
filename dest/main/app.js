@@ -39709,21 +39709,25 @@ angular.module('site.portfolio').directive('tab', function(){
 });
 angular.module("site.blog", []);
 angular.module("site.blog").controller("blogCtrl", [
+	'$scope',
 	'postlist',
 	'featuredPosts',
-	'tags',
 	'subFeaturedPosts',
 	function(
+		scope,
 		postList,
 		featured,
-		tags,
-		subFeatured
+		subFeatureds
 	){
 		console.log('Response of Wordpress from route', postList);
 		console.log('Featured', featured);
-		console.log('Sub-Featured', subFeatured);
-		console.log('Tags', tags);
-	
+		console.log('Sub-Featured', subFeatureds);
+
+		scope.featured = featured;
+		scope.subFeatured_1 = subFeatureds[1];	
+		scope.subFeatured_2 = subFeatureds[2];	
+
+		scope.postList = postList;
 	}
 ])
 /*The service is the same of post list, but only get the featured posts*/
@@ -39744,10 +39748,21 @@ angular.module("site.blog").factory('featuredPostListSRV',[
 
 					resource.list(
 						{
-							tags: tagList
+							tags: tagList,
+							'_embed': 1 // Bring all media and another embed data into response
 						},
 						function(dataReturn){
-							resolve(dataReturn);
+							
+							resolve({
+								mainImage: dataReturn[0]._embedded["wp:featuredmedia"][0].source_url,
+								category: dataReturn[0]._embedded["wp:term"].find( function (termList){
+									return termList.find( function(term){
+										return term.taxonomy == 'category';	
+									});
+								})[0].name,
+								title: dataReturn[0].title.rendered,
+								excerpt: dataReturn[0].excerpt.rendered
+							});
 						}
 					);
 				});
@@ -39782,7 +39797,9 @@ angular.module("site.blog").factory('postListSRV',[
 
 				return new Promise (function(resolve, reject){
 					resource.list(
-						{},
+						{
+							'_embed': 1 // Bring all media and another embed data into response
+						},
 						function(dataReturn){
 							resolve(dataReturn);
 						}
@@ -39868,7 +39885,8 @@ angular.module("site.blog").factory('subFeaturedPostListSRV',[
 
 					resource.list(
 						{
-							tags: tagList
+							tags: tagList,
+							'_embed': 1 // Bring all media and another embed data into response
 						},
 						function(dataReturn){
 							resolve(dataReturn);

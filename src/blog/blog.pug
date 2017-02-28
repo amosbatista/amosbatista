@@ -5,12 +5,15 @@ div(my-header)
 	
 	// *** Featured post ***
 	.post.featured
-		img.background
+		img.background(ng-src='{{featured.mainImage}}')
 
 		.post-content
 			span.category
+				|TEste - {{featured.category}}
 			h3.title
+				|{{featured.title}}
 			p.excerpt
+				|{{featured.excerpt}}
 
 
 

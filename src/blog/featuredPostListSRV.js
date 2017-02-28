@@ -16,10 +16,21 @@ angular.module("site.blog").factory('featuredPostListSRV',[
 
 					resource.list(
 						{
-							tags: tagList
+							tags: tagList,
+							'_embed': 1 // Bring all media and another embed data into response
 						},
 						function(dataReturn){
-							resolve(dataReturn);
+							
+							resolve({
+								mainImage: dataReturn[0]._embedded["wp:featuredmedia"][0].source_url,
+								category: dataReturn[0]._embedded["wp:term"].find( function (termList){
+									return termList.find( function(term){
+										return term.taxonomy == 'category';	
+									});
+								})[0].name,
+								title: dataReturn[0].title.rendered,
+								excerpt: dataReturn[0].excerpt.rendered
+							});
 						}
 					);
 				});
