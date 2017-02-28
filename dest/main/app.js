@@ -39710,11 +39710,49 @@ angular.module('site.portfolio').directive('tab', function(){
 angular.module("site.blog", []);
 angular.module("site.blog").controller("blogCtrl", [
 	'postlist',
+	'featuredPosts',
+	'tags',
+	'subFeaturedPosts',
 	function(
-		postList
+		postList,
+		featured,
+		tags,
+		subFeatured
 	){
 		console.log('Response of Wordpress from route', postList);
+		console.log('Featured', featured);
+		console.log('Sub-Featured', subFeatured);
+		console.log('Tags', tags);
 	
+	}
+])
+/*The service is the same of post list, but only get the featured posts*/
+angular.module("site.blog").factory('featuredPostListSRV',[
+	'postListResource',
+	function(
+		resource
+	){
+		return {
+			getList: function(filters){
+
+				return new Promise (function(resolve, reject){
+
+					if(filters.currentPage == undefined || filters.currentPage > 1)
+						resolve(null);
+
+					var tagList = filters.tagList['featured'];
+
+					resource.list(
+						{
+							tags: tagList
+						},
+						function(dataReturn){
+							resolve(dataReturn);
+						}
+					);
+				});
+			}
+		}
 	}
 ])
 angular.module("site.blog").factory("postListResource", [
@@ -39740,7 +39778,7 @@ angular.module("site.blog").factory('postListSRV',[
 		resource
 	){
 		return {
-			getList: function(){
+			getList: function(filters){
 
 				return new Promise (function(resolve, reject){
 					resource.list(
@@ -39776,7 +39814,27 @@ angular.module("site.blog").config([
 				controller: "blogCtrl",
 				url: '/blog',
 				resolve: {
+					tagListService: 'tagListSRV',
 					postListService: 'postListSRV',
+					featuredService: 'featuredPostListSRV',
+					subFeaturedService: 'subFeaturedPostListSRV',
+
+					tags: ['tagListService', function(service){
+						return service.getList();
+					}],
+					
+					subFeaturedPosts: ['subFeaturedService', 'tags', function(service, tags){
+						return service.getList({
+							currentPage: 0,
+							tagList: tags
+						});
+					}],
+					featuredPosts: ['featuredService', 'tags', function(service, tags){
+						return service.getList({
+							currentPage: 0,
+							tagList: tags
+						});
+					}],
 					postlist: ['postListService', function(service){
 						return service.getList();
 					}]
@@ -39785,6 +39843,86 @@ angular.module("site.blog").config([
 	}
 ])
 
+/*The service is the same of post list, but only get the sub-featured 
+(if page orientation is landscape) posts*/
+angular.module("site.blog").factory('subFeaturedPostListSRV',[
+	'postListResource',
+	function(
+		resource
+	){
+		return {
+			getList: function(filters){
+
+				return new Promise (function(resolve, reject){
+
+					if(filters.currentPage == undefined || filters.currentPage > 1)
+						resolve(null);
+
+					
+
+					if(window.innerWidth > window.innerHeight)
+						return (null);
+
+
+					var tagList = filters.tagList['sub-featured'];
+
+					resource.list(
+						{
+							tags: tagList
+						},
+						function(dataReturn){
+							resolve(dataReturn);
+						}
+					);
+				});
+			}
+		}
+	}
+])
+angular.module("site.blog").factory("tagListResource", [
+	'$resource',
+	'env',
+	function(
+		resource,
+		env
+	){
+		return resource(env.config.wordPressAPIURL + env.config.tagList,
+		{},
+		{
+			list: {
+				method: 'GET',
+				isArray: true
+			}
+		});
+	}
+]);
+angular.module("site.blog").factory('tagListSRV',[
+	'tagListResource',
+	function(
+		resource
+	){
+		return {
+			getList: function(){
+
+				return new Promise (function(resolve, reject){
+					resource.list(
+						{},
+						function(dataReturn){
+
+							// Mounting tag structure
+							var objTags = dataReturn.reduce( function (processedObject, tag){
+								processedObject[tag.slug] = tag.id;
+								return processedObject;
+							}, {});
+
+							resolve(objTags);
+						}
+					);
+				});
+			}
+		}
+	}
+])
 angular.module("site.blog").factory('generalSRV',[
 	'wpGeneralResource',
 	function(

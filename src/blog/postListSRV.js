@@ -4,7 +4,7 @@ angular.module("site.blog").factory('postListSRV',[
 		resource
 	){
 		return {
-			getList: function(){
+			getList: function(filters){
 
 				return new Promise (function(resolve, reject){
 					resource.list(

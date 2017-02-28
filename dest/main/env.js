@@ -1,6 +1,7 @@
 envConfig = {
-	wordPressAPIURL: 'http://localhost/wordpress/wp-json/',
+	wordPressAPIURL: 'http://localhost/wordpress/wp-json/wp/v2/',
 
-	postList: 'wp/v2/posts'
+	postList: 'posts',
+	tagList: 'tags',
 
 };
