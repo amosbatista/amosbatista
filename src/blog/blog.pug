@@ -9,30 +9,36 @@ div(my-header)
 
 		.post-content
 			span.category
-				|TEste - {{featured.category}}
+				|{{featured.category}}
 			h3.title
 				|{{featured.title}}
-			p.excerpt
-				|{{featured.excerpt}}
+			p.excerpt(put-html content='featured.excerpt')
 
 
 
 	// *** Sub-featured posts ***
 	.post.sub-featured
-		img.background
+		img.background(ng-src='{{subFeatured_1.mainImage}}')
 
 		.post-content
 			span.category
+				|{{subFeatured_1.category}}
 			h3.title
+				|{{subFeatured_1.title}}
 			p.excerpt
+				|{{subFeatured_1.excerpt}}
+		
 
 	.post.sub-featured
-		img.background
+		img.background(ng-src='{{subFeatured_2.mainImage}}')
 
 		.post-content
 			span.category
+				|{{subFeatured_2.category}}
 			h3.title
+				|{{subFeatured_2.title}}
 			p.excerpt
+				|{{subFeatured_2.excerpt}}
 
 
 

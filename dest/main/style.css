@@ -3012,6 +3012,9 @@ body {
   overflow: auto;
   background-color: #081109;
 }
+.body-blog-page {
+  overflow: auto;
+}
 /* Default style of all links*/
 a {
   text-decoration: none;

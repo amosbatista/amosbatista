@@ -39770,6 +39770,21 @@ angular.module("site.blog").factory('featuredPostListSRV',[
 		}
 	}
 ])
+// The directive will insert HTML tags directly into the element
+angular.module("site.blog").directive('putHtml', function(){
+
+	return {
+		restrict: "A",
+		scope: {
+			content: '='
+		},
+		link: function (scope, element){
+			element[0].innerHTML = scope.content
+				.replace('<p>', '')
+				.replace('</p>', '');
+		}
+	}
+});
 angular.module("site.blog").factory("postListResource", [
 	'$resource',
 	'env',
@@ -39801,6 +39816,20 @@ angular.module("site.blog").factory('postListSRV',[
 							'_embed': 1 // Bring all media and another embed data into response
 						},
 						function(dataReturn){
+
+							dataReturn = dataReturn.map(function(post){
+								return {
+									mainImage: dataReturn[0]._embedded["wp:featuredmedia"][0].source_url,
+									category: dataReturn[0]._embedded["wp:term"].find( function (termList){
+										return termList.find( function(term){
+											return term.taxonomy == 'category';	
+										});
+									})[0].name,
+									title: dataReturn[0].title.rendered,
+									excerpt: dataReturn[0].excerpt.rendered
+								}
+							});
+							
 							resolve(dataReturn);
 						}
 					);
@@ -39889,6 +39918,19 @@ angular.module("site.blog").factory('subFeaturedPostListSRV',[
 							'_embed': 1 // Bring all media and another embed data into response
 						},
 						function(dataReturn){
+							dataReturn = dataReturn.map(function(post){
+								return {
+									mainImage: dataReturn[0]._embedded["wp:featuredmedia"][0].source_url,
+									category: dataReturn[0]._embedded["wp:term"].find( function (termList){
+										return termList.find( function(term){
+											return term.taxonomy == 'category';	
+										});
+									})[0].name,
+									title: dataReturn[0].title.rendered,
+									excerpt: dataReturn[0].excerpt.rendered
+								}
+							})
+							
 							resolve(dataReturn);
 						}
 					);
@@ -40029,6 +40071,9 @@ angular.module("site").directive('body', [
 						break;
 					case 'portfolio':
 						element[0].className = 'body-portfolio-page';
+						break;
+					case 'blog':
+						element[0].className = 'body-blog-page';
 						break;
 					default:
 						element[0].className = 'body-home-page';
