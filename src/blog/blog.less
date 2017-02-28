@@ -1,6 +1,8 @@
 @insertTextColor: hsl(123, 41%, 89%);
 @outsideTextColor: hsl(100, 57%, 20%);
 
+@rightContentWidth: 45%; /* Title, exceprtp*/
+
 .post{
 	position: relative;
 	width: 100%;
@@ -9,11 +11,10 @@
 	border-bottom: 1px dotted hsla(100, 100%, 27%, 0.42);
 
 	.post-background{
-		width: 40%;
+		width: 45%;
 		height: 100%;
 		background-size: contain;
 		background-repeat: no-repeat;
-		background-origin: center center;
 		float: left;
 	}
 
@@ -29,7 +30,7 @@
 	}
 
 	.title{
-    	width: 56%;
+    	width: @rightContentWidth;
     	text-align: left;
     	font-family: @fontFamily_Titles;
 		font-size: 70%;
@@ -44,10 +45,14 @@
     	color: @outsideTextColor;
     	padding: 0 30px 0 0;
     	text-align: left;
-    	width: 52%;
+    	width: @rightContentWidth;
     	float: right;
     	margin: 0;
     	text-indent: 25px;
+    }
+
+    .post-list{
+    	position: relative;
     }
 }
 
@@ -103,3 +108,115 @@
 
 }
 
+
+
+@media screen and (orientation: landscape){
+
+	.featured{
+		height: 450px;
+		width: 50%;
+		position: absolute;
+		top: 0;
+		left: 110px;
+
+		.post-background{
+			background-position: center center;
+		}
+	}
+
+	.sub-featureds{
+		width: 32%;
+		position: absolute;
+		top: 30px;
+		right: 0px;
+
+		.sub-featured{
+			height: 200px;
+			position: relative;
+			width: 100%;
+			float: right;	
+			border-bottom: none;
+
+			.post-background{
+				width: 100%;
+				height: 130px;
+			}
+
+			.title{
+				width: 100%;
+				padding: 0;
+			}
+			.excerpt{
+				width: 100%;
+				padding: 0 0 0 10px;
+			}
+		}	
+	}
+
+	.post-list{
+		margin: 470px 0 0 150px;
+    	width: 69%;
+
+    	.post{
+    		.post-background{
+    			margin: 0 15px 0 0 ;
+    		}
+    		.title{
+    			width: 50%;
+    			font-size: 80%;
+    			padding: 0 0 15px 0;
+    			text-align: left;
+    			float: left;
+    		}
+
+    		.excerpt{
+    			width: 50%;
+    			padding: 0;
+    			text-align: left;
+    			float: left;
+    		}
+    	}
+	}
+	
+
+}
+
+
+@media screen and (min-width: 900px){
+
+	.sub-featureds{
+		width: 37%;
+		position: absolute;
+		top: 100px;
+		right: 0px;
+
+		.sub-featured{
+			height: 150px;
+
+			.post-background{
+				width: 45%;
+				height: 130px;
+			}
+
+			.category{
+				font-size: 65%;
+			}
+
+			.title{
+				width: 53%;
+				padding: 0;
+			}
+
+			.excerpt{
+				width: 53%;
+				padding: 0;
+			}
+		}	
+	}
+
+	.post-list{
+    	width: 74%;
+	}
+	
+
+}

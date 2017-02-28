@@ -39806,7 +39806,6 @@ angular.module("site.blog").factory('postListSRV',[
 	){
 		return {
 			getList: function(filters){
-
 				return new Promise (function(resolve, reject){
 					resource.list(
 						{
@@ -39913,16 +39912,15 @@ angular.module("site.blog").factory('subFeaturedPostListSRV',[
 	){
 		return {
 			getList: function(filters){
-
 				return new Promise (function(resolve, reject){
 
 					if(filters.currentPage == undefined || filters.currentPage > 1)
 						resolve(null);
 
 					
-
+/*
 					if(window.innerWidth > window.innerHeight)
-						return (null);
+						resolve (null);*/
 
 
 					var tagList = filters.tagList['sub-featured'];

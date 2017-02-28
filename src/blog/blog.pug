@@ -17,26 +17,27 @@ div(my-header)
 
 
 	// *** Sub-featured posts ***
-	.post.sub-featured
-		.post-background(bg-insert image-url="subFeatured_1.mainImage")
-		//img.background(ng-src='{{subFeatured_1.mainImage}}')
-	
-		span.category
-			|{{subFeatured_1.category}}
-		h3.title
-			|{{subFeatured_1.title}}
-		p.excerpt(put-html content='subFeatured_1.excerpt')
+	.sub-featureds
+
+		.post.sub-featured
+			.post-background(bg-insert image-url="subFeatured_1.mainImage")
+			//img.background(ng-src='{{subFeatured_1.mainImage}}')
 		
+			span.category
+				|{{subFeatured_1.category}}
+			h3.title
+				|{{subFeatured_1.title}}
+			p.excerpt(put-html content='subFeatured_1.excerpt')
 
-	.post.sub-featured
-		.post-background(bg-insert image-url="subFeatured_2.mainImage")
-		//img.background(ng-src='{{subFeatured_2.mainImage}}')
+		.post.sub-featured
+			.post-background(bg-insert image-url="subFeatured_2.mainImage")
+			//img.background(ng-src='{{subFeatured_2.mainImage}}')
 
-		span.category
-			|{{subFeatured_2.category}}
-		h3.title
-			|{{subFeatured_2.title}}
-		p.excerpt(put-html content='subFeatured_2.excerpt')
+			span.category
+				|{{subFeatured_2.category}}
+			h3.title
+				|{{subFeatured_2.title}}
+			p.excerpt(put-html content='subFeatured_2.excerpt')
 
 
 
