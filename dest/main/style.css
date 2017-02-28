@@ -2883,7 +2883,7 @@
 }
 .page-content {
   width: 100%;
-  padding: 90px 0 0 0;
+  padding: 125px 0 0 0;
   font-family: 'Source Serif Pro', sans-serif;
   margin: 0 0 200px 0;
   float: left;
@@ -2998,6 +2998,95 @@
     width: 73%;
     float: right;
   }
+}
+.post {
+  position: relative;
+  width: 100%;
+  margin: 0 0 15px 0;
+  height: 175px;
+  border-bottom: 1px dotted rgba(46, 138, 0, 0.42);
+}
+.post .post-background {
+  width: 40%;
+  height: 100%;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-origin: center center;
+  float: left;
+}
+.post .category {
+  color: #d7eed9;
+  position: absolute;
+  left: 0px;
+  top: 10px;
+  padding: 3px 15px 3px 25px;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-family: 'Fjalla One', sans-serif;
+  font-size: 80%;
+}
+.post .title {
+  width: 56%;
+  text-align: left;
+  font-family: 'Fjalla One', sans-serif;
+  font-size: 70%;
+  padding: 0 15px 25px 0;
+  float: right;
+  margin: 0;
+  color: #295016;
+}
+.post .excerpt {
+  font-size: 57%;
+  color: #295016;
+  padding: 0 30px 0 0;
+  text-align: left;
+  width: 52%;
+  float: right;
+  margin: 0;
+  text-indent: 25px;
+}
+.featured {
+  height: 300px;
+}
+.featured .post-background {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  box-shadow: inset 0px 0px 300px 60px;
+  z-index: -1;
+  background-size: cover;
+}
+.featured .category {
+  color: #d7eed9;
+  position: absolute;
+  left: 0px;
+  top: 10px;
+  padding: 3px 15px 3px 25px;
+  background-color: rgba(0, 0, 0, 0.5);
+  font-family: 'Fjalla One', sans-serif;
+  font-size: 80%;
+}
+.featured .title {
+  position: absolute;
+  right: 0px;
+  bottom: 50%;
+  width: 65%;
+  color: #d7eed9;
+  text-align: right;
+  font-family: 'Fjalla One', sans-serif;
+  font-size: 140%;
+  padding: 0 15px 0 0;
+}
+.featured .excerpt {
+  position: absolute;
+  right: 0px;
+  bottom: 20px;
+  font-size: 70%;
+  color: #d7eed9;
+  padding: 0 30px 30px 0;
+  text-align: right;
+  width: 80%;
 }
 /* Body classes, to be user to the body directive */
 body {

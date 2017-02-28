@@ -15,14 +15,14 @@ angular.module("site.blog").factory('postListSRV',[
 
 							dataReturn = dataReturn.map(function(post){
 								return {
-									mainImage: dataReturn[0]._embedded["wp:featuredmedia"][0].source_url,
-									category: dataReturn[0]._embedded["wp:term"].find( function (termList){
+									mainImage: post._embedded["wp:featuredmedia"] != undefined ? post._embedded["wp:featuredmedia"][0].source_url : '',
+									category: post._embedded["wp:term"].find( function (termList){
 										return termList.find( function(term){
 											return term.taxonomy == 'category';	
 										});
 									})[0].name,
-									title: dataReturn[0].title.rendered,
-									excerpt: dataReturn[0].excerpt.rendered
+									title: post.title.rendered,
+									excerpt: post.excerpt.rendered
 								}
 							});
 							

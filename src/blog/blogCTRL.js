@@ -11,11 +11,10 @@ angular.module("site.blog").controller("blogCtrl", [
 	){
 		console.log('Response of Wordpress from route', postList);
 		console.log('Featured', featured);
-		console.log('Sub-Featured', subFeatureds);
 
 		scope.featured = featured;
-		scope.subFeatured_1 = subFeatureds[1];	
-		scope.subFeatured_2 = subFeatureds[2];	
+		scope.subFeatured_1 = subFeatureds[0];	
+		scope.subFeatured_2 = subFeatureds[1];	
 
 		scope.postList = postList;
 	}

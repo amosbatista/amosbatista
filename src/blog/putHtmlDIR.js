@@ -7,9 +7,12 @@ angular.module("site.blog").directive('putHtml', function(){
 			content: '='
 		},
 		link: function (scope, element){
-			element[0].innerHTML = scope.content
-				.replace('<p>', '')
-				.replace('</p>', '');
+			if(scope.content == undefined)
+				element[0].innerHTML = '';
+			else
+				element[0].innerHTML = scope.content
+					.replace('<p>', '')
+					.replace('</p>', '');
 		}
 	}
 });

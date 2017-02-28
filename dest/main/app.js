@@ -39707,7 +39707,20 @@ angular.module('site.portfolio').directive('tab', function(){
 		}
 	}
 });
+"use strict";
 angular.module("site.blog", []);
+angular.module("site.blog").directive('bgInsert', function(){
+
+	return {
+		restrict: "A",
+		scope: {
+			imageUrl: '='
+		},
+		link: function (scope, element){
+			element[0].style['background-image'] = 'url("' + scope.imageUrl + '")';
+		}
+	}
+});
 angular.module("site.blog").controller("blogCtrl", [
 	'$scope',
 	'postlist',
@@ -39721,11 +39734,10 @@ angular.module("site.blog").controller("blogCtrl", [
 	){
 		console.log('Response of Wordpress from route', postList);
 		console.log('Featured', featured);
-		console.log('Sub-Featured', subFeatureds);
 
 		scope.featured = featured;
-		scope.subFeatured_1 = subFeatureds[1];	
-		scope.subFeatured_2 = subFeatureds[2];	
+		scope.subFeatured_1 = subFeatureds[0];	
+		scope.subFeatured_2 = subFeatureds[1];	
 
 		scope.postList = postList;
 	}
@@ -39770,21 +39782,6 @@ angular.module("site.blog").factory('featuredPostListSRV',[
 		}
 	}
 ])
-// The directive will insert HTML tags directly into the element
-angular.module("site.blog").directive('putHtml', function(){
-
-	return {
-		restrict: "A",
-		scope: {
-			content: '='
-		},
-		link: function (scope, element){
-			element[0].innerHTML = scope.content
-				.replace('<p>', '')
-				.replace('</p>', '');
-		}
-	}
-});
 angular.module("site.blog").factory("postListResource", [
 	'$resource',
 	'env',
@@ -39819,14 +39816,14 @@ angular.module("site.blog").factory('postListSRV',[
 
 							dataReturn = dataReturn.map(function(post){
 								return {
-									mainImage: dataReturn[0]._embedded["wp:featuredmedia"][0].source_url,
-									category: dataReturn[0]._embedded["wp:term"].find( function (termList){
+									mainImage: post._embedded["wp:featuredmedia"] != undefined ? post._embedded["wp:featuredmedia"][0].source_url : '',
+									category: post._embedded["wp:term"].find( function (termList){
 										return termList.find( function(term){
 											return term.taxonomy == 'category';	
 										});
 									})[0].name,
-									title: dataReturn[0].title.rendered,
-									excerpt: dataReturn[0].excerpt.rendered
+									title: post.title.rendered,
+									excerpt: post.excerpt.rendered
 								}
 							});
 							
@@ -39838,6 +39835,24 @@ angular.module("site.blog").factory('postListSRV',[
 		}
 	}
 ])
+// The directive will insert HTML tags directly into the element
+angular.module("site.blog").directive('putHtml', function(){
+
+	return {
+		restrict: "A",
+		scope: {
+			content: '='
+		},
+		link: function (scope, element){
+			if(scope.content == undefined)
+				element[0].innerHTML = '';
+			else
+				element[0].innerHTML = scope.content
+					.replace('<p>', '')
+					.replace('</p>', '');
+		}
+	}
+});
 angular.module("site.blog").factory("wpGeneralResource", [
 	'$resource',
 	'env',
@@ -39920,14 +39935,14 @@ angular.module("site.blog").factory('subFeaturedPostListSRV',[
 						function(dataReturn){
 							dataReturn = dataReturn.map(function(post){
 								return {
-									mainImage: dataReturn[0]._embedded["wp:featuredmedia"][0].source_url,
-									category: dataReturn[0]._embedded["wp:term"].find( function (termList){
+									mainImage: post._embedded["wp:featuredmedia"] != undefined ? post._embedded["wp:featuredmedia"][0].source_url : '',
+									category: post._embedded["wp:term"].find( function (termList){
 										return termList.find( function(term){
 											return term.taxonomy == 'category';	
 										});
 									})[0].name,
-									title: dataReturn[0].title.rendered,
-									excerpt: dataReturn[0].excerpt.rendered
+									title: post.title.rendered,
+									excerpt: post.excerpt.rendered
 								}
 							})
 							

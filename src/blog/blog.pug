@@ -5,54 +5,52 @@ div(my-header)
 	
 	// *** Featured post ***
 	.post.featured
-		img.background(ng-src='{{featured.mainImage}}')
+		.post-background(bg-insert image-url="featured.mainImage")
+		//img.background(ng-src='{{featured.mainImage}}')
 
-		.post-content
-			span.category
-				|{{featured.category}}
-			h3.title
-				|{{featured.title}}
-			p.excerpt(put-html content='featured.excerpt')
+		span.category
+			|{{featured.category}}
+		h3.title
+			|{{featured.title}}
+		p.excerpt(put-html content='featured.excerpt')
 
 
 
 	// *** Sub-featured posts ***
 	.post.sub-featured
-		img.background(ng-src='{{subFeatured_1.mainImage}}')
-
-		.post-content
-			span.category
-				|{{subFeatured_1.category}}
-			h3.title
-				|{{subFeatured_1.title}}
-			p.excerpt
-				|{{subFeatured_1.excerpt}}
+		.post-background(bg-insert image-url="subFeatured_1.mainImage")
+		//img.background(ng-src='{{subFeatured_1.mainImage}}')
+	
+		span.category
+			|{{subFeatured_1.category}}
+		h3.title
+			|{{subFeatured_1.title}}
+		p.excerpt(put-html content='subFeatured_1.excerpt')
 		
 
 	.post.sub-featured
-		img.background(ng-src='{{subFeatured_2.mainImage}}')
+		.post-background(bg-insert image-url="subFeatured_2.mainImage")
+		//img.background(ng-src='{{subFeatured_2.mainImage}}')
 
-		.post-content
+		span.category
+			|{{subFeatured_2.category}}
+		h3.title
+			|{{subFeatured_2.title}}
+		p.excerpt(put-html content='subFeatured_2.excerpt')
+
+
+
+	// Other posts
+	.post-list
+		.post(ng-repeat="post in postList")
+			.post-background(bg-insert image-url="post.mainImage")
+			//img.background(ng-src='{{post.mainImage}}')
+
 			span.category
-				|{{subFeatured_2.category}}
+				|{{post.category}}
 			h3.title
-				|{{subFeatured_2.title}}
-			p.excerpt
-				|{{subFeatured_2.excerpt}}
-
-
-
-	// Commons posts
-
-
-
-
-
-	
-
-			
-
-	
+				|{{post.title}}
+			p.excerpt(put-html content='post.excerpt')
 
 
 div(my-footer)
