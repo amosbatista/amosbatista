@@ -1,5 +1,5 @@
 .header
-	a.icon(href="" ng-repeat="linkElement in hederLinkToShow" ng-click="linkElement.linkFunction()" ng-class="linkElement.linkClass")
+	a.icon(href="" ng-repeat="linkElement in headerLinkToShow" ng-click="linkElement.linkFunction()" ng-class="linkElement.linkClass")
 		i.fa(ng-class="linkElement.iconClass")
 		span.title-paragraph
 			|{{linkElement.name}}

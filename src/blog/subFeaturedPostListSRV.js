@@ -35,7 +35,8 @@ angular.module("site.blog").factory('subFeaturedPostListSRV',[
 										});
 									})[0].name,
 									title: post.title.rendered,
-									excerpt: post.excerpt.rendered
+									excerpt: post.excerpt.rendered,
+									createdDate: post.date
 								}
 							})
 							

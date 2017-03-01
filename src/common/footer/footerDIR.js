@@ -94,7 +94,7 @@ angular.module('common.footer').directive("myFooter", [
 
 				pageOrientation = detectOrientation();
 
-				document.addEventListener("resize", function(){
+				window.addEventListener("resize", function(){
 					pageOrientation = detectOrientation();
 
 					/* Force translation fix*/

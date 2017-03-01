@@ -3034,6 +3034,15 @@
   margin: 0;
   color: #295016;
 }
+.post .date {
+  margin: 0;
+  text-align: right;
+  color: #4d7d36;
+  font-size: 55%;
+  padding: 0 15px 0 0;
+  float: right;
+  width: 45%;
+}
 .post .excerpt {
   font-size: 57%;
   color: #295016;
@@ -3118,6 +3127,9 @@
   .sub-featureds .sub-featured .post-background {
     width: 100%;
     height: 130px;
+  }
+  .sub-featureds .sub-featured .date {
+    display: none;
   }
   .sub-featureds .sub-featured .title {
     width: 100%;

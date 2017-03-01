@@ -75,7 +75,7 @@ angular.module("site").directive('body', [
 
 				switch (direction){
 					case "down":
-						if( element[0].scrollTop <= 10 ){
+						if( element[0].scrollTop <= 60 ){
 							element[0].scrollTop = 60;
 							scope.$broadcast ('easyScrollDown');
 						}
@@ -104,12 +104,12 @@ angular.module("site").directive('body', [
 			var footerAndHeaderEvent = function (direction, lastPosition){
 
 				// Indicate to bring the foot upper or not, if user reached the bottom of the screen
-				if ((element[0].scrollHeight - element[0].scrollTop == element[0].clientHeight) == true)
+				if ((element[0].scrollTop + window.outerHeight) >= element[0].scrollHeight )
 					scope.$broadcast ('footerIsRising');
 				else{
 
 					// If direction is up and last position was the bottom
-					if(direction == "up" && ((element[0].scrollHeight - lastPosition == element[0].clientHeight) == true))
+					if(direction == "up" && ( lastPosition + window.outerHeight >= element[0].scrollHeight))
 						scope.$broadcast ('footerIsHiding');
 				}
 

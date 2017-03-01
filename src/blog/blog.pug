@@ -25,6 +25,8 @@ div(my-header)
 		
 			span.category
 				|{{subFeatured_1.category}}
+			p.date
+				|{{subFeatured_1.createdDate}}
 			h3.title
 				|{{subFeatured_1.title}}
 			p.excerpt(put-html content='subFeatured_1.excerpt')
@@ -35,6 +37,8 @@ div(my-header)
 
 			span.category
 				|{{subFeatured_2.category}}
+			p.date
+				|{{subFeatured_1.createdDate}}
 			h3.title
 				|{{subFeatured_2.title}}
 			p.excerpt(put-html content='subFeatured_2.excerpt')
@@ -49,6 +53,8 @@ div(my-header)
 
 			span.category
 				|{{post.category}}
+			p.date
+				|{{post.createdDate}}
 			h3.title
 				|{{post.title}}
 			p.excerpt(put-html content='post.excerpt')

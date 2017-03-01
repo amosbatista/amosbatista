@@ -38579,7 +38579,7 @@ angular.module('common.header').directive("myHeader", [
 				];
 
 				// Set all links to show (remove the link of current page)
-				scope.hederLinkToShow = headerLinkList.filter( function (link ){
+				scope.headerLinkToShow = headerLinkList.filter( function (link ){
 					return link.location != locationObj.path();
 				});
 
@@ -38620,7 +38620,7 @@ angular.module('common.header').directive("myHeader", [
 
 				var pageOrientation = detectOrientation();
 
-				document.addEventListener("resize", function(){
+				window.addEventListener("resize", function(){
 					pageOrientation = detectOrientation();
 				});
 
@@ -38659,11 +38659,7 @@ angular.module('common.header').directive("myHeader", [
 							}
 							else{
 								headerAnimationCurrentTop = headerAnimationCurrentTop + headerTransictionFactor;	
-							}
-
-							
-
-							
+							}							
 						}
 
 						element[0].style.transform = 'translate(0px, -' + (headerAnimationLimits - headerAnimationCurrentTop) + 'px)';
@@ -38770,7 +38766,7 @@ angular.module('common.footer').directive("myFooter", [
 
 				pageOrientation = detectOrientation();
 
-				document.addEventListener("resize", function(){
+				window.addEventListener("resize", function(){
 					pageOrientation = detectOrientation();
 
 					/* Force translation fix*/
@@ -39822,7 +39818,9 @@ angular.module("site.blog").factory('postListSRV',[
 										});
 									})[0].name,
 									title: post.title.rendered,
-									excerpt: post.excerpt.rendered
+									excerpt: post.excerpt.rendered,
+									createdDate: post.date,
+									/*all: post*/
 								}
 							});
 							
@@ -39940,7 +39938,8 @@ angular.module("site.blog").factory('subFeaturedPostListSRV',[
 										});
 									})[0].name,
 									title: post.title.rendered,
-									excerpt: post.excerpt.rendered
+									excerpt: post.excerpt.rendered,
+									createdDate: post.date
 								}
 							})
 							
@@ -40103,7 +40102,7 @@ angular.module("site").directive('body', [
 
 				switch (direction){
 					case "down":
-						if( element[0].scrollTop <= 10 ){
+						if( element[0].scrollTop <= 60 ){
 							element[0].scrollTop = 60;
 							scope.$broadcast ('easyScrollDown');
 						}
@@ -40132,12 +40131,12 @@ angular.module("site").directive('body', [
 			var footerAndHeaderEvent = function (direction, lastPosition){
 
 				// Indicate to bring the foot upper or not, if user reached the bottom of the screen
-				if ((element[0].scrollHeight - element[0].scrollTop == element[0].clientHeight) == true)
+				if ((element[0].scrollTop + window.outerHeight) >= element[0].scrollHeight )
 					scope.$broadcast ('footerIsRising');
 				else{
 
 					// If direction is up and last position was the bottom
-					if(direction == "up" && ((element[0].scrollHeight - lastPosition == element[0].clientHeight) == true))
+					if(direction == "up" && ( lastPosition + window.outerHeight >= element[0].scrollHeight))
 						scope.$broadcast ('footerIsHiding');
 				}
 

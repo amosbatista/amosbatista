@@ -63,7 +63,7 @@ angular.module('common.header').directive("myHeader", [
 				];
 
 				// Set all links to show (remove the link of current page)
-				scope.hederLinkToShow = headerLinkList.filter( function (link ){
+				scope.headerLinkToShow = headerLinkList.filter( function (link ){
 					return link.location != locationObj.path();
 				});
 
@@ -104,7 +104,7 @@ angular.module('common.header').directive("myHeader", [
 
 				var pageOrientation = detectOrientation();
 
-				document.addEventListener("resize", function(){
+				window.addEventListener("resize", function(){
 					pageOrientation = detectOrientation();
 				});
 
@@ -143,11 +143,7 @@ angular.module('common.header').directive("myHeader", [
 							}
 							else{
 								headerAnimationCurrentTop = headerAnimationCurrentTop + headerTransictionFactor;	
-							}
-
-							
-
-							
+							}							
 						}
 
 						element[0].style.transform = 'translate(0px, -' + (headerAnimationLimits - headerAnimationCurrentTop) + 'px)';
