@@ -1,8 +1,7 @@
 angular.module("site", [
 	'ui.router',
 	'ngResource',
-	'common.header',
-	'common.footer',
+	'common',
 	'site.about',
 	'site.portfolio',
 	'site.blog',

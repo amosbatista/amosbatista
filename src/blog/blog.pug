@@ -4,60 +4,63 @@ div(my-header)
 
 	
 	// *** Featured post ***
-	.post.featured
-		.post-background(bg-insert image-url="featured.mainImage")
-		//img.background(ng-src='{{featured.mainImage}}')
+	a(ui-sref='blog.post({postName: featured.postName})')
+		.post.featured
+			.post-background(bg-insert image-url="featured.mainImage")
+			//img.background(ng-src='{{featured.mainImage}}')
 
-		span.category
-			|{{featured.category}}
-		h3.title
-			|{{featured.title}}
-		p.excerpt(put-html content='featured.excerpt')
+			span.category
+				|{{featured.category}}
+			h3.title
+				|{{featured.title}}
+			p.excerpt(put-html content='featured.excerpt')
 
 
 
 	// *** Sub-featured posts ***
 	.sub-featureds
+		a(ui-sref='blog.post({postName: subFeatured_1.postName})')
+			.post.sub-featured
+				.post-background(bg-insert image-url="subFeatured_1.mainImage")
+				//img.background(ng-src='{{subFeatured_1.mainImage}}')
+			
+				span.category
+					|{{subFeatured_1.category}}
+				p.date
+					|{{subFeatured_1.createdDate}}
+				h3.title
+					|{{subFeatured_1.title}}
+				p.excerpt(put-html content='subFeatured_1.excerpt')
 
-		.post.sub-featured
-			.post-background(bg-insert image-url="subFeatured_1.mainImage")
-			//img.background(ng-src='{{subFeatured_1.mainImage}}')
-		
-			span.category
-				|{{subFeatured_1.category}}
-			p.date
-				|{{subFeatured_1.createdDate}}
-			h3.title
-				|{{subFeatured_1.title}}
-			p.excerpt(put-html content='subFeatured_1.excerpt')
+		a(ui-sref='blog.post({postName: subFeatured_2.postName})')
+			.post.sub-featured
+				.post-background(bg-insert image-url="subFeatured_2.mainImage")
+				//img.background(ng-src='{{subFeatured_2.mainImage}}')
 
-		.post.sub-featured
-			.post-background(bg-insert image-url="subFeatured_2.mainImage")
-			//img.background(ng-src='{{subFeatured_2.mainImage}}')
-
-			span.category
-				|{{subFeatured_2.category}}
-			p.date
-				|{{subFeatured_1.createdDate}}
-			h3.title
-				|{{subFeatured_2.title}}
-			p.excerpt(put-html content='subFeatured_2.excerpt')
+				span.category
+					|{{subFeatured_2.category}}
+				p.date
+					|{{subFeatured_1.createdDate}}
+				h3.title
+					|{{subFeatured_2.title}}
+				p.excerpt(put-html content='subFeatured_2.excerpt')
 
 
 
 	// Other posts
 	.post-list
-		.post(ng-repeat="post in postList")
-			.post-background(bg-insert image-url="post.mainImage")
-			//img.background(ng-src='{{post.mainImage}}')
+		a(ui-sref='blog.post({postName: post.postName})')
+			.post(ng-repeat="post in postList")
+				.post-background(bg-insert image-url="post.mainImage")
+				//img.background(ng-src='{{post.mainImage}}')
 
-			span.category
-				|{{post.category}}
-			p.date
-				|{{post.createdDate}}
-			h3.title
-				|{{post.title}}
-			p.excerpt(put-html content='post.excerpt')
+				span.category
+					|{{post.category}}
+				p.date
+					|{{post.createdDate}}
+				h3.title
+					|{{post.title}}
+				p.excerpt(put-html content='post.excerpt')
 
 
 div(my-footer)

@@ -3189,6 +3189,109 @@
     width: 74%;
   }
 }
+/* Space between top and header (only Landscape)*/
+.about-bg {
+  background-color: #0a150e;
+  /*position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;*/
+}
+.page-content {
+  width: 100%;
+}
+.page-content .top-history {
+  position: relative;
+  margin: 175px 0 0 0;
+}
+.page-content .top-history .title,
+.page-content .top-history .content {
+  color: white;
+}
+.page-content .top-history .title {
+  font-family: 'Fjalla One', sans-serif;
+  text-transform: uppercase;
+  font-size: 30px;
+  text-align: center;
+  font-weight: 500;
+  letter-spacing: -3px;
+}
+.page-content .top-history .title::first-letter {
+  font-size: 110px;
+}
+.page-content .top-history .content {
+  max-width: 60%;
+  margin: 0 auto;
+  padding: 0 0 0 65px;
+  font-family: 'Source Serif Pro', sans-serif;
+  font-style: italic;
+}
+.page-content .top-history .content:before {
+  font-size: 55px;
+  content: '"';
+  line-height: 3px;
+}
+.page-content .page-content-subpart {
+  width: 90%;
+  margin: auto;
+  /* Set as page transition*/
+  opacity: 0.1;
+  transform: translateY(175px);
+}
+.page-content .page-content-subpart .title,
+.page-content .page-content-subpart .content {
+  color: #295016;
+}
+.page-content .page-content-subpart .title {
+  font-family: 'Fjalla One', sans-serif;
+  text-transform: uppercase;
+  font-size: 20px;
+  text-align: left;
+  font-weight: 500;
+  letter-spacing: -1px;
+}
+.page-content .page-content-subpart .title::first-letter {
+  font-size: 30px;
+}
+.scroll-link {
+  width: 100%;
+  position: fixed;
+  bottom: 20px;
+  left: 0;
+  text-align: center;
+  color: white;
+  font-size: 70px;
+  animation: scrollDownPopUp 2s ease infinite 0.1s;
+}
+.scroll-up {
+  display: none;
+  opacity: 0;
+}
+/* Scroll down button animation */
+@keyframes scrollDownPopUp {
+  0% {
+    transform: translate(0px, 0px);
+    opacity: 0.7;
+  }
+  25% {
+    transform: translate(0px, 15px);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0px, 0px);
+    opacity: 0.7;
+  }
+}
+@media screen and (orientation: landscape) {
+  .page-content .top-history {
+    margin: 115px 0 0 0;
+  }
+  .page-content .page-content-subpart {
+    width: 60%;
+  }
+}
 /* Body classes, to be user to the body directive */
 body {
   font-size: 22px;

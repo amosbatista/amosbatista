@@ -1,28 +1,20 @@
-/*The service is the same of post list, but only get the featured posts*/
-angular.module("site.blog").factory('featuredPostListSRV',[
-	'postListResource',
+angular.module("site.blog").factory('postSRV',[
+	'postBySlugResource',
 	function(
 		resource
 	){
 		return {
-			getList: function(filters){
-
+			getPost: function(filters){
 				return new Promise (function(resolve, reject){
-
-					if(filters.currentPage == undefined || filters.currentPage > 1)
-						resolve(null);
-
-					var tagList = filters.tagList['featured'];
-
 					resource.list(
 						{
-							tags: tagList,
+							postName: filters.postName,
 							'_embed': 1 // Bring all media and another embed data into response
 						},
 						function(dataReturn){
-							
+
 							resolve({
-								mainImage: dataReturn[0]._embedded["wp:featuredmedia"][0].source_url,
+								mainImage: dataReturn[0]._embedded["wp:featuredmedia"] != undefined ? dataReturn[0]._embedded["wp:featuredmedia"][0].source_url : '',
 								category: dataReturn[0]._embedded["wp:term"].find( function (termList){
 									return termList.find( function(term){
 										return term.taxonomy == 'category';	
@@ -30,7 +22,8 @@ angular.module("site.blog").factory('featuredPostListSRV',[
 								})[0].name,
 								title: dataReturn[0].title.rendered,
 								excerpt: dataReturn[0].excerpt.rendered,
-								postName: dataReturn[0].slug
+								createdDate: dataReturn[0].date,
+								all: dataReturn[0]
 							});
 						}
 					);

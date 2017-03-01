@@ -23,7 +23,8 @@ angular.module("site.blog").factory('postListSRV',[
 									title: post.title.rendered,
 									excerpt: post.excerpt.rendered,
 									createdDate: post.date,
-									/*all: post*/
+									postName: post.slug,
+									all: post
 								}
 							});
 							

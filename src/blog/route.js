@@ -36,5 +36,22 @@ angular.module("site.blog").config([
 					}]
 				}
 			})
+
+			.state('blog.post', {
+				templateUrl: "post.html",
+				controller: "postCtrl",
+				url: '/:postName',
+				resolve: {
+					postService: 'postSRV',
+
+					post: ['postService', '$stateParams', function (service, params){
+						return service.getPost({
+							postName: params.postName
+						});
+					}]
+				}
+			})
+
+			
 	}
 ])

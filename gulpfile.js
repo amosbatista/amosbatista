@@ -21,8 +21,8 @@ var jsOrigin = [
 	"node_modules/angular-ui-router/release/angular-ui-router.js",
 
 	"src/plugins/*.js",
-	"src/common/header/*.js",
-	"src/common/footer/*.js",
+	"src/common/main.js",
+	"src/common/**/*.js",
 	"src/about/*.js",
 	"src/home/*.js",
 	"src/portfolio/*.js",

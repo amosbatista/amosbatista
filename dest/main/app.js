@@ -38514,162 +38514,269 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);
-angular.module('common.header', []);
+angular.module('common', [
+	'common.header',
+	'common.footer',
+	'common.easyScroll'
+	]
+);
+/* The directive that set the footer link scroll animation
+ Angular events:
+ easyScrollDown - When user scroll the page down 
+ easyScrollUp - When user scroll up
+*/
+angular.module('common.easyScroll', []);
+angular.module('common.easyScroll').directive('easyScrollContentLink', [ function(){
 
-angular.module('common.header').directive("myHeader", [
-	'$timeout',
-	'$location',
-	function(
-		timeout,
-		locationObj
-	){
-		return {
-			restrict: "A",
-			templateUrl: "_header.html",
-			replace: true,
-			link: function (scope, element){
+	// The function process to show the link
+	var scrollAndShowProcessFunction = function(scope, element, animation){
+		var showElement = true;
+		var linkOpacity = 0;	
 
-				var headerAnimation = null;
-				var headerAnimationLimits = 0;
-				var headerTransictionFactor = 0;
-				var headerAnimationCurrentTop = 0;
+		clearInterval (animation);
 
-				/* Links redirects*/
-				var headerLinkToHome = function(){
-					locationObj.path('/');
-				}
+		element[0].style.display = 'block';
 
-				var headerLinkList = [
-					{
-						name: 'Home',
-						location: '/',
-						iconClass: 'fa-home',
-						linkFunction: headerLinkToHome,
-						linkClass: 'link-home'
-					},
-					{
-						name: 'About',
-						location: '/about',
-						iconClass: 'fa-arrow-up',
-						linkFunction: headerLinkToHome,
-						linkClass: 'link-about'
-					},
-					{
-						name: 'Gallery',
-						location: '/gallery',
-						iconClass: 'fa-arrow-right',
-						linkFunction: headerLinkToHome,
-						linkClass: 'link-gallery'
-					},
-					{
-						name: 'Portfolio',
-						location: '/portfolio',
-						iconClass: 'fa-arrow-left',
-						linkFunction: headerLinkToHome,
-						linkClass: 'link-portfolio'
-					},
-					{
-						name: 'Blog',
-						location: '/blog',
-						iconClass: 'fa-arrow-down',
-						linkFunction: headerLinkToHome,
-						linkClass: 'link-blog'
-					},
-					
-				];
+		// Hide the link
+		animation = setInterval(function (){
 
-				// Set all links to show (remove the link of current page)
-				scope.headerLinkToShow = headerLinkList.filter( function (link ){
-					return link.location != locationObj.path();
-				});
-
-
-				/* Header behavior with the footer. Header hides, when footers shows and vice-versa */
-				/* Event to detect the apperance of footer */
-				scope.$on("footerIsRising", function(){
-					isBrigingFooterUp = true;
-
-					if(headerAnimation == null){
-						animationProcess();	
-					}
-					
-				});
-				scope.$on("footerIsHiding", function(){
-					isBrigingFooterUp = false;
-
-					if(headerAnimation == null){
-						animationProcess();	
-					}
-				});
-
-
-				/* Page orientation detection */
-				var detectOrientation = function (){
-
-					if(window.innerWidth <= window.innerHeight){
-						headerAnimationLimits = 200;
-						headerTransictionFactor = 20;
-						return "portrait";
-					}
-					else{
-						headerAnimationLimits = 430; // Header top + header size
-						headerTransictionFactor = 40;
-						return "landscape";
-					}
-				};
-
-				var pageOrientation = detectOrientation();
-
-				window.addEventListener("resize", function(){
-					pageOrientation = detectOrientation();
-				});
-
-				
-
-				headerAnimationCurrentTop = headerAnimationLimits;
-
-				/* Animation process to footer transition */
-				var animationProcess = function(){
-
-					headerAnimation = setInterval(function(){
-
-						// Limits of animation, according orientation and scroll position
-						// Bringing footer up
-						if(isBrigingFooterUp == true){
-
-							
-							if( headerAnimationCurrentTop <= 0){
-								headerAnimationCurrentTop = 0;
-								clearInterval(headerAnimation);
-								headerAnimation = null;
-							}
-							else{
-								headerAnimationCurrentTop = headerAnimationCurrentTop - headerTransictionFactor;	
-							}
-							
-						}
-						
-						// Bringing footer down
-						else{
-
-							if(headerAnimationCurrentTop >= headerAnimationLimits){
-								headerAnimationCurrentTop = headerAnimationLimits;
-								clearInterval(headerAnimation);
-								headerAnimation = null;
-							}
-							else{
-								headerAnimationCurrentTop = headerAnimationCurrentTop + headerTransictionFactor;	
-							}							
-						}
-
-						element[0].style.transform = 'translate(0px, -' + (headerAnimationLimits - headerAnimationCurrentTop) + 'px)';
-
-					}, 30);
-				}
+			// Animation end
+			if(linkOpacity > 1 ){
+				linkOpacity = 1;
+				clearInterval (animation);
+				animation = null;
 			}
+
+			// Setup transition
+			else{
+				linkOpacity = Number((linkOpacity + 0.2).toFixed(2));
+			}
+
+			element[0].children[0].style.opacity = linkOpacity;
+
+		}, 25);
+	}
+
+
+	// The function process to hide the link
+	var scrollAndHideProcessFunction = function(scope, element, animation){
+		var showElement = true;
+		var linkOpacity = 1;
+		
+		// Clear the animation, if there's some activated
+		clearInterval (animation);
+
+		// Hide the link
+		animation = setInterval(function (){
+
+			// Animation end
+			if(linkOpacity <= 0 ){
+				linkOpacity = 0;
+				element[0].style.display = 'none';
+				clearInterval (animation);
+				animation = null;
+			}
+
+			// Setup transition
+			else{
+				linkOpacity = (linkOpacity - 0.2).toFixed(2);
+			}
+
+			element[0].children[0].style.opacity = linkOpacity;
+
+		}, 25);
+		
+	}
+
+	return {
+		restrict: "A",
+		link: function(scope, element){
+
+			var animation = null;
+
+			// Activate the transition into this directive when receive the event
+			scope.$on ("easyScrollDown", function(){
+				// Do not end the last animation
+				if( animation != null)
+					return;
+
+				scrollAndHideProcessFunction(scope, element, animation);
+			});
+
+			scope.$on ("easyScrollUp", function(){
+
+				// Do not end the last animation
+				if( animation != null)
+					return;
+
+				scrollAndShowProcessFunction(scope, element, animation);
+			});
+
+			// Emit the event at click, to activate to another directives
+			element.bind("click", function(clickEvent){
+				scope.$emit ('easyScrollDown');
+			});
+			
 		}
 	}
-]);
+}]);
+
+
+
+
+// The page header directive. When receives the 'easyScrollDown', scroll, to hide the element
+angular.module('common.easyScroll').directive('easyScrollTop', function(){
+
+	return {
+		restrict: "A",
+		link: function(scope, element){
+
+			var animation = null; 
+
+			scope.$on ("easyScrollDown", function(){
+				var translateY = 1;
+				//var translateYLimit = window.innerHeight
+				var translateYLimit = 200;
+				var translateOpac = 0.9;
+
+				
+				if( animation != null)
+					return;
+
+				clearInterval (animation);
+
+				animation = setInterval(function (){
+
+					// End of animation
+					if(translateY >= translateYLimit){
+						translateY = translateYLimit;
+						clearInterval (animation);
+						animation = null;
+					}
+
+					// Process the values
+					else{
+						translateY = translateY * 1.2 + 5;
+						translateOpac = translateOpac - 0.07;
+					}
+
+					element[0].style.transform = 'translate(0px, -' + translateY + 'px)';
+					element[0].style.opacity = translateOpac;
+				}, 20);
+			});
+
+			scope.$on ("easyScrollUp", function(){
+				var translateY = 200;
+				var translateYLimit = 1;
+				var translateOpac = 0;
+			
+				if( animation != null)
+					return;
+				
+				clearInterval (animation);
+
+				animation = setInterval(function (){
+
+					// End of animation
+					if(translateY <= translateYLimit){
+						translateY = translateYLimit;
+						translateOpac = 1;
+						clearInterval (animation);
+						animation = null;
+					}
+
+					// Process the values
+					else{
+						translateY = translateY / 1.2 - 5;
+						translateOpac = translateOpac + 0.07;
+					}
+
+					element[0].style.transform = 'translate(0px, -' + translateY + 'px)';
+					element[0].style.opacity = translateOpac;
+				}, 20);
+			});
+		}
+	}
+});
+
+
+// The page content directive. When receives the 'easyScrollDown', scroll and show the element
+angular.module('common.easyScroll').directive('easyScrollContent', function(){
+
+	return {
+		restrict: "A",
+		link: function(scope, element){
+			
+			var animation = null; 
+
+			scope.$on ("easyScrollDown", function(){
+				
+				var translateOpac = 0.1;
+				var translateY = 175;
+
+				if( animation != null)
+					return;
+
+				clearInterval (animation);
+
+				animation = setInterval(function (){
+
+					// Animation end
+					if( translateY <= -75 ){
+						translateOpac = 1;
+						/*translateY = 0;*/
+						clearInterval(animation);
+						animation = null;
+					}
+
+					// Animation process
+					else{
+						translateOpac = translateOpac + 0.2;
+						translateY = translateY - 50;
+					}
+
+					// Transition set
+					element[0].style.transform = 'translateY(' + translateY + 'px)';
+					element[0].style.opacity = translateOpac;
+
+				}, 50);
+			});
+
+			scope.$on ("easyScrollUp", function(){
+				
+				var translateOpac = 1;
+				var translateY = 0;
+
+				if( animation != null)
+					return;
+
+				clearInterval (animation);
+
+				animation = setInterval(function (){
+
+					// Animation end
+					if( translateY >= 175 ){
+						translateOpac = 0.1;
+						/*translateY = 0;*/
+						clearInterval(animation);
+						animation = null;
+					}
+
+					// Animation process
+					else{
+						translateOpac = translateOpac - 0.2;
+						translateY = translateY + 50;
+					}
+
+					// Transition set
+					element[0].style.transform = 'translateY(' + translateY + 'px)';
+					element[0].style.opacity = translateOpac;
+
+				}, 50);
+			});
+		}
+	}
+});
 /* The footer directive*/
 angular.module('common.footer', []);
 
@@ -38831,6 +38938,162 @@ angular.module('common.footer').directive("myFooter", [
 		}
 	}
 ]);
+angular.module('common.header', []);
+
+angular.module('common.header').directive("myHeader", [
+	'$timeout',
+	'$location',
+	function(
+		timeout,
+		locationObj
+	){
+		return {
+			restrict: "A",
+			templateUrl: "_header.html",
+			replace: true,
+			link: function (scope, element){
+
+				var headerAnimation = null;
+				var headerAnimationLimits = 0;
+				var headerTransictionFactor = 0;
+				var headerAnimationCurrentTop = 0;
+
+				/* Links redirects*/
+				var headerLinkToHome = function(){
+					locationObj.path('/');
+				}
+
+				var headerLinkList = [
+					{
+						name: 'Home',
+						location: '/',
+						iconClass: 'fa-home',
+						linkFunction: headerLinkToHome,
+						linkClass: 'link-home'
+					},
+					{
+						name: 'About',
+						location: '/about',
+						iconClass: 'fa-arrow-up',
+						linkFunction: headerLinkToHome,
+						linkClass: 'link-about'
+					},
+					{
+						name: 'Gallery',
+						location: '/gallery',
+						iconClass: 'fa-arrow-right',
+						linkFunction: headerLinkToHome,
+						linkClass: 'link-gallery'
+					},
+					{
+						name: 'Portfolio',
+						location: '/portfolio',
+						iconClass: 'fa-arrow-left',
+						linkFunction: headerLinkToHome,
+						linkClass: 'link-portfolio'
+					},
+					{
+						name: 'Blog',
+						location: '/blog',
+						iconClass: 'fa-arrow-down',
+						linkFunction: headerLinkToHome,
+						linkClass: 'link-blog'
+					},
+					
+				];
+
+				// Set all links to show (remove the link of current page)
+				scope.headerLinkToShow = headerLinkList.filter( function (link ){
+					return link.location != locationObj.path();
+				});
+
+
+				/* Header behavior with the footer. Header hides, when footers shows and vice-versa */
+				/* Event to detect the apperance of footer */
+				scope.$on("footerIsRising", function(){
+					isBrigingFooterUp = true;
+
+					if(headerAnimation == null){
+						animationProcess();	
+					}
+					
+				});
+				scope.$on("footerIsHiding", function(){
+					isBrigingFooterUp = false;
+
+					if(headerAnimation == null){
+						animationProcess();	
+					}
+				});
+
+
+				/* Page orientation detection */
+				var detectOrientation = function (){
+
+					if(window.innerWidth <= window.innerHeight){
+						headerAnimationLimits = 200;
+						headerTransictionFactor = 20;
+						return "portrait";
+					}
+					else{
+						headerAnimationLimits = 430; // Header top + header size
+						headerTransictionFactor = 40;
+						return "landscape";
+					}
+				};
+
+				var pageOrientation = detectOrientation();
+
+				window.addEventListener("resize", function(){
+					pageOrientation = detectOrientation();
+				});
+
+				
+
+				headerAnimationCurrentTop = headerAnimationLimits;
+
+				/* Animation process to footer transition */
+				var animationProcess = function(){
+
+					headerAnimation = setInterval(function(){
+
+						// Limits of animation, according orientation and scroll position
+						// Bringing footer up
+						if(isBrigingFooterUp == true){
+
+							
+							if( headerAnimationCurrentTop <= 0){
+								headerAnimationCurrentTop = 0;
+								clearInterval(headerAnimation);
+								headerAnimation = null;
+							}
+							else{
+								headerAnimationCurrentTop = headerAnimationCurrentTop - headerTransictionFactor;	
+							}
+							
+						}
+						
+						// Bringing footer down
+						else{
+
+							if(headerAnimationCurrentTop >= headerAnimationLimits){
+								headerAnimationCurrentTop = headerAnimationLimits;
+								clearInterval(headerAnimation);
+								headerAnimation = null;
+							}
+							else{
+								headerAnimationCurrentTop = headerAnimationCurrentTop + headerTransictionFactor;	
+							}							
+						}
+
+						element[0].style.transform = 'translate(0px, -' + (headerAnimationLimits - headerAnimationCurrentTop) + 'px)';
+
+					}, 30);
+				}
+			}
+		}
+	}
+]);
 angular.module("site.about", []);
 angular.module('site.about').controller('aboutCtrl', [
 	'$scope',
@@ -38845,263 +39108,6 @@ angular.module('site.about').controller('aboutCtrl', [
 		}
 	}
 ])
-/* The directive that set the footer link scroll animation
- Angular events:
- easyScrollDown - When user scroll the page down 
- easyScrollUp - When user scroll up
-*/
-
-angular.module('site.about').directive('easyScrollContentLink', [ function(){
-
-	// The function process to show the link
-	var scrollAndShowProcessFunction = function(scope, element, animation){
-		var showElement = true;
-		var linkOpacity = 0;	
-
-		clearInterval (animation);
-
-		element[0].style.display = 'block';
-
-		// Hide the link
-		animation = setInterval(function (){
-
-			// Animation end
-			if(linkOpacity > 1 ){
-				linkOpacity = 1;
-				clearInterval (animation);
-				animation = null;
-			}
-
-			// Setup transition
-			else{
-				linkOpacity = Number((linkOpacity + 0.2).toFixed(2));
-			}
-
-			element[0].children[0].style.opacity = linkOpacity;
-
-		}, 25);
-	}
-
-
-	// The function process to hide the link
-	var scrollAndHideProcessFunction = function(scope, element, animation){
-		var showElement = true;
-		var linkOpacity = 1;
-		
-		// Clear the animation, if there's some activated
-		clearInterval (animation);
-
-		// Hide the link
-		animation = setInterval(function (){
-
-			// Animation end
-			if(linkOpacity <= 0 ){
-				linkOpacity = 0;
-				element[0].style.display = 'none';
-				clearInterval (animation);
-				animation = null;
-			}
-
-			// Setup transition
-			else{
-				linkOpacity = (linkOpacity - 0.2).toFixed(2);
-			}
-
-			element[0].children[0].style.opacity = linkOpacity;
-
-		}, 25);
-		
-	}
-
-	return {
-		restrict: "A",
-		link: function(scope, element){
-
-			var animation = null;
-
-			// Activate the transition into this directive when receive the event
-			scope.$on ("easyScrollDown", function(){
-				// Do not end the last animation
-				if( animation != null)
-					return;
-
-				scrollAndHideProcessFunction(scope, element, animation);
-			});
-
-			scope.$on ("easyScrollUp", function(){
-
-				// Do not end the last animation
-				if( animation != null)
-					return;
-
-				scrollAndShowProcessFunction(scope, element, animation);
-			});
-
-			// Emit the event at click, to activate to another directives
-			element.bind("click", function(clickEvent){
-				scope.$emit ('easyScrollDown');
-			});
-			
-		}
-	}
-}]);
-
-
-
-
-// The page header directive. When receives the 'easyScrollDown', scroll, to hide the element
-angular.module('site.about').directive('easyScrollTop', function(){
-
-	return {
-		restrict: "A",
-		link: function(scope, element){
-
-			var animation = null; 
-
-			scope.$on ("easyScrollDown", function(){
-				var translateY = 1;
-				//var translateYLimit = window.innerHeight
-				var translateYLimit = 200;
-				var translateOpac = 0.9;
-
-				
-				if( animation != null)
-					return;
-
-				clearInterval (animation);
-
-				animation = setInterval(function (){
-
-					// End of animation
-					if(translateY >= translateYLimit){
-						translateY = translateYLimit;
-						clearInterval (animation);
-						animation = null;
-					}
-
-					// Process the values
-					else{
-						translateY = translateY * 1.2 + 5;
-						translateOpac = translateOpac - 0.07;
-					}
-
-					element[0].style.transform = 'translate(0px, -' + translateY + 'px)';
-					element[0].style.opacity = translateOpac;
-				}, 20);
-			});
-
-			scope.$on ("easyScrollUp", function(){
-				var translateY = 200;
-				var translateYLimit = 1;
-				var translateOpac = 0;
-			
-				if( animation != null)
-					return;
-				
-				clearInterval (animation);
-
-				animation = setInterval(function (){
-
-					// End of animation
-					if(translateY <= translateYLimit){
-						translateY = translateYLimit;
-						translateOpac = 1;
-						clearInterval (animation);
-						animation = null;
-					}
-
-					// Process the values
-					else{
-						translateY = translateY / 1.2 - 5;
-						translateOpac = translateOpac + 0.07;
-					}
-
-					element[0].style.transform = 'translate(0px, -' + translateY + 'px)';
-					element[0].style.opacity = translateOpac;
-				}, 20);
-			});
-		}
-	}
-});
-
-
-// The page content directive. When receives the 'easyScrollDown', scroll and show the element
-angular.module('site.about').directive('easyScrollContent', function(){
-
-	return {
-		restrict: "A",
-		link: function(scope, element){
-			
-			var animation = null; 
-
-			scope.$on ("easyScrollDown", function(){
-				
-				var translateOpac = 0.1;
-				var translateY = 175;
-
-				if( animation != null)
-					return;
-
-				clearInterval (animation);
-
-				animation = setInterval(function (){
-
-					// Animation end
-					if( translateY <= -75 ){
-						translateOpac = 1;
-						/*translateY = 0;*/
-						clearInterval(animation);
-						animation = null;
-					}
-
-					// Animation process
-					else{
-						translateOpac = translateOpac + 0.2;
-						translateY = translateY - 50;
-					}
-
-					// Transition set
-					element[0].style.transform = 'translateY(' + translateY + 'px)';
-					element[0].style.opacity = translateOpac;
-
-				}, 50);
-			});
-
-			scope.$on ("easyScrollUp", function(){
-				
-				var translateOpac = 1;
-				var translateY = 0;
-
-				if( animation != null)
-					return;
-
-				clearInterval (animation);
-
-				animation = setInterval(function (){
-
-					// Animation end
-					if( translateY >= 175 ){
-						translateOpac = 0.1;
-						/*translateY = 0;*/
-						clearInterval(animation);
-						animation = null;
-					}
-
-					// Animation process
-					else{
-						translateOpac = translateOpac - 0.2;
-						translateY = translateY + 50;
-					}
-
-					// Transition set
-					element[0].style.transform = 'translateY(' + translateY + 'px)';
-					element[0].style.opacity = translateOpac;
-
-				}, 50);
-			});
-		}
-	}
-});
 /*appWebSite.config("internalConfig", function (){
 	links: [
 		{
@@ -39769,13 +39775,45 @@ angular.module("site.blog").factory('featuredPostListSRV',[
 									});
 								})[0].name,
 								title: dataReturn[0].title.rendered,
-								excerpt: dataReturn[0].excerpt.rendered
+								excerpt: dataReturn[0].excerpt.rendered,
+								postName: dataReturn[0].slug
 							});
 						}
 					);
 				});
 			}
 		}
+	}
+])
+angular.module("site.blog").factory("postBySlugResource", [
+	'$resource',
+	'env',
+	function(
+		resource,
+		env
+	){
+		return resource(env.config.wordPressAPIURL + env.config.postBySlug,
+		{
+			slug: '@postName'
+		},
+		{
+			list: {
+				method: 'GET',
+				isArray: true
+			}
+		});
+	}
+]);
+angular.module("site.blog").controller("postCtrl", [
+	'$scope',
+	'post',
+	function(
+		scope,
+		post
+	){
+		console.log('The loaded post', post);
+
+		scope.post = post;
 	}
 ])
 angular.module("site.blog").factory("postListResource", [
@@ -39820,11 +39858,46 @@ angular.module("site.blog").factory('postListSRV',[
 									title: post.title.rendered,
 									excerpt: post.excerpt.rendered,
 									createdDate: post.date,
-									/*all: post*/
+									postName: post.slug,
+									all: post
 								}
 							});
 							
 							resolve(dataReturn);
+						}
+					);
+				});
+			}
+		}
+	}
+])
+angular.module("site.blog").factory('postSRV',[
+	'postBySlugResource',
+	function(
+		resource
+	){
+		return {
+			getPost: function(filters){
+				return new Promise (function(resolve, reject){
+					resource.list(
+						{
+							postName: filters.postName,
+							'_embed': 1 // Bring all media and another embed data into response
+						},
+						function(dataReturn){
+
+							resolve({
+								mainImage: dataReturn[0]._embedded["wp:featuredmedia"] != undefined ? dataReturn[0]._embedded["wp:featuredmedia"][0].source_url : '',
+								category: dataReturn[0]._embedded["wp:term"].find( function (termList){
+									return termList.find( function(term){
+										return term.taxonomy == 'category';	
+									});
+								})[0].name,
+								title: dataReturn[0].title.rendered,
+								excerpt: dataReturn[0].excerpt.rendered,
+								createdDate: dataReturn[0].date,
+								all: dataReturn[0]
+							});
 						}
 					);
 				});
@@ -39898,6 +39971,23 @@ angular.module("site.blog").config([
 					}]
 				}
 			})
+
+			.state('blog.post', {
+				templateUrl: "post.html",
+				controller: "postCtrl",
+				url: '/:postName',
+				resolve: {
+					postService: 'postSRV',
+
+					post: ['postService', '$stateParams', function (service, params){
+						return service.getPost({
+							postName: params.postName
+						});
+					}]
+				}
+			})
+
+			
 	}
 ])
 
@@ -39939,7 +40029,8 @@ angular.module("site.blog").factory('subFeaturedPostListSRV',[
 									})[0].name,
 									title: post.title.rendered,
 									excerpt: post.excerpt.rendered,
-									createdDate: post.date
+									createdDate: post.date,
+									postName: post.slug,
 								}
 							})
 							
@@ -40018,8 +40109,7 @@ angular.module("site.blog").factory('generalSRV',[
 angular.module("site", [
 	'ui.router',
 	'ngResource',
-	'common.header',
-	'common.footer',
+	'common',
 	'site.about',
 	'site.portfolio',
 	'site.blog',
