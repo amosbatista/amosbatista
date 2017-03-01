@@ -5,10 +5,8 @@ angular.module("site.blog").factory("postBySlugResource", [
 		resource,
 		env
 	){
-		return resource(env.config.wordPressAPIURL + env.config.postBySlug,
-		{
-			slug: '@postName'
-		},
+		return resource(env.config.wordPressAPIURL + env.config.postList,
+		{},
 		{
 			list: {
 				method: 'GET',

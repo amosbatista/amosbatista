@@ -1,52 +1,56 @@
 /* Space between top and header (only Landscape)*/
 @topSpacing_Landscape: 115px;
 
-.about-bg{
-	background-color: hsl(142, 35%, 6%);
-	/*position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: -1;*/
-}
 
-.page-content{
+.blog-post{
 	width: 100%;
 
 	.top-history{
 		position: relative;
-		margin: 175px 0 0 0;
+		margin: 135px 0 0 0;
+
+		.featured-img{
+			max-width: 85%;
+			margin: 0 auto 15px auto;
+			max-height: 200px;
+			display: block;
+			border-bottom: 3px solid hsl(100, 19%, 78%);
+		}
 
 		.title,
 		.content{
-			color: white;
+			color: hsl(100, 16%, 13%);
 		}
 
 		.title{
 			font-family: @fontFamily_Titles;
 			text-transform: uppercase;
-			font-size: 30px;
+			font-size: 140%;
 			text-align: center;
 			font-weight: 500;
-			letter-spacing: -3px;
+			letter-spacing: 3px;
+			color: hsl(100, 16%, 20%);
+			padding: 0 15px;
+
 
 			&::first-letter{
-				font-size: 110px;
+				font-size: 160%;
 			}
 		}
 
-		.content{
+		.excerpt{
 			max-width: 60%;
 	    	margin: 0 auto;
 	    	padding: 0 0 0 65px;
 	    	font-family: @fontFamily_Default;
 	    	font-style: italic;
+	    	font-size: 70%;
+	    	color: hsl(100, 16%, 25%);
 
 
 	    	&:before
 	    	{
-				font-size: 55px;
+				font-size: 200%;
 				content: '"';
 				line-height: 3px;
 			}
@@ -54,10 +58,11 @@
 		}
 	}
 
-	.page-content-subpart{
-
+	.page-content{
+		padding: 100px 0 120px 0;
 		width: 90%;
 		margin: auto;
+		float: none;
 
 		/* Set as page transition*/
 		opacity: 0.1;
@@ -65,7 +70,7 @@
 		
 		.title,
 		.content{
-			color: @outsideTextColor;
+			color: hsl(100, 16%, 13%);;
 		}
 
 		.title{
@@ -82,7 +87,8 @@
 
 		}
 		.content{
-
+			text-indent: 25px;
+			font-size: 85%;
 		}
 	}
 
@@ -94,7 +100,7 @@
 	bottom: 20px;
 	left: 0;
 	text-align: center;
-	color: white;
+	color: hsl(100, 35%, 20%);
 	font-size: 70px;
 	animation: scrollDownPopUp 2s ease infinite 0.1s;
 }
@@ -125,12 +131,12 @@
 
 @media screen and (orientation: landscape){
 
-	.page-content{
+	.blog-post{
 		.top-history{
 			margin: @topSpacing_Landscape 0 0 0;
 		}
 
-		.page-content-subpart{
+		.page-content{
 			width: 60%;
 		}	
 	}

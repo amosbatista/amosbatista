@@ -3190,61 +3190,65 @@
   }
 }
 /* Space between top and header (only Landscape)*/
-.about-bg {
-  background-color: #0a150e;
-  /*position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: -1;*/
-}
-.page-content {
+.blog-post {
   width: 100%;
 }
-.page-content .top-history {
+.blog-post .top-history {
   position: relative;
-  margin: 175px 0 0 0;
+  margin: 135px 0 0 0;
 }
-.page-content .top-history .title,
-.page-content .top-history .content {
-  color: white;
+.blog-post .top-history .featured-img {
+  max-width: 85%;
+  margin: 0 auto 15px auto;
+  max-height: 200px;
+  display: block;
+  border-bottom: 3px solid #c3d2bc;
 }
-.page-content .top-history .title {
+.blog-post .top-history .title,
+.blog-post .top-history .content {
+  color: #1f261c;
+}
+.blog-post .top-history .title {
   font-family: 'Fjalla One', sans-serif;
   text-transform: uppercase;
-  font-size: 30px;
+  font-size: 140%;
   text-align: center;
   font-weight: 500;
-  letter-spacing: -3px;
+  letter-spacing: 3px;
+  color: #303b2b;
+  padding: 0 15px;
 }
-.page-content .top-history .title::first-letter {
-  font-size: 110px;
+.blog-post .top-history .title::first-letter {
+  font-size: 160%;
 }
-.page-content .top-history .content {
+.blog-post .top-history .excerpt {
   max-width: 60%;
   margin: 0 auto;
   padding: 0 0 0 65px;
   font-family: 'Source Serif Pro', sans-serif;
   font-style: italic;
+  font-size: 70%;
+  color: #3c4a36;
 }
-.page-content .top-history .content:before {
-  font-size: 55px;
+.blog-post .top-history .excerpt:before {
+  font-size: 200%;
   content: '"';
   line-height: 3px;
 }
-.page-content .page-content-subpart {
+.blog-post .page-content {
+  padding: 100px 0 120px 0;
   width: 90%;
   margin: auto;
+  float: none;
   /* Set as page transition*/
   opacity: 0.1;
   transform: translateY(175px);
 }
-.page-content .page-content-subpart .title,
-.page-content .page-content-subpart .content {
-  color: #295016;
+.blog-post .page-content .title,
+.blog-post .page-content .content {
+  color: #1f261c;
 }
-.page-content .page-content-subpart .title {
+.blog-post .page-content .title {
   font-family: 'Fjalla One', sans-serif;
   text-transform: uppercase;
   font-size: 20px;
@@ -3252,8 +3256,12 @@
   font-weight: 500;
   letter-spacing: -1px;
 }
-.page-content .page-content-subpart .title::first-letter {
+.blog-post .page-content .title::first-letter {
   font-size: 30px;
+}
+.blog-post .page-content .content {
+  text-indent: 25px;
+  font-size: 85%;
 }
 .scroll-link {
   width: 100%;
@@ -3261,7 +3269,7 @@
   bottom: 20px;
   left: 0;
   text-align: center;
-  color: white;
+  color: #2d4521;
   font-size: 70px;
   animation: scrollDownPopUp 2s ease infinite 0.1s;
 }
@@ -3285,10 +3293,10 @@
   }
 }
 @media screen and (orientation: landscape) {
-  .page-content .top-history {
+  .blog-post .top-history {
     margin: 115px 0 0 0;
   }
-  .page-content .page-content-subpart {
+  .blog-post .page-content {
     width: 60%;
   }
 }

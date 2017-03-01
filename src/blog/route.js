@@ -37,7 +37,7 @@ angular.module("site.blog").config([
 				}
 			})
 
-			.state('blog.post', {
+			.state('blogPost', {
 				templateUrl: "post.html",
 				controller: "postCtrl",
 				url: '/:postName',

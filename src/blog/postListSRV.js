@@ -21,7 +21,9 @@ angular.module("site.blog").factory('postListSRV',[
 										});
 									})[0].name,
 									title: post.title.rendered,
-									excerpt: post.excerpt.rendered,
+									excerpt: post.excerpt.rendered
+										.replace('<p>', '')
+										.replace('</p>', ''),
 									createdDate: post.date,
 									postName: post.slug,
 									all: post

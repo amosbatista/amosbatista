@@ -4,7 +4,7 @@ div(my-header)
 
 	
 	// *** Featured post ***
-	a(ui-sref='blog.post({postName: featured.postName})')
+	a(ui-sref='blogPost({postName: featured.postName})')
 		.post.featured
 			.post-background(bg-insert image-url="featured.mainImage")
 			//img.background(ng-src='{{featured.mainImage}}')
@@ -19,7 +19,7 @@ div(my-header)
 
 	// *** Sub-featured posts ***
 	.sub-featureds
-		a(ui-sref='blog.post({postName: subFeatured_1.postName})')
+		a(ui-sref='blogPost({postName: subFeatured_1.postName})')
 			.post.sub-featured
 				.post-background(bg-insert image-url="subFeatured_1.mainImage")
 				//img.background(ng-src='{{subFeatured_1.mainImage}}')
@@ -32,7 +32,7 @@ div(my-header)
 					|{{subFeatured_1.title}}
 				p.excerpt(put-html content='subFeatured_1.excerpt')
 
-		a(ui-sref='blog.post({postName: subFeatured_2.postName})')
+		a(ui-sref='blogPost({postName: subFeatured_2.postName})')
 			.post.sub-featured
 				.post-background(bg-insert image-url="subFeatured_2.mainImage")
 				//img.background(ng-src='{{subFeatured_2.mainImage}}')
@@ -49,7 +49,7 @@ div(my-header)
 
 	// Other posts
 	.post-list
-		a(ui-sref='blog.post({postName: post.postName})')
+		a(ui-sref='blogPost({postName: post.postName})')
 			.post(ng-repeat="post in postList")
 				.post-background(bg-insert image-url="post.mainImage")
 				//img.background(ng-src='{{post.mainImage}}')

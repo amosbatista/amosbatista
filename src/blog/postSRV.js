@@ -8,7 +8,7 @@ angular.module("site.blog").factory('postSRV',[
 				return new Promise (function(resolve, reject){
 					resource.list(
 						{
-							postName: filters.postName,
+							slug: filters.postName,
 							'_embed': 1 // Bring all media and another embed data into response
 						},
 						function(dataReturn){
@@ -21,9 +21,12 @@ angular.module("site.blog").factory('postSRV',[
 									});
 								})[0].name,
 								title: dataReturn[0].title.rendered,
-								excerpt: dataReturn[0].excerpt.rendered,
+								excerpt: dataReturn[0].excerpt.rendered
+									.replace('<p>', '')
+									.replace('</p>', ''),
 								createdDate: dataReturn[0].date,
-								all: dataReturn[0]
+								content: dataReturn[0].content.rendered,
+								//all: dataReturn[0]
 							});
 						}
 					);

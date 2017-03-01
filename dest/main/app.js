@@ -39775,7 +39775,9 @@ angular.module("site.blog").factory('featuredPostListSRV',[
 									});
 								})[0].name,
 								title: dataReturn[0].title.rendered,
-								excerpt: dataReturn[0].excerpt.rendered,
+								excerpt: dataReturn[0].excerpt.rendered
+									.replace('<p>', '')
+									.replace('</p>', ''),
 								postName: dataReturn[0].slug
 							});
 						}
@@ -39792,10 +39794,8 @@ angular.module("site.blog").factory("postBySlugResource", [
 		resource,
 		env
 	){
-		return resource(env.config.wordPressAPIURL + env.config.postBySlug,
-		{
-			slug: '@postName'
-		},
+		return resource(env.config.wordPressAPIURL + env.config.postList,
+		{},
 		{
 			list: {
 				method: 'GET',
@@ -39856,7 +39856,9 @@ angular.module("site.blog").factory('postListSRV',[
 										});
 									})[0].name,
 									title: post.title.rendered,
-									excerpt: post.excerpt.rendered,
+									excerpt: post.excerpt.rendered
+										.replace('<p>', '')
+										.replace('</p>', ''),
 									createdDate: post.date,
 									postName: post.slug,
 									all: post
@@ -39881,7 +39883,7 @@ angular.module("site.blog").factory('postSRV',[
 				return new Promise (function(resolve, reject){
 					resource.list(
 						{
-							postName: filters.postName,
+							slug: filters.postName,
 							'_embed': 1 // Bring all media and another embed data into response
 						},
 						function(dataReturn){
@@ -39894,9 +39896,12 @@ angular.module("site.blog").factory('postSRV',[
 									});
 								})[0].name,
 								title: dataReturn[0].title.rendered,
-								excerpt: dataReturn[0].excerpt.rendered,
+								excerpt: dataReturn[0].excerpt.rendered
+									.replace('<p>', '')
+									.replace('</p>', ''),
 								createdDate: dataReturn[0].date,
-								all: dataReturn[0]
+								content: dataReturn[0].content.rendered,
+								//all: dataReturn[0]
 							});
 						}
 					);
@@ -39917,9 +39922,7 @@ angular.module("site.blog").directive('putHtml', function(){
 			if(scope.content == undefined)
 				element[0].innerHTML = '';
 			else
-				element[0].innerHTML = scope.content
-					.replace('<p>', '')
-					.replace('</p>', '');
+				element[0].innerHTML = scope.content;
 		}
 	}
 });
@@ -39972,7 +39975,7 @@ angular.module("site.blog").config([
 				}
 			})
 
-			.state('blog.post', {
+			.state('blogPost', {
 				templateUrl: "post.html",
 				controller: "postCtrl",
 				url: '/:postName',
@@ -40028,7 +40031,9 @@ angular.module("site.blog").factory('subFeaturedPostListSRV',[
 										});
 									})[0].name,
 									title: post.title.rendered,
-									excerpt: post.excerpt.rendered,
+									excerpt: post.excerpt.rendered
+										.replace('<p>', '')
+										.replace('</p>', ''),
 									createdDate: post.date,
 									postName: post.slug,
 								}
@@ -40174,7 +40179,7 @@ angular.module("site").directive('body', [
 					case 'portfolio':
 						element[0].className = 'body-portfolio-page';
 						break;
-					case 'blog':
+					case 'blog', 'blogPost':
 						element[0].className = 'body-blog-page';
 						break;
 					default:

@@ -29,7 +29,9 @@ angular.module("site.blog").factory('featuredPostListSRV',[
 									});
 								})[0].name,
 								title: dataReturn[0].title.rendered,
-								excerpt: dataReturn[0].excerpt.rendered,
+								excerpt: dataReturn[0].excerpt.rendered
+									.replace('<p>', '')
+									.replace('</p>', ''),
 								postName: dataReturn[0].slug
 							});
 						}
