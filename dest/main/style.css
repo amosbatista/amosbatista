@@ -3094,7 +3094,7 @@
   position: absolute;
   right: 0px;
   bottom: 20px;
-  font-size: 70%;
+  font-size: 77%;
   color: #d7eed9;
   padding: 0 30px 30px 0;
   text-align: right;
@@ -3107,18 +3107,27 @@
     position: absolute;
     top: 0;
     left: 110px;
+    box-shadow: 0px 3px 1px 0px #172b0d;
+    border: none;
   }
   .featured .post-background {
     background-position: center center;
   }
+  .featured .title {
+    font-size: 170%;
+  }
   .sub-featureds {
     width: 32%;
     position: absolute;
-    top: 30px;
+    top: 40px;
     right: 0px;
+    background-color: #c2ffcf;
+    padding: 20px 0 0 20px;
+    box-shadow: 0px 1px 1px 0px #172b0d;
+    border: none;
   }
   .sub-featureds .sub-featured {
-    height: 200px;
+    height: 180px;
     position: relative;
     width: 100%;
     float: right;
@@ -3126,12 +3135,13 @@
   }
   .sub-featureds .sub-featured .post-background {
     width: 100%;
-    height: 130px;
+    height: 100px;
   }
   .sub-featureds .sub-featured .date {
     display: none;
   }
   .sub-featureds .sub-featured .title {
+    font-size: 100%;
     width: 100%;
     padding: 0;
   }
@@ -3140,7 +3150,7 @@
     padding: 0 0 0 10px;
   }
   .post-list {
-    margin: 470px 0 0 150px;
+    margin: 430px 0 0 150px;
     width: 69%;
   }
   .post-list .post .post-background {
@@ -3162,7 +3172,7 @@
 }
 @media screen and (min-width: 900px) {
   .sub-featureds {
-    width: 37%;
+    width: 34%;
     position: absolute;
     top: 100px;
     right: 0px;
@@ -3171,8 +3181,8 @@
     height: 150px;
   }
   .sub-featureds .sub-featured .post-background {
-    width: 45%;
-    height: 130px;
+    width: 38%;
+    height: 100px;
   }
   .sub-featureds .sub-featured .category {
     font-size: 65%;
@@ -3186,7 +3196,14 @@
     padding: 0;
   }
   .post-list {
-    width: 74%;
+    width: 80%;
+  }
+  .post-list .post {
+    width: 48%;
+    float: left;
+  }
+  .post-list .post:nth-child(2n) {
+    float: right;
   }
 }
 /* Space between top and header (only Landscape)*/

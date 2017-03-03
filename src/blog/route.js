@@ -40,7 +40,7 @@ angular.module("site.blog").config([
 			.state('blogPost', {
 				templateUrl: "post.html",
 				controller: "postCtrl",
-				url: '/:postName',
+				url: '/blog/:postName',
 				resolve: {
 					postService: 'postSRV',
 
