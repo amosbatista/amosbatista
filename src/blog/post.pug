@@ -5,10 +5,12 @@ div(my-header)
 
 	.top-history(easy-scroll-top)
 
+		img.featured-img(ng-src="{{post.mainImage}}")
+		p.img-caption
+			|{{post.imageCaption}}
+
 		h1.title
 			|{{post.title}}
-
-		img.featured-img(ng-src="{{post.mainImage}}")
 
 		p.excerpt
 			|{{post.excerpt}}

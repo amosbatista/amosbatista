@@ -15,6 +15,7 @@ angular.module("site.blog").factory('postSRV',[
 
 							resolve({
 								mainImage: dataReturn[0]._embedded["wp:featuredmedia"] != undefined ? dataReturn[0]._embedded["wp:featuredmedia"][0].source_url : '',
+								imageCaption: dataReturn[0]._embedded["wp:featuredmedia"] != undefined || dataReturn[0]._embedded["wp:featuredmedia"][0].caption != undefined ? dataReturn[0]._embedded["wp:featuredmedia"][0].caption.rendered.replace("<p>", "").replace("</p>", "") : '',
 								category: dataReturn[0]._embedded["wp:term"].find( function (termList){
 									return termList.find( function(term){
 										return term.taxonomy == 'category';	
@@ -26,7 +27,7 @@ angular.module("site.blog").factory('postSRV',[
 									.replace('</p>', ''),
 								createdDate: dataReturn[0].date,
 								content: dataReturn[0].content.rendered,
-								//all: dataReturn[0]
+								/*all: dataReturn[0]*/
 							});
 						}
 					);

@@ -38520,167 +38520,6 @@ angular.module('common', [
 	'common.easyScroll'
 	]
 );
-/* The footer directive*/
-angular.module('common.footer', []);
-
-angular.module('common.footer').directive("myFooter", [
-	'$location',
-	function(
-		locationObj
-	){
-		return {
-			restrict: "A",
-			templateUrl: "_footer.html",
-			replace: true,
-			link: function (scope, element){
-
-				/* Control the animation behavior*/
-				var isBrigingFooterUp = false;				
-				var footerAnimation = null;
-				var footerAnimationLimits = 0;
-				var footerAnimationCurrentTop = 0;
-				var pageOrientation = '';
-
-				/* Links redirects*/
-				var footerLinkToHome = function(){
-					locationObj.path('/');
-				}
-
-				var linkList = [
-					{
-						name: 'Home',
-						location: '/',
-						iconClass: 'fa-home',
-						linkFunction: footerLinkToHome
-					},
-					{
-						name: 'About',
-						location: '/about',
-						iconClass: 'fa-arrow-up',
-						linkFunction: footerLinkToHome
-					},
-					{
-						name: 'Gallery',
-						location: '/gallery',
-						iconClass: 'fa-arrow-right',
-						linkFunction: footerLinkToHome
-					},
-					{
-						name: 'Portfolio',
-						location: '/portfolio',
-						iconClass: 'fa-arrow-left',
-						linkFunction: footerLinkToHome
-					},
-					{
-						name: 'Blog',
-						location: '/blog',
-						iconClass: 'fa-arrow-down',
-						linkFunction: footerLinkToHome
-					},
-					
-				];
-
-				// Set all links to show (remove the link of current page)
-				scope.linkToShow = linkList.filter( function (link ){
-					return link.location != locationObj.path();
-				});
-
-
-
-				/* Event to detect the apperance of footer */
-				scope.$on("footerIsRising", function(){
-					isBrigingFooterUp = true;
-
-					if(footerAnimation == null){
-						animationProcess();	
-					}
-					
-				});
-				scope.$on("footerIsHiding", function(){
-					isBrigingFooterUp = false;
-
-					if(footerAnimation == null){
-						animationProcess();	
-					}
-				});
-
-
-				/* Page orientation detection */
-				var detectOrientation = function (){
-
-					if(window.innerWidth <= window.innerHeight)
-						return "portrait";
-					else
-						return "landscape";
-				};
-
-				pageOrientation = detectOrientation();
-
-				window.addEventListener("resize", function(){
-					pageOrientation = detectOrientation();
-
-					/* Force translation fix*/
-					/*if(isBrigingFooterUp == false && footerAnimation == null && pageOrientation == "portrait")
-						element[0].style.transform = 'translate(0px, 200px)';*/
-				});
-
-
-				/* Before any animation, set the footer limits*/
-				if(pageOrientation == "portrait"){
-					footerAnimationLimits = 200;
-				}
-				else{
-					footerAnimationLimits = 150;
-				}
-
-				/* Set the initial transition*/
-				/*element[0].style.transform = 'translate(0px, ' + footerAnimationLimits + 'px)';*/
-
-
-				/* Animation process to footer transition */
-				var animationProcess = function(){
-
-					footerAnimation = setInterval(function(){
-
-						// Limits of animation, according orientation and scroll position
-						// Bringing footer up
-						if(isBrigingFooterUp == true){
-
-							if(footerAnimationCurrentTop >= footerAnimationLimits - 20){
-								footerAnimationCurrentTop = footerAnimationLimits;
-								clearInterval(footerAnimation);
-								footerAnimation = null;
-							}
-							else{
-								footerAnimationCurrentTop = footerAnimationCurrentTop + 20;	
-							}
-
-							
-						}
-						
-						// Bringing footer down
-						else{
-
-							if( footerAnimationCurrentTop <= 0){
-								footerAnimationCurrentTop = -5;
-								clearInterval(footerAnimation);
-								footerAnimation = null;
-							}
-							else{
-								footerAnimationCurrentTop = footerAnimationCurrentTop - 20;	
-							}
-						}
-
-						element[0].style.transform = 'translate(0px, ' + (footerAnimationLimits - footerAnimationCurrentTop) + 'px)';
-
-					}, 30);
-				}
-				
-
-			}
-		}
-	}
-]);
 /* The directive that set the footer link scroll animation
  Angular events:
  easyScrollDown - When user scroll the page down 
@@ -38938,6 +38777,167 @@ angular.module('common.easyScroll').directive('easyScrollContent', function(){
 		}
 	}
 });
+/* The footer directive*/
+angular.module('common.footer', []);
+
+angular.module('common.footer').directive("myFooter", [
+	'$location',
+	function(
+		locationObj
+	){
+		return {
+			restrict: "A",
+			templateUrl: "_footer.html",
+			replace: true,
+			link: function (scope, element){
+
+				/* Control the animation behavior*/
+				var isBrigingFooterUp = false;				
+				var footerAnimation = null;
+				var footerAnimationLimits = 0;
+				var footerAnimationCurrentTop = 0;
+				var pageOrientation = '';
+
+				/* Links redirects*/
+				var footerLinkToHome = function(){
+					locationObj.path('/');
+				}
+
+				var linkList = [
+					{
+						name: 'Home',
+						location: '/',
+						iconClass: 'fa-home',
+						linkFunction: footerLinkToHome
+					},
+					{
+						name: 'About',
+						location: '/about',
+						iconClass: 'fa-arrow-up',
+						linkFunction: footerLinkToHome
+					},
+					{
+						name: 'Gallery',
+						location: '/gallery',
+						iconClass: 'fa-arrow-right',
+						linkFunction: footerLinkToHome
+					},
+					{
+						name: 'Portfolio',
+						location: '/portfolio',
+						iconClass: 'fa-arrow-left',
+						linkFunction: footerLinkToHome
+					},
+					{
+						name: 'Blog',
+						location: '/blog',
+						iconClass: 'fa-arrow-down',
+						linkFunction: footerLinkToHome
+					},
+					
+				];
+
+				// Set all links to show (remove the link of current page)
+				scope.linkToShow = linkList.filter( function (link ){
+					return link.location != locationObj.path();
+				});
+
+
+
+				/* Event to detect the apperance of footer */
+				scope.$on("footerIsRising", function(){
+					isBrigingFooterUp = true;
+
+					if(footerAnimation == null){
+						animationProcess();	
+					}
+					
+				});
+				scope.$on("footerIsHiding", function(){
+					isBrigingFooterUp = false;
+
+					if(footerAnimation == null){
+						animationProcess();	
+					}
+				});
+
+
+				/* Page orientation detection */
+				var detectOrientation = function (){
+
+					if(window.innerWidth <= window.innerHeight)
+						return "portrait";
+					else
+						return "landscape";
+				};
+
+				pageOrientation = detectOrientation();
+
+				window.addEventListener("resize", function(){
+					pageOrientation = detectOrientation();
+
+					/* Force translation fix*/
+					/*if(isBrigingFooterUp == false && footerAnimation == null && pageOrientation == "portrait")
+						element[0].style.transform = 'translate(0px, 200px)';*/
+				});
+
+
+				/* Before any animation, set the footer limits*/
+				if(pageOrientation == "portrait"){
+					footerAnimationLimits = 200;
+				}
+				else{
+					footerAnimationLimits = 150;
+				}
+
+				/* Set the initial transition*/
+				/*element[0].style.transform = 'translate(0px, ' + footerAnimationLimits + 'px)';*/
+
+
+				/* Animation process to footer transition */
+				var animationProcess = function(){
+
+					footerAnimation = setInterval(function(){
+
+						// Limits of animation, according orientation and scroll position
+						// Bringing footer up
+						if(isBrigingFooterUp == true){
+
+							if(footerAnimationCurrentTop >= footerAnimationLimits - 20){
+								footerAnimationCurrentTop = footerAnimationLimits;
+								clearInterval(footerAnimation);
+								footerAnimation = null;
+							}
+							else{
+								footerAnimationCurrentTop = footerAnimationCurrentTop + 20;	
+							}
+
+							
+						}
+						
+						// Bringing footer down
+						else{
+
+							if( footerAnimationCurrentTop <= 0){
+								footerAnimationCurrentTop = -5;
+								clearInterval(footerAnimation);
+								footerAnimation = null;
+							}
+							else{
+								footerAnimationCurrentTop = footerAnimationCurrentTop - 20;	
+							}
+						}
+
+						element[0].style.transform = 'translate(0px, ' + (footerAnimationLimits - footerAnimationCurrentTop) + 'px)';
+
+					}, 30);
+				}
+				
+
+			}
+		}
+	}
+]);
 angular.module('common.header', []);
 
 angular.module('common.header').directive("myHeader", [
@@ -39890,6 +39890,7 @@ angular.module("site.blog").factory('postSRV',[
 
 							resolve({
 								mainImage: dataReturn[0]._embedded["wp:featuredmedia"] != undefined ? dataReturn[0]._embedded["wp:featuredmedia"][0].source_url : '',
+								imageCaption: dataReturn[0]._embedded["wp:featuredmedia"] != undefined || dataReturn[0]._embedded["wp:featuredmedia"][0].caption != undefined ? dataReturn[0]._embedded["wp:featuredmedia"][0].caption.rendered.replace("<p>", "").replace("</p>", "") : '',
 								category: dataReturn[0]._embedded["wp:term"].find( function (termList){
 									return termList.find( function(term){
 										return term.taxonomy == 'category';	
@@ -39901,7 +39902,7 @@ angular.module("site.blog").factory('postSRV',[
 									.replace('</p>', ''),
 								createdDate: dataReturn[0].date,
 								content: dataReturn[0].content.rendered,
-								//all: dataReturn[0]
+								/*all: dataReturn[0]*/
 							});
 						}
 					);

@@ -7,14 +7,22 @@
 
 	.top-history{
 		position: relative;
-		margin: 135px 0 0 0;
+		margin: 120px 0 0 0;
 
 		.featured-img{
-			max-width: 85%;
-			margin: 0 auto 15px auto;
-			max-height: 200px;
+			max-width: 100%;
+			margin: 0 auto 5px auto;
+			/*max-height: 200px;*/
 			display: block;
 			border-bottom: 3px solid hsl(100, 19%, 78%);
+		}
+
+		.img-caption{
+			font-size: 60%;
+			width: 100%;
+			text-align: center;
+			font-style: italic;
+			color: hsl(100, 30%, 20%);
 		}
 
 		.title,
@@ -39,9 +47,8 @@
 		}
 
 		.excerpt{
-			max-width: 60%;
+			width: 90%;
 	    	margin: 0 auto;
-	    	padding: 0 0 0 65px;
 	    	font-family: @fontFamily_Default;
 	    	font-style: italic;
 	    	font-size: 70%;
@@ -59,7 +66,7 @@
 	}
 
 	.page-content{
-		padding: 100px 0 120px 0;
+		padding: 20px 0 120px 0;
 		width: 90%;
 		margin: auto;
 		float: none;
