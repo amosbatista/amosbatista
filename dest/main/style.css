@@ -2433,7 +2433,7 @@
 @media screen and (orientation: landscape) {
   .header {
     position: fixed;
-    top: 115px;
+    top: 0px;
     left: 0;
     width: 65px;
     box-shadow: 2px 2px 8px 0px #4b774b;
@@ -2844,7 +2844,7 @@
 }
 @media screen and (orientation: landscape) {
   .page-content .top-history {
-    margin: 115px 0 0 0;
+    margin: 0px 0 0 0;
   }
   .page-content .page-content-subpart {
     width: 60%;
@@ -3215,7 +3215,7 @@
   margin: 120px 0 0 0;
 }
 .blog-post .top-history .featured-img {
-  max-width: 100%;
+  max-width: 360px;
   margin: 0 auto 5px auto;
   /*max-height: 200px;*/
   display: block;
@@ -3315,12 +3315,26 @@
     opacity: 0.7;
   }
 }
-@media screen and (orientation: landscape) {
+@media screen and (min-width: 475px) {
   .blog-post .top-history {
-    margin: 115px 0 0 0;
+    margin: 80px 0 0 0;
+  }
+}
+@media screen and (orientation: landscape) {
+  .blog-post {
+    width: 90%;
+    float: right;
+  }
+  .blog-post .top-history {
+    margin: 0px 0 0 0;
+  }
+  .blog-post .top-history .featured-img {
+    max-height: 375px;
+    max-width: 100%;
   }
   .blog-post .page-content {
-    width: 60%;
+    width: 90%;
+    padding: 0 0 120px 0;
   }
 }
 /* Body classes, to be user to the body directive */

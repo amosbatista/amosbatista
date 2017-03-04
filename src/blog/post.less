@@ -1,5 +1,5 @@
 /* Space between top and header (only Landscape)*/
-@topSpacing_Landscape: 115px;
+@topSpacing_Landscape: 0px;
 
 
 .blog-post{
@@ -10,7 +10,7 @@
 		margin: 120px 0 0 0;
 
 		.featured-img{
-			max-width: 100%;
+			max-width: 360px;
 			margin: 0 auto 5px auto;
 			/*max-height: 200px;*/
 			display: block;
@@ -135,16 +135,35 @@
 }
 
 
+@media screen and (min-width: 475px){
+	.blog-post {
+		.top-history{
+			margin: 80px 0 0 0;
+		}
+	}
+}
+
 
 @media screen and (orientation: landscape){
 
 	.blog-post{
+
+		width: 90%;
+		float: right;
+
 		.top-history{
 			margin: @topSpacing_Landscape 0 0 0;
+
+			.featured-img{
+				max-height: 375px;
+				max-width: 100%;
+
+			}
 		}
 
 		.page-content{
-			width: 60%;
+			width: 90%;
+			padding: 0 0 120px 0;
 		}	
 	}
 
