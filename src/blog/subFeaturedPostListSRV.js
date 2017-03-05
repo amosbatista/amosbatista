@@ -12,18 +12,12 @@ angular.module("site.blog").factory('subFeaturedPostListSRV',[
 					if(filters.currentPage == undefined || filters.currentPage > 1)
 						resolve(null);
 
-					
-/*
-					if(window.innerWidth > window.innerHeight)
-						resolve (null);*/
-
-
-					var tagList = filters.tagList['sub-featured'];
+					var tagList = filters.tagList['sub-featured'] + "," +  filters.tagList['blog'];
 
 					resource.list(
 						{
 							tags: tagList,
-							'_embed': 1 // Bring all media and another embed data into response
+							'_embed': 1, // Bring all media and another embed data into response
 						},
 						function(dataReturn){
 							dataReturn = dataReturn.map(function(post){

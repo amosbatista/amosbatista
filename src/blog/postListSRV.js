@@ -8,7 +8,9 @@ angular.module("site.blog").factory('postListSRV',[
 				return new Promise (function(resolve, reject){
 					resource.list(
 						{
+							tags: filters.tagList['blog'],
 							'_embed': 1 // Bring all media and another embed data into response
+
 						},
 						function(dataReturn){
 

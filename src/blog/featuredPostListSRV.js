@@ -12,12 +12,12 @@ angular.module("site.blog").factory('featuredPostListSRV',[
 					if(filters.currentPage == undefined || filters.currentPage > 1)
 						resolve(null);
 
-					var tagList = filters.tagList['featured'];
+					var tagList = filters.tagList['featured'] + ',' + filters.tagList['blog'];
 
 					resource.list(
 						{
 							tags: tagList,
-							'_embed': 1 // Bring all media and another embed data into response
+							'_embed': 1, // Bring all media and another embed data into response
 						},
 						function(dataReturn){
 							
@@ -32,7 +32,8 @@ angular.module("site.blog").factory('featuredPostListSRV',[
 								excerpt: dataReturn[0].excerpt.rendered
 									.replace('<p>', '')
 									.replace('</p>', ''),
-								postName: dataReturn[0].slug
+								postName: dataReturn[0].slug,
+								all: dataReturn[0]
 							});
 						}
 					);

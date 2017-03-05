@@ -31,8 +31,11 @@ angular.module("site.blog").config([
 							tagList: tags
 						});
 					}],
-					postlist: ['postListService', function(service){
-						return service.getList();
+					postlist: ['postListService', 'tags', function(service, tags){
+						return service.getList({
+							currentPage: 0,
+							tagList: tags
+						});
 					}]
 				}
 			})
