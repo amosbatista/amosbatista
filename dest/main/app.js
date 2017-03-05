@@ -39382,6 +39382,10 @@ angular.module('site.home').controller('homeCtrl', [
 		scope.goToBlog = function(){
 			state.go('blog');
 		}
+
+		scope.goToGallery = function(){
+			state.go('gallery');
+		}
 	}
 ])
 // Directive to set the transition animation to the icon, at mouse over
@@ -40112,6 +40116,185 @@ angular.module("site.blog").factory('generalSRV',[
 		}
 	}
 ])
+angular.module('site.gallery', []);
+angular.module("site.gallery").directive('galleryBgInsert', function(){
+
+	return {
+		restrict: "A",
+		scope: {
+			imageUrl: '='
+		},
+		link: function (scope, element){
+			
+			if(scope.imageUrl != undefined)
+				element[0].style['background-image'] = 'url("' + scope.imageUrl + '")';
+		}
+	}
+});
+angular.module("site.gallery").controller("galleryCtrl", [
+	'$scope',
+	'gallery',
+	function(
+		scope,
+		gallery
+	){
+		console.log('Gallery', gallery);
+
+		scope.gallery = gallery;
+		
+	}
+])
+angular.module('site.gallery').factory('gallerySRV', [
+	'postListResource',
+	function(
+		resource
+	){
+		return {
+			getList: function(filters){
+				return new Promise (function(resolve, reject){
+					resource.list(
+						{
+							tags: filters.tagList['gallery'],
+							per_page: 14,
+							'_embed': 1 // Bring all media and another embed data into response
+
+						},
+						function(dataReturn){
+
+							dataReturn = dataReturn.map(function(post){
+								return {
+									mainImage: post._embedded["wp:featuredmedia"] != undefined ? post._embedded["wp:featuredmedia"][0].source_url : '',
+									category: post._embedded["wp:term"].find( function (termList){
+										return termList.find( function(term){
+											return term.taxonomy == 'category';	
+										});
+									})[0].name,
+									title: post.title.rendered,
+									excerpt: post.excerpt.rendered
+										.replace('<p>', '')
+										.replace('</p>', ''),
+									createdDate: post.date,
+									postName: post.slug,
+									all: post
+								}
+							});
+							
+							resolve(dataReturn);
+						}
+					);
+				});
+			}
+		}
+	}
+])
+angular.module("site.gallery").factory("postListResource", [
+	'$resource',
+	'env',
+	function(
+		resource,
+		env
+	){
+		return resource(env.config.wordPressAPIURL + env.config.postList,
+		{},
+		{
+			list: {
+				method: 'GET',
+				isArray: true
+			}
+		});
+	}
+]);
+angular.module("site.gallery").config([
+	'$stateProvider',
+	function(
+		state
+	){
+		state
+
+			.state('gallery', {
+				templateUrl: "gallery.html",
+				controller: "galleryCtrl",
+				url: '/gallery',
+				resolve: {
+					tagListService: 'tagListSRV',
+					galleryService: 'gallerySRV',
+					/*featuredService: 'featuredPostListSRV',
+					subFeaturedService: 'subFeaturedPostListSRV',*/
+
+					tags: ['tagListService', function(service){
+						return service.getList();
+					}],
+					
+					/*subFeaturedPosts: ['subFeaturedService', 'tags', function(service, tags){
+						return service.getList({
+							currentPage: 0,
+							tagList: tags
+						});
+					}],
+					featuredPosts: ['featuredService', 'tags', function(service, tags){
+						return service.getList({
+							currentPage: 0,
+							tagList: tags
+						});
+					}],*/
+					gallery: ['galleryService', 'tags', function(service, tags){
+						return service.getList({
+							currentPage: 0,
+							tagList: tags
+						});
+					}]
+				}
+			})
+
+			
+			
+	}
+])
+
+angular.module("site.gallery").factory("tagListResource", [
+	'$resource',
+	'env',
+	function(
+		resource,
+		env
+	){
+		return resource(env.config.wordPressAPIURL + env.config.tagList,
+		{},
+		{
+			list: {
+				method: 'GET',
+				isArray: true
+			}
+		});
+	}
+]);
+angular.module("site.gallery").factory('tagListSRV',[
+	'tagListResource',
+	function(
+		resource
+	){
+		return {
+			getList: function(){
+
+				return new Promise (function(resolve, reject){
+					resource.list(
+						{},
+						function(dataReturn){
+
+							// Mounting tag structure
+							var objTags = dataReturn.reduce( function (processedObject, tag){
+								processedObject[tag.slug] = tag.id;
+								return processedObject;
+							}, {});
+
+							resolve(objTags);
+						}
+					);
+				});
+			}
+		}
+	}
+])
 angular.module("site", [
 	'ui.router',
 	'ngResource',
@@ -40119,7 +40302,9 @@ angular.module("site", [
 	'site.about',
 	'site.portfolio',
 	'site.blog',
-	'site.home'
+	'site.home',
+	'site.gallery'
+
 ]);
 
 

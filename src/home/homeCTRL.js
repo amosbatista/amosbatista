@@ -16,5 +16,9 @@ angular.module('site.home').controller('homeCtrl', [
 		scope.goToBlog = function(){
 			state.go('blog');
 		}
+
+		scope.goToGallery = function(){
+			state.go('gallery');
+		}
 	}
 ])

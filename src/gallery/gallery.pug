@@ -1,0 +1,11 @@
+.page-content
+
+
+	// Other posts
+	.post-list
+		a(ng-repeat="post in gallery" ui-sref='blogPost({postName: post.postName})')
+			.post-background(gallery-bg-insert image-url="post.mainImage")
+
+
+
+div(my-footer)

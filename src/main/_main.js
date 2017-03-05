@@ -5,5 +5,7 @@ angular.module("site", [
 	'site.about',
 	'site.portfolio',
 	'site.blog',
-	'site.home'
+	'site.home',
+	'site.gallery'
+
 ]);

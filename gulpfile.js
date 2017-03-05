@@ -27,6 +27,7 @@ var jsOrigin = [
 	"src/home/*.js",
 	"src/portfolio/*.js",
 	"src/blog/*.js",
+	"src/gallery/*.js",
 	"src/main/*.js",
 	"!src/env.js" // Excluding environment config
 ];
