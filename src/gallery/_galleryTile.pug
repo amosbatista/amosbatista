@@ -1,2 +1,3 @@
-a(ng-repeat="post in postList")
-	.post-background(gallery-bg-insert image-url="post.mainImage")
+a(ng-repeat="post in processedPostList")
+	div(dinamic-absolute dimensions="post.dimensions")
+		.post-background(gallery-bg-insert image-url="post.mainImage")
