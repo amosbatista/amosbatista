@@ -12,12 +12,13 @@ angular.module("site.gallery").directive('dinamicAbsolute', function(){
 			}*/
 			dimensions: '='
 		},
+		replace: true,
 		link: function (scope, element){
 			element[0].style.position = 'absolute';
-			element[0].style.top = scope.top + 'px';
-			element[0].style.left = scope.left + 'px';
-			element[0].style.width = scope.width + 'px';
-			element[0].style.height = scope.height + 'px';
+			element[0].style.top = scope.dimensions.top + 'px';
+			element[0].style.left = scope.dimensions.left + 'px';
+			element[0].style.width = scope.dimensions.width + 'px';
+			element[0].style.height = scope.dimensions.height + 'px';
 
 		}
 	}
