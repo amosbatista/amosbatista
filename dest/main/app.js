@@ -38789,6 +38789,9 @@ angular.module('common.footer').directive("myFooter", [
 			restrict: "A",
 			templateUrl: "_footer.html",
 			replace: true,
+			scope: {
+				isFixed: "@"
+			},
 			link: function (scope, element){
 
 				/* Control the animation behavior*/
@@ -38890,8 +38893,13 @@ angular.module('common.footer').directive("myFooter", [
 					footerAnimationLimits = 150;
 				}
 
+				// Remove the transition configuration when page had no scroll
+				if(scope.isFixed )
+					element[0].style.transform = '';
+
 				/* Set the initial transition*/
-				/*element[0].style.transform = 'translate(0px, ' + footerAnimationLimits + 'px)';*/
+				else
+					element[0].style.transform = 'translate(0px, ' + footerAnimationLimits + 'px)';
 
 
 				/* Animation process to footer transition */
