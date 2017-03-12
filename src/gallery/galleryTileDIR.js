@@ -11,6 +11,7 @@ angular.module('site.gallery').directive('galleryTile', function(){
 		templateUrl: '_galleryTile.html',
 		link: function (scope, element){
 
+			var originalPostlist = scope.postList.slice();
 
 			/* Page orientation detection */
 			var detectOrientation = function (){
@@ -287,26 +288,78 @@ angular.module('site.gallery').directive('galleryTile', function(){
 
 			}
 
-			/*squareTileAlgorithm({
-				imageList: scope.postList,
-				currentX: 0,
-				currentY: 0,
-				containerWidth: _containerWidth,
-				containerHeight: _containerHeight
-			})*/
+			// Algorith decision
+			if(_containerWidth > 700 && _containerHeight > 400){
 
-			euclideanTileAlgorithm({
-				plotArea: {
-					point1: {
-						x: 0, y: 0,
+				euclideanTileAlgorithm({
+					plotArea: {
+						point1: {
+							x: 0, y: 0,
+						},
+						point2: {
+							x: _containerWidth, y: _containerHeight,
+							//x: 1920, y: 1080,
+						}
 					},
-					point2: {
-						x: _containerWidth, y: _containerHeight,
-						//x: 1920, y: 1080,
-					}
-				},
-				imageList: scope.postList
-			})
+					imageList: scope.postList
+				});	
+			}
+
+			else{
+
+				squareTileAlgorithm({
+					imageList: scope.postList,
+					currentX: 0,
+					currentY: 0,
+					containerWidth: _containerWidth,
+					containerHeight: _containerHeight
+				})	
+			}
+
+			
+
+			
+
+			window.addEventListener("resize", function(){
+
+				scope.processedPostList = [];
+
+				/*scope.$digest();*/
+
+				var postList = originalPostlist.slice();
+
+				var _containerWidth = element.parent()[0].offsetWidth;
+				var _containerHeight = element.parent()[0].offsetHeight;
+
+				if(_containerWidth > 700 && _containerHeight > 400){
+
+					euclideanTileAlgorithm({
+						plotArea: {
+							point1: {
+								x: 0, y: 0,
+							},
+							point2: {
+								x: _containerWidth, y: _containerHeight,
+								//x: 1920, y: 1080,
+							}
+						},
+						imageList: postList
+					});	
+				}
+
+				else{
+
+					squareTileAlgorithm({
+						imageList: postList,
+						currentX: 0,
+						currentY: 0,
+						containerWidth: _containerWidth,
+						containerHeight: _containerHeight
+					})	
+				}
+
+				scope.$digest();
+			});
 		}
 	}
 });

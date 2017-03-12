@@ -11,11 +11,14 @@ angular.module("site.gallery").directive('galleryBgInsert', function(){
 			if(scope.imageUrl != undefined)
 				element[0].style['background-image'] = 'url("' + scope.imageUrl + '")';
 
-				var classList = scope.bgClass.split(' ');
+				if(Array.isArray(scope.bgClass)){
 
-				classList.forEach (function (className){
-					element[0].classList.add(className);	
-				});
+					var classList = scope.bgClass.split(' ');
+
+					classList.forEach (function (className){
+						element[0].classList.add(className);	
+					});
+				}
 
 				
 		}
