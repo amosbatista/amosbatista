@@ -1,4 +1,4 @@
 .gallery-tile
 	a(ng-repeat="post in processedPostList")
 		div(dinamic-absolute dimensions="post.dimensions")
-			.post-background(gallery-bg-insert image-url="post.mainImage")
+			.post-background(gallery-bg-insert image-url="post.mainImage" bg-class="post.class")

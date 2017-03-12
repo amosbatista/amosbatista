@@ -3339,6 +3339,7 @@
 }
 .gallery.page-content {
   padding: 0;
+  /* Scale effects, when Euclidean Algorithm*/
 }
 .gallery.page-content .post-background {
   width: 100%;
@@ -3346,7 +3347,54 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  border: 2px solid red;
+}
+.gallery.page-content .eucld-alg-hoverEffect {
+  z-index: 1;
+}
+.gallery.page-content .eucld-alg-hoverEffect:hover {
+  z-index: 10;
+}
+.gallery.page-content .scale-size-0 {
+  transform: none;
+}
+.gallery.page-content .scale-size-0:hover {
+  transform: scale(1, 1);
+}
+.gallery.page-content .scale-size-1 {
+  transform: none;
+}
+.gallery.page-content .scale-size-1:hover {
+  transform: scale(1.5, 1.5);
+}
+.gallery.page-content .scale-size-2 {
+  transform: none;
+}
+.gallery.page-content .scale-size-2:hover {
+  transform: scale(2, 2);
+}
+.gallery.page-content .scale-size-3 {
+  transform: none;
+}
+.gallery.page-content .scale-size-3:hover {
+  transform: scale(3, 3);
+}
+.gallery.page-content .scale-size-4 {
+  transform: none;
+}
+.gallery.page-content .scale-size-4:hover {
+  transform: scale(4, 4);
+}
+.gallery.page-content .scale-size-5 {
+  transform: none;
+}
+.gallery.page-content .scale-size-5:hover {
+  transform: scale(8, 8);
+}
+.gallery.page-content .scale-size-6 {
+  transform: none;
+}
+.gallery.page-content .scale-size-6:hover {
+  transform: scale(15, 15);
 }
 /* Body classes, to be user to the body directive */
 body {

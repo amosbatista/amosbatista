@@ -32,7 +32,7 @@ angular.module('site.gallery').directive('galleryTile', function(){
 
 
 			// Defining container height
-			element.parent()[0].style.height = window.innerHeight - 200 + 'px';
+			element.parent()[0].style.height = window.innerHeight - 210 + 'px';
 			
 			// Get the size of the screen
 			var _containerWidth = element.parent()[0].offsetWidth;
@@ -222,12 +222,24 @@ angular.module('site.gallery').directive('galleryTile', function(){
 						}
 					}
 
-
-					console.log('Size:', params.newBlockSize);
+					var plotArea = Math.abs(params.plotArea.point1.x - params.plotArea.point2.x) *  Math.abs(params.plotArea.point1.y - params.plotArea.point2.y);
+					var originalPlotArea = Math.abs(params.originalPlotArea.point1.x - params.originalPlotArea.point2.x) *  Math.abs(params.originalPlotArea.point1.y - params.originalPlotArea.point2.y);
+					var scaleSize;
+					var currentScalePercentage = plotArea * 100 / originalPlotArea;
+					
+					switch (true){
+						case (currentScalePercentage < 1): scaleSize = 5; break;
+						case (currentScalePercentage < 5): scaleSize = 4; break;
+						case (currentScalePercentage < 10): scaleSize = 3; break;
+						case (currentScalePercentage < 15): scaleSize = 2; break;
+						case (currentScalePercentage < 25): scaleSize = 1; break;
+						default: scaleSize = 0; break;
+					}
 
 					scope.processedPostList.push({
 						mainImage: currentBlock.mainImage,
-						dimensions: newDimension
+						dimensions: newDimension,
+						class: 'eucld-alg-hoverEffect scale-size-' + scaleSize // Hover transition
 					});
 
 					// The Recursive call
@@ -235,10 +247,14 @@ angular.module('site.gallery').directive('galleryTile', function(){
 						amtBlocks: params.amtBlocks - 1,
 						newBlockSize: params.newBlockSize,
 						imageList: params.imageList,
-						plotArea: newPlotArea
+						plotArea: newPlotArea,
+						originalPlotArea: params.originalPlotArea
 					});
 
 				}
+
+				// How many interaction we had
+				params.originalPlotArea = params.originalPlotArea || params.plotArea;
 
 				var amtBlocks;
 				var newBlockSize;
@@ -259,12 +275,14 @@ angular.module('site.gallery').directive('galleryTile', function(){
 					amtBlocks: amtBlocks,
 					newBlockSize: newBlockSize,
 					imageList: params.imageList,
-					plotArea: params.plotArea
+					plotArea: params.plotArea, 
+					originalPlotArea: params.originalPlotArea
 				});
 
 				euclideanTileAlgorithm({
 					plotArea: newPlotArea,
-					imageList: params.imageList
+					imageList: params.imageList,
+					originalPlotArea: params.originalPlotArea
 				});
 
 			}
