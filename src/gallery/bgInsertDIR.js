@@ -11,7 +11,7 @@ angular.module("site.gallery").directive('galleryBgInsert', function(){
 			if(scope.imageUrl != undefined)
 				element[0].style['background-image'] = 'url("' + scope.imageUrl + '")';
 
-				if(Array.isArray(scope.bgClass)){
+				if(scope.bgClass != undefined && scope.bgClass != ''){
 
 					var classList = scope.bgClass.split(' ');
 
