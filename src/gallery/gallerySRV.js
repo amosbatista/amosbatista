@@ -9,7 +9,7 @@ angular.module('site.gallery').factory('gallerySRV', [
 					resource.list(
 						{
 							tags: filters.tagList['gallery'],
-							per_page: 14,
+							per_page: 10,
 							'_embed': 1 // Bring all media and another embed data into response
 
 						},
