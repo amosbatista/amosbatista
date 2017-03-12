@@ -3399,6 +3399,46 @@
 .gallery.page-content .scale-size-6:hover {
   transform: scale(15, 15);
 }
+.gallery-post {
+  padding: 100px 0 0 0;
+  width: 90%;
+  margin: auto;
+  float: none;
+}
+.gallery-post .photo-cover {
+  max-width: 100%;
+  background-color: white;
+  box-shadow: 0px 5px 3px 1px #000000;
+}
+.gallery-post .photo-cover .featured-img {
+  display: block;
+  max-width: 90%;
+  margin: auto;
+  padding: 30px 0 0 0;
+}
+.gallery-post .photo-cover .title {
+  font-family: 'Source Serif Pro', sans-serif;
+  font-size: 65%;
+  text-align: center;
+  font-weight: 500;
+  color: #303b2b;
+  margin: 10px 0;
+}
+.gallery-post .photo-cover .excerpt {
+  font-family: 'Source Serif Pro', sans-serif;
+  font-size: 65%;
+  text-align: center;
+  font-weight: 500;
+  color: #303b2b;
+  margin: 10px 0;
+}
+@media screen and (orientation: landscape) {
+  .gallery-post {
+    width: 80%;
+    margin: 0 3.5%;
+    float: right;
+  }
+}
 /* Body classes, to be user to the body directive */
 body {
   font-size: 22px;
@@ -3414,6 +3454,10 @@ body {
 }
 .body-blog-page {
   overflow: auto;
+}
+.body-gallery-post-page {
+  overflow: auto;
+  background-color: #f0f4f1;
 }
 /* Default style of all links*/
 a {

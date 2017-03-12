@@ -59,6 +59,7 @@ angular.module('site.gallery').directive('galleryTile', function(){
 
 				scope.processedPostList.push({
 					mainImage: currentImage.mainImage,
+					postName: currentImage.postName,
 					dimensions: {
 						top: params.currentY, 
 						left: params.currentX,
@@ -238,6 +239,7 @@ angular.module('site.gallery').directive('galleryTile', function(){
 					}
 
 					scope.processedPostList.push({
+						postName: currentBlock.postName,
 						mainImage: currentBlock.mainImage,
 						dimensions: newDimension,
 						class: 'eucld-alg-hoverEffect scale-size-' + scaleSize // Hover transition

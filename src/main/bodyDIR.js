@@ -63,6 +63,9 @@ angular.module("site").directive('body', [
 					case 'blogPost':
 						element[0].className = 'body-blog-page';
 						break;
+					case 'galleryPost':
+						element[0].className = 'body-gallery-post-page';
+						break;
 					default:
 						element[0].className = 'body-home-page';
 						break;

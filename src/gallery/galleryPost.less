@@ -1,0 +1,49 @@
+.gallery-post{
+
+	padding: 100px 0 0 0;
+	width: 90%;
+	margin: auto;
+	float: none;
+
+	.photo-cover{
+		max-width: 100%;
+		background-color: white;
+		box-shadow: 0px 5px 3px 1px hsl(100, 0%, 0%);
+
+		.featured-img{
+			display: block;
+		    max-width: 90%;
+		    margin: auto;
+		    padding: 30px 0 0 0;
+		}
+		
+		.title{
+			font-family: @fontFamily_Default;
+			font-size: 65%;
+			text-align: center;
+			font-weight: 500;
+			color: hsl(100, 16%, 20%);
+			margin: 10px 0;
+		}
+
+		.excerpt{
+			font-family: @fontFamily_Default;
+			font-size: 65%;
+			text-align: center;
+			font-weight: 500;
+			color: hsl(100, 16%, 20%);
+			margin: 10px 0;
+		}
+		
+	}
+
+}
+
+@media screen and (orientation: landscape){
+	
+	.gallery-post{
+		width: 80%;
+    	margin: 0 3.5%;
+    	float: right;
+	}	
+}

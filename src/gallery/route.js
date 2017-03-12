@@ -40,7 +40,20 @@ angular.module("site.gallery").config([
 				}
 			})
 
-			
+			.state('galleryPost', {
+				templateUrl: "galleryPost.html",
+				controller: "galleryPostCtrl",
+				url: '/gallery/:postName',
+				resolve: {
+					postService: 'galleryPostSRV',
+
+					post: ['postService', '$stateParams', function (service, params){
+						return service.getPost({
+							postName: params.postName
+						});
+					}]
+				}
+			})			
 			
 	}
 ])

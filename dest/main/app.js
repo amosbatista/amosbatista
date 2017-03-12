@@ -40187,6 +40187,55 @@ angular.module("site.gallery").controller("galleryCtrl", [
 		
 	}
 ])
+angular.module("site.gallery").controller("galleryPostCtrl", [
+	'$scope',
+	'post',
+	function(
+		scope,
+		post
+	){
+		console.log('The loaded post', post);
+		scope.post = post;
+	}
+])
+angular.module("site.gallery").factory('galleryPostSRV',[
+	'postBySlugResource',
+	function(
+		resource
+	){
+		return {
+			getPost: function(filters){
+				return new Promise (function(resolve, reject){
+					resource.list(
+						{
+							slug: filters.postName,
+							'_embed': 1 // Bring all media and another embed data into response
+						},
+						function(dataReturn){
+
+							resolve({
+								mainImage: dataReturn[0]._embedded["wp:featuredmedia"] != undefined ? dataReturn[0]._embedded["wp:featuredmedia"][0].source_url : '',
+								imageCaption: dataReturn[0]._embedded["wp:featuredmedia"] != undefined || dataReturn[0]._embedded["wp:featuredmedia"][0].caption != undefined ? dataReturn[0]._embedded["wp:featuredmedia"][0].caption.rendered.replace("<p>", "").replace("</p>", "") : '',
+								category: dataReturn[0]._embedded["wp:term"].find( function (termList){
+									return termList.find( function(term){
+										return term.taxonomy == 'category';	
+									});
+								})[0].name,
+								title: dataReturn[0].title.rendered,
+								excerpt: dataReturn[0].excerpt.rendered
+									.replace('<p>', '')
+									.replace('</p>', ''),
+								createdDate: dataReturn[0].date,
+								content: dataReturn[0].content.rendered,
+								all: dataReturn[0]
+							});
+						}
+					);
+				});
+			}
+		}
+	}
+])
 angular.module('site.gallery').factory('gallerySRV', [
 	'postListResource',
 	function(
@@ -40291,6 +40340,7 @@ angular.module('site.gallery').directive('galleryTile', function(){
 
 				scope.processedPostList.push({
 					mainImage: currentImage.mainImage,
+					postName: currentImage.postName,
 					dimensions: {
 						top: params.currentY, 
 						left: params.currentX,
@@ -40470,6 +40520,7 @@ angular.module('site.gallery').directive('galleryTile', function(){
 					}
 
 					scope.processedPostList.push({
+						postName: currentBlock.postName,
 						mainImage: currentBlock.mainImage,
 						dimensions: newDimension,
 						class: 'eucld-alg-hoverEffect scale-size-' + scaleSize // Hover transition
@@ -40654,7 +40705,20 @@ angular.module("site.gallery").config([
 				}
 			})
 
-			
+			.state('galleryPost', {
+				templateUrl: "galleryPost.html",
+				controller: "galleryPostCtrl",
+				url: '/gallery/:postName',
+				resolve: {
+					postService: 'galleryPostSRV',
+
+					post: ['postService', '$stateParams', function (service, params){
+						return service.getPost({
+							postName: params.postName
+						});
+					}]
+				}
+			})			
 			
 	}
 ])
@@ -40778,6 +40842,9 @@ angular.module("site").directive('body', [
 						break;
 					case 'blogPost':
 						element[0].className = 'body-blog-page';
+						break;
+					case 'galleryPost':
+						element[0].className = 'body-gallery-post-page';
 						break;
 					default:
 						element[0].className = 'body-home-page';
