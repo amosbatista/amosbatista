@@ -7,14 +7,17 @@
 		background-size: cover;
 	    background-repeat: no-repeat;
 	    background-position: center center;
+	    position: relative;
 
 	}
 
 	.eucld-alg-hoverEffect{
 		z-index: 1;
+		transition: all 1.8s ease;
 
 		&:hover {
-			z-index: 10;
+			z-index: 50;
+			box-shadow: 0px 0px 20px 8px hsl(100, 0%, 0%);
 		}
 	}
 
@@ -23,7 +26,7 @@
 		transform: none;
 
 		&:hover {
-			transform: scale(1, 1);
+			transform: scale(1.1, 1.1);
 		}
 			
 	}
@@ -32,7 +35,7 @@
 		transform: none;
 
 		&:hover {
-			transform: scale(1.5, 1.5);
+			transform: scale(1.1, 1.1);
 		}
 			
 	}
@@ -50,7 +53,7 @@
 		transform: none;
 
 		&:hover {
-			transform: scale(3, 3);
+			transform: scale(2.5, 2.5);
 		}
 			
 	}
@@ -59,7 +62,7 @@
 		transform: none;
 
 		&:hover {
-			transform: scale(4, 4);
+			transform: scale(5, 5);		
 		}
 			
 	}

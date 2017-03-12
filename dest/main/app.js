@@ -40261,7 +40261,7 @@ angular.module('site.gallery').directive('galleryTile', function(){
 
 
 			// Defining container height
-			element.parent()[0].style.height = window.innerHeight - 210 + 'px';
+			element.parent()[0].style.height = window.innerHeight - 190 + 'px';
 			
 			// Get the size of the screen
 			var _containerWidth = element.parent()[0].offsetWidth;
@@ -40458,10 +40458,10 @@ angular.module('site.gallery').directive('galleryTile', function(){
 					
 					switch (true){
 						case (currentScalePercentage < 1): scaleSize = 5; break;
-						case (currentScalePercentage < 5): scaleSize = 4; break;
-						case (currentScalePercentage < 10): scaleSize = 3; break;
-						case (currentScalePercentage < 15): scaleSize = 2; break;
-						case (currentScalePercentage < 25): scaleSize = 1; break;
+						case (currentScalePercentage < 3): scaleSize = 4; break;
+						case (currentScalePercentage < 5): scaleSize = 3; break;
+						case (currentScalePercentage < 8): scaleSize = 2; break;
+						case (currentScalePercentage < 10): scaleSize = 1; break;
 						default: scaleSize = 0; break;
 					}
 
