@@ -2533,6 +2533,20 @@
     margin: 0 0 0 10px;
   }
 }
+@-webkit-keyframes key_SlideAbout {
+  from {
+    transform: translate(0%, 0%);
+  }
+  to {
+    transform: translate(1%, 100%);
+  }
+}
+.slideAbout {
+  animation: key_SlideAbout 1s ease;
+  -webkit-animation: key_SlideAbout 1s ease;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
 #homeContainer {
   /* Mouse hover transition - To scroll the arrow */
   /*#linkAbout:hover .icon{

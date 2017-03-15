@@ -153,10 +153,19 @@ angular.module('site.home').directive('mainLink', ['$timeout', function(timeout)
 				});
 			});
 
+
+
+
 			/* Function to execute the process insert into the directive*/
 			scope.executeAction = function(){
-				/*element[0].preventDefault();*/
-				scope.linkAction();
+
+				setTimeout(function() {
+					scope.linkAction();	
+				}, (1000));
+				
+				element.parent()[0].classList.add('slideAbout');
+				
+				
 			}
 
 			scope.$on("$destroy", function(event){
