@@ -1,16 +1,68 @@
-@-webkit-keyframes key_SlideAbout {
+@-webkit-keyframes slideUp {
+
     from {
     	transform: translate(0%, 0%);
     }
     to {
-    	transform: translate(1%, 100%);
+    	transform: translate(0%, -100%);
+    }
+}
+
+@-webkit-keyframes slideDown {
+
+    from {
+    	transform: translate(0%, 0%);
+    }
+    to {
+    	transform: translate(0%, 100%);
+    }
+}
+
+@-webkit-keyframes slideLeft {
+
+    from {
+    	transform: translate(0%, 0%);
+    }
+    to {
+    	transform: translate(-100%, 0%);
+    }
+}
+
+@-webkit-keyframes slideRight {
+
+    from {
+    	transform: translate(0%, 0%);
+    }
+    to {
+    	transform: translate(100%, 0%);
     }
 }
 
 
-.slideAbout {
-    animation: key_SlideAbout 1s ease;
-    -webkit-animation: key_SlideAbout 1s ease;
+.slide-about, 
+.slide-gallery,
+.slide-portfolio,
+.slide-blog {
     animation-iteration-count: 1;
     animation-fill-mode: forwards;
+}
+
+.slide-about {
+    animation: slideUp 1s ease;
+    -webkit-animation: slideUp 1s ease;
+}
+
+.slide-gallery {
+    animation: slideRight 1s ease;
+    -webkit-animation: slideRight 1s ease;
+}
+
+.slide-portfolio {
+    animation: slideLeft 1s ease;
+    -webkit-animation: slideLeft 1s ease;
+}
+
+.slide-blog {
+    animation: slideDown 1s ease;
+    -webkit-animation: slideDown 1s ease;
 }

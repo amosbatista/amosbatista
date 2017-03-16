@@ -163,7 +163,21 @@ angular.module('site.home').directive('mainLink', ['$timeout', function(timeout)
 					scope.linkAction();	
 				}, (1000));
 				
-				element.parent()[0].classList.add('slideAbout');
+				switch (scope.linkName){
+					case 'about': 
+						element.parent()[0].classList.add('slide-about');
+						break;
+					case 'portfolio': 
+						element.parent()[0].classList.add('slide-portfolio');
+						break;
+					case 'blog': 
+						element.parent()[0].classList.add('slide-blog');
+						break;
+					case 'gallery': 
+						element.parent()[0].classList.add('slide-gallery');
+						break;
+				}
+				
 				
 				
 			}
