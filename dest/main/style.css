@@ -2565,28 +2565,25 @@
     transform: translate(100%, 0%);
   }
 }
-.slide-about,
-.slide-gallery,
-.slide-portfolio,
-.slide-blog {
+.slide-about {
+  animation: slideUp 1s ease;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
-.slide-about {
-  animation: slideUp 1s ease;
-  -webkit-animation: slideUp 1s ease;
-}
 .slide-gallery {
   animation: slideRight 1s ease;
-  -webkit-animation: slideRight 1s ease;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
 .slide-portfolio {
   animation: slideLeft 1s ease;
-  -webkit-animation: slideLeft 1s ease;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
 .slide-blog {
   animation: slideDown 1s ease;
-  -webkit-animation: slideDown 1s ease;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
 #homeContainer {
   position: absolute;
