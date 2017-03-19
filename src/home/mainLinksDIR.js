@@ -161,7 +161,7 @@ angular.module('site.home').directive('mainLink', ['$timeout', function(timeout)
 
 				setTimeout(function() {
 					scope.linkAction();	
-				}, (1000));
+				}, (500));
 				
 				switch (scope.linkName){
 					case 'about': 

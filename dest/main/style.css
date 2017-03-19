@@ -2566,22 +2566,22 @@
   }
 }
 .slide-about {
-  animation: slideUp 1s ease;
+  animation: slideUp 0.5s ease;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
 .slide-gallery {
-  animation: slideRight 1s ease;
+  animation: slideRight 0.5s ease;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
 .slide-portfolio {
-  animation: slideLeft 1s ease;
+  animation: slideLeft 0.5s ease;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
 .slide-blog {
-  animation: slideDown 1s ease;
+  animation: slideDown 0.5s ease;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
