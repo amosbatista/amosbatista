@@ -1,22 +1,13 @@
-/* Space between top and header (only Landscape)*/
-@topSpacing_Landscape: 115px;
 
 .about-bg{
 	background-color: hsl(142, 35%, 6%);
-	/*position: fixed;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: -1;*/
 }
 
-.page-content{
-	width: 100%;
+.about-page{
 
 	.top-history{
 		position: relative;
-		margin: 175px 0 0 0;
+		margin: 200px 0 0 0;
 
 		.title,
 		.content{
@@ -37,11 +28,11 @@
 		}
 
 		.content{
-			max-width: 60%;
+			max-width: 75%;
 	    	margin: 0 auto;
-	    	padding: 0 0 0 65px;
 	    	font-family: @fontFamily_Default;
 	    	font-style: italic;
+	    	font-size: 87%;
 
 
 	    	&:before
@@ -88,51 +79,15 @@
 
 }
 
-.scroll-link{
-	width: 100%;
-	position: fixed;
-	bottom: 20px;
-	left: 0;
-	text-align: center;
-	color: white;
-	font-size: 70px;
-	animation: scrollDownPopUp 2s ease infinite 0.1s;
-}
 
-.scroll-up{
-	display: none;
-	opacity: 0;
-}
 
-/* Scroll down button animation */
-@keyframes scrollDownPopUp{
-	0% {
-		transform: translate(0px, 0px);
-		opacity: 0.7;
-	}
-	25% {
-		transform: translate(0px, 15px);
-		opacity: 1;
-	}
-	100% {
-		transform: translate(0px, 0px);
-		opacity: 0.7;
-	}
-	
-}
+
 
 
 
 @media screen and (orientation: landscape){
 
-	.page-content{
-		.top-history{
-			margin: @topSpacing_Landscape 0 0 0;
-		}
-
-		.page-content-subpart{
-			width: 60%;
-		}	
-	}
-
+	.page-content-subpart{
+		width: 60%;
+	}	
 }

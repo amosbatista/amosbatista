@@ -1,0 +1,72 @@
+@keyframes scrollTitle {
+	0% {
+		transform: translate(0%, 0%);
+		opacity: 1;
+	}
+
+	100% {
+		transform: translate(0%, -100%);
+		opacity: 0.1;
+	}
+}
+
+@keyframes scrollContent {
+	0% {
+		transform: translate(0%, -100%);
+		opacity: 0.1;
+	}
+
+	100% {
+		transform: translate(0%, 0%);
+		opacity: 1;
+	}
+}
+
+@keyframes linkSwing {
+
+    0% {
+    	transform: translate(0px, 0px);
+    	opacity: 1;
+    }
+    25% {
+    	transform: translate(0px, -25px);
+    	opacity: 0.25;
+    }
+    100% {
+    	transform: translate(0px, 0px);
+    	opacity: 1;
+    }
+
+}
+
+
+
+
+.easy-scroll-title{
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+	animation: scrollTitle 0.5s ease;
+}
+
+.easy-scroll-content{
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+	animation: scrollContent 0.5s ease;
+}
+
+
+
+/* Easy scroll link*/
+.easy-scroll-link{
+	width: 100%;
+	position: fixed;
+	bottom: 20px;
+	left: 0;
+	text-align: center;
+	color: white;
+	font-size: 70px;
+	animation: linkSwing 5s ease infinite 0.1s;
+}
+
+
+

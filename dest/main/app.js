@@ -38529,87 +38529,30 @@ angular.module('common.easyScroll', []);
 angular.module('common.easyScroll').directive('easyScrollContentLink', [ function(){
 
 	// The function process to show the link
-	var scrollAndShowProcessFunction = function(scope, element, animation){
-		var showElement = true;
-		var linkOpacity = 0;	
-
-		clearInterval (animation);
-
-		element[0].style.display = 'block';
-
-		// Hide the link
-		animation = setInterval(function (){
-
-			// Animation end
-			if(linkOpacity > 1 ){
-				linkOpacity = 1;
-				clearInterval (animation);
-				animation = null;
-			}
-
-			// Setup transition
-			else{
-				linkOpacity = Number((linkOpacity + 0.2).toFixed(2));
-			}
-
-			element[0].children[0].style.opacity = linkOpacity;
-
-		}, 25);
+	var scrollAndShowProcessFunction = function(scope, element){
+		
+		element[0].classList.add('swing-link');
 	}
 
 
 	// The function process to hide the link
-	var scrollAndHideProcessFunction = function(scope, element, animation){
-		var showElement = true;
-		var linkOpacity = 1;
-		
-		// Clear the animation, if there's some activated
-		clearInterval (animation);
-
-		// Hide the link
-		animation = setInterval(function (){
-
-			// Animation end
-			if(linkOpacity <= 0 ){
-				linkOpacity = 0;
-				element[0].style.display = 'none';
-				clearInterval (animation);
-				animation = null;
-			}
-
-			// Setup transition
-			else{
-				linkOpacity = (linkOpacity - 0.2).toFixed(2);
-			}
-
-			element[0].children[0].style.opacity = linkOpacity;
-
-		}, 25);
-		
+	var scrollAndHideProcessFunction = function(scope, element){
+		element[0].classList.remove('swing-link');
 	}
 
 	return {
 		restrict: "A",
 		link: function(scope, element){
 
-			var animation = null;
+			element[0].classList.add('easy-scroll-link');		
 
 			// Activate the transition into this directive when receive the event
 			scope.$on ("easyScrollDown", function(){
-				// Do not end the last animation
-				if( animation != null)
-					return;
-
-				scrollAndHideProcessFunction(scope, element, animation);
+				scrollAndHideProcessFunction(scope, element);
 			});
 
 			scope.$on ("easyScrollUp", function(){
-
-				// Do not end the last animation
-				if( animation != null)
-					return;
-
-				scrollAndShowProcessFunction(scope, element, animation);
+				scrollAndShowProcessFunction(scope, element);
 			});
 
 			// Emit the event at click, to activate to another directives
@@ -38631,69 +38574,12 @@ angular.module('common.easyScroll').directive('easyScrollTop', function(){
 		restrict: "A",
 		link: function(scope, element){
 
-			var animation = null; 
-
 			scope.$on ("easyScrollDown", function(){
-				var translateY = 1;
-				//var translateYLimit = window.innerHeight
-				var translateYLimit = 200;
-				var translateOpac = 0.9;
-
-				
-				if( animation != null)
-					return;
-
-				clearInterval (animation);
-
-				animation = setInterval(function (){
-
-					// End of animation
-					if(translateY >= translateYLimit){
-						translateY = translateYLimit;
-						clearInterval (animation);
-						animation = null;
-					}
-
-					// Process the values
-					else{
-						translateY = translateY * 1.2 + 5;
-						translateOpac = translateOpac - 0.07;
-					}
-
-					element[0].style.transform = 'translate(0px, -' + translateY + 'px)';
-					element[0].style.opacity = translateOpac;
-				}, 20);
+				element[0].classList.add('easy-scroll-title');
 			});
 
 			scope.$on ("easyScrollUp", function(){
-				var translateY = 200;
-				var translateYLimit = 1;
-				var translateOpac = 0;
-			
-				if( animation != null)
-					return;
-				
-				clearInterval (animation);
-
-				animation = setInterval(function (){
-
-					// End of animation
-					if(translateY <= translateYLimit){
-						translateY = translateYLimit;
-						translateOpac = 1;
-						clearInterval (animation);
-						animation = null;
-					}
-
-					// Process the values
-					else{
-						translateY = translateY / 1.2 - 5;
-						translateOpac = translateOpac + 0.07;
-					}
-
-					element[0].style.transform = 'translate(0px, -' + translateY + 'px)';
-					element[0].style.opacity = translateOpac;
-				}, 20);
+				element[0].classList.remove('easy-scroll-title');
 			});
 		}
 	}
@@ -38707,72 +38593,13 @@ angular.module('common.easyScroll').directive('easyScrollContent', function(){
 		restrict: "A",
 		link: function(scope, element){
 			
-			var animation = null; 
 
 			scope.$on ("easyScrollDown", function(){
-				
-				var translateOpac = 0.1;
-				var translateY = 175;
-
-				if( animation != null)
-					return;
-
-				clearInterval (animation);
-
-				animation = setInterval(function (){
-
-					// Animation end
-					if( translateY <= -75 ){
-						translateOpac = 1;
-						/*translateY = 0;*/
-						clearInterval(animation);
-						animation = null;
-					}
-
-					// Animation process
-					else{
-						translateOpac = translateOpac + 0.2;
-						translateY = translateY - 50;
-					}
-
-					// Transition set
-					element[0].style.transform = 'translateY(' + translateY + 'px)';
-					element[0].style.opacity = translateOpac;
-
-				}, 50);
+				element[0].classList.add('easy-scroll-content');
 			});
 
 			scope.$on ("easyScrollUp", function(){
-				
-				var translateOpac = 1;
-				var translateY = 0;
-
-				if( animation != null)
-					return;
-
-				clearInterval (animation);
-
-				animation = setInterval(function (){
-
-					// Animation end
-					if( translateY >= 175 ){
-						translateOpac = 0.1;
-						/*translateY = 0;*/
-						clearInterval(animation);
-						animation = null;
-					}
-
-					// Animation process
-					else{
-						translateOpac = translateOpac - 0.2;
-						translateY = translateY + 50;
-					}
-
-					// Transition set
-					element[0].style.transform = 'translateY(' + translateY + 'px)';
-					element[0].style.opacity = translateOpac;
-
-				}, 50);
+				element[0].classList.remove('easy-scroll-content');
 			});
 		}
 	}
