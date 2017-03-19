@@ -2585,17 +2585,57 @@
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
 }
+/* Link mouse over effect */
+@keyframes swingUp {
+  0% {
+    transform: translate(0%, 0%);
+  }
+  25% {
+    transform: translate(0%, -100%);
+  }
+  100% {
+    transform: translate(0%, 25%);
+  }
+}
+@keyframes swingDown {
+  0% {
+    transform: translate(0%, 0%);
+  }
+  25% {
+    transform: translate(0%, 100%);
+  }
+  100% {
+    transform: translate(0%, -25%);
+  }
+}
+@keyframes swingRight {
+  0% {
+    transform: translate(0%, 0%);
+  }
+  25% {
+    transform: translate(100%, 0%);
+  }
+  100% {
+    transform: translate(-25%, 0%);
+  }
+}
+@keyframes swingLeft {
+  0% {
+    transform: translate(0%, 0%);
+  }
+  25% {
+    transform: translate(-100%, 0%);
+  }
+  100% {
+    transform: translate(25%, 0%);
+  }
+}
 #homeContainer {
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0px;
   left: 0px;
-  /* Mouse hover transition - To scroll the arrow */
-  /*#linkAbout:hover .icon{
-		
-		animation: iconScrollArrowUp 1s linear infinite;
-	}*/
   /* Animation */
 }
 #homeContainer .main-link {
@@ -2605,13 +2645,27 @@
   opacity: 1;
   transition: opacity 0.7s ease-in;
 }
+#homeContainer .link-swing .icon {
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+#homeContainer .link-swing #linkAbout .icon {
+  animation: swingUp 0.9s ease infinite;
+}
+#homeContainer .link-swing #linkPortfolio .icon {
+  animation: swingLeft 0.9s ease infinite;
+}
+#homeContainer .link-swing #linkGallery .icon {
+  animation: swingRight 0.9s ease infinite;
+}
+#homeContainer .link-swing #linkBlog .icon {
+  animation: swingDown 0.9s ease infinite;
+}
 #homeContainer #linkAbout {
   top: 10px;
-  /*left: 30px;*/
   left: 10px;
 }
 #homeContainer #linkGallery {
-  /*top: 30px;*/
   top: 70px;
   right: 10px;
   display: flex;
@@ -2619,11 +2673,9 @@
 }
 #homeContainer #linkBlog {
   bottom: 10px;
-  /*right: 30px;*/
   right: 10px;
 }
 #homeContainer #linkPortfolio {
-  /*bottom: 30px;*/
   bottom: 70px;
   left: 10px;
   display: flex;
