@@ -102,11 +102,6 @@ angular.module('site.home').directive('mainLink', ['$timeout', function(timeout)
 						break;
 				}				
 			}
-
-			scope.$on("$destroy", function(event){
-				clearInterval(animationID);
-				animationID = undefined;
-			});
 		}
 	}
 }]);

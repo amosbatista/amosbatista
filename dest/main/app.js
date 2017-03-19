@@ -39177,6 +39177,7 @@ angular.module('site.home').directive('animatedBg', ['$timeout', function(timeou
 			var theCanvas;
 			var context;
 			var animation;
+			var lineProgressionSize =  1;
 
 			// On load, ge the elements and generate the animation
 			timeout(function(){
@@ -39313,18 +39314,18 @@ angular.module('site.home').directive('animatedBg', ['$timeout', function(timeou
 
 								// Recalculate the point
 								if(point.X > centralPoint.X)
-									point.X --;
+									point.X = point.X - lineProgressionSize;
 								if(point.X < centralPoint.X)
-									point.X ++;
+									point.X = point.X + lineProgressionSize;
 
 								if(point.Y > centralPoint.Y)
-									point.Y --;
+									point.Y = point.Y - lineProgressionSize;
 								if(point.Y < centralPoint.Y)
-									point.Y ++;
+									point.Y = point.Y + lineProgressionSize;
 
 							});
 
-						}, 5 );
+						}, 60 );
 					},
 
 					stopAndClear: function(){
@@ -39500,11 +39501,6 @@ angular.module('site.home').directive('mainLink', ['$timeout', function(timeout)
 						break;
 				}				
 			}
-
-			scope.$on("$destroy", function(event){
-				clearInterval(animationID);
-				animationID = undefined;
-			});
 		}
 	}
 }]);
