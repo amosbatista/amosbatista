@@ -2774,10 +2774,6 @@
   opacity: 1;
   transition: opacity 0.7s ease-in;
 }
-#homeContainer .link-swing .icon {
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-}
 #homeContainer .link-swing #linkAbout .icon {
   animation: swingUp 0.9s ease infinite;
 }
