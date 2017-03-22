@@ -13,11 +13,6 @@ angular.module('common.header').directive("myHeader", [
 			replace: true,
 			link: function (scope, element){
 
-				var headerAnimation = null;
-				var headerAnimationLimits = 0;
-				var headerTransictionFactor = 0;
-				var headerAnimationCurrentTop = 0;
-
 				/* Links redirects*/
 				var headerLinkToHome = function(){
 					locationObj.path('/');
@@ -71,85 +66,13 @@ angular.module('common.header').directive("myHeader", [
 				/* Header behavior with the footer. Header hides, when footers shows and vice-versa */
 				/* Event to detect the apperance of footer */
 				scope.$on("footerIsRising", function(){
-					isBrigingFooterUp = true;
-
-					if(headerAnimation == null){
-						animationProcess();	
-					}
-					
+					element[0].classList.add('hide-header');
+					element[0].classList.remove('show-header');
 				});
 				scope.$on("footerIsHiding", function(){
-					isBrigingFooterUp = false;
-
-					if(headerAnimation == null){
-						animationProcess();	
-					}
+					element[0].classList.add('show-header');
+					element[0].classList.remove('hide-header');
 				});
-
-
-				/* Page orientation detection */
-				var detectOrientation = function (){
-
-					if(window.innerWidth <= window.innerHeight){
-						headerAnimationLimits = 200;
-						headerTransictionFactor = 20;
-						return "portrait";
-					}
-					else{
-						headerAnimationLimits = 430; // Header top + header size
-						headerTransictionFactor = 40;
-						return "landscape";
-					}
-				};
-
-				var pageOrientation = detectOrientation();
-
-				window.addEventListener("resize", function(){
-					pageOrientation = detectOrientation();
-				});
-
-				
-
-				headerAnimationCurrentTop = headerAnimationLimits;
-
-				/* Animation process to footer transition */
-				var animationProcess = function(){
-
-					headerAnimation = setInterval(function(){
-
-						// Limits of animation, according orientation and scroll position
-						// Bringing footer up
-						if(isBrigingFooterUp == true){
-
-							
-							if( headerAnimationCurrentTop <= 0){
-								headerAnimationCurrentTop = 0;
-								clearInterval(headerAnimation);
-								headerAnimation = null;
-							}
-							else{
-								headerAnimationCurrentTop = headerAnimationCurrentTop - headerTransictionFactor;	
-							}
-							
-						}
-						
-						// Bringing footer down
-						else{
-
-							if(headerAnimationCurrentTop >= headerAnimationLimits){
-								headerAnimationCurrentTop = headerAnimationLimits;
-								clearInterval(headerAnimation);
-								headerAnimation = null;
-							}
-							else{
-								headerAnimationCurrentTop = headerAnimationCurrentTop + headerTransictionFactor;	
-							}							
-						}
-
-						element[0].style.transform = 'translate(0px, -' + (headerAnimationLimits - headerAnimationCurrentTop) + 'px)';
-
-					}, 30);
-				}
 			}
 		}
 	}

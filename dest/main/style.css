@@ -2340,18 +2340,18 @@
 /* Set an animation that will make the element stay where animation finishes */
 @keyframes hide {
   from {
-    transform: transition(0%, 0%);
+    transform: translate(0%, 0%);
   }
   to {
-    transform: transition(0%, -100%);
+    transform: translate(0%, -150%);
   }
 }
 @keyframes show {
   from {
-    transform: transition(0%, -100%);
+    transform: translate(0%, -150%);
   }
   to {
-    transform: transition(0%, 0%);
+    transform: translate(0%, 0%);
   }
 }
 .hide-header {
