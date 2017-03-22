@@ -1,0 +1,6 @@
+/* Set an animation that will make the element stay where animation finishes */
+.mix-animation(@keyFrame, @endurance: 0.5s, @transition: ease){
+	animation: @keyFrame @endurance @transition;
+	animation-iteration-count: 1;
+	animation-fill-mode: forwards;
+}
