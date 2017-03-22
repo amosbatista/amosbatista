@@ -2338,6 +2338,32 @@
 
 /* For space in bottom, for the footer */
 /* Set an animation that will make the element stay where animation finishes */
+@keyframes hide {
+  from {
+    transform: transition(0%, 0%);
+  }
+  to {
+    transform: transition(0%, -100%);
+  }
+}
+@keyframes show {
+  from {
+    transform: transition(0%, -100%);
+  }
+  to {
+    transform: transition(0%, 0%);
+  }
+}
+.hide-header {
+  animation: hide 0.5s ease;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+.show-header {
+  animation: show 0.5s ease;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
 .header {
   position: fixed;
   width: 100%;

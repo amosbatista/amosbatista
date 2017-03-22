@@ -1,0 +1,27 @@
+@keyframes hide{
+	from {
+		transform: transition(0%, 0%);
+	}
+
+	to{
+		transform: transition(0%, -100%);	
+	}
+}
+
+@keyframes show{
+	from {
+		transform: transition(0%, -100%);
+	}
+
+	to{
+		transform: transition(0%, 0%);	
+	}
+}
+
+.hide-header{
+	.mix-animation(hide);   
+}
+
+.show-header{
+	.mix-animation(show);   
+}
