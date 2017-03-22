@@ -2488,6 +2488,32 @@
     margin: 0 0 35px 0;
   }
 }
+@keyframes hideFooter {
+  from {
+    transform: translate(0%, 0%);
+  }
+  to {
+    transform: translate(0%, 150%);
+  }
+}
+@keyframes showFooter {
+  from {
+    transform: translate(0%, 150%);
+  }
+  to {
+    transform: translate(0%, 0%);
+  }
+}
+.hide-footer {
+  animation: hideFooter 0.5s ease;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+.show-footer {
+  animation: showFooter 0.5s ease;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
 /* Container to hold the template content */
 .footer-container {
   position: fixed;
@@ -2495,7 +2521,8 @@
   bottom: 0;
   left: 0;
   margin: 0;
-  /*transform: translate(0px, @footerHeight);*/
+  transform: translate(0%, 150%);
+  /* Starts hide*/
 }
 .footer-container .footer {
   margin: 0 auto;
@@ -2564,12 +2591,12 @@
 .page-content {
   width: 100%;
   position: relative;
+  margin: 0 0 250px 0;
 }
 @media screen and (orientation: landscape) {
   .page-content {
     width: 90%;
     float: right;
-    margin: 0 0 250px 0;
     /*border: 1px solid white;*/
   }
 }

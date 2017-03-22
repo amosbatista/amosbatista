@@ -15,12 +15,7 @@ angular.module('common.footer').directive("myFooter", [
 			},
 			link: function (scope, element){
 
-				/* Control the animation behavior*/
-				var isBrigingFooterUp = false;				
-				var footerAnimation = null;
-				var footerAnimationLimits = 0;
-				var footerAnimationCurrentTop = 0;
-				var pageOrientation = '';
+				scope.isFixed = scope.isFixed || false;
 
 				/* Links redirects*/
 				var footerLinkToHome = function(){
@@ -66,103 +61,22 @@ angular.module('common.footer').directive("myFooter", [
 					return link.location != locationObj.path();
 				});
 
-
-
 				/* Event to detect the apperance of footer */
 				scope.$on("footerIsRising", function(){
-					isBrigingFooterUp = true;
 
-					if(footerAnimation == null){
-						animationProcess();	
+					if(scope.isFixed == false){
+						element[0].classList.add('show-footer');
+						element[0].classList.remove('hide-footer');
 					}
 					
 				});
 				scope.$on("footerIsHiding", function(){
-					isBrigingFooterUp = false;
 
-					if(footerAnimation == null){
-						animationProcess();	
+					if(scope.isFixed == false){
+						element[0].classList.add('hide-footer');
+						element[0].classList.remove('show-footer');
 					}
 				});
-
-
-				/* Page orientation detection */
-				var detectOrientation = function (){
-
-					if(window.innerWidth <= window.innerHeight)
-						return "portrait";
-					else
-						return "landscape";
-				};
-
-				pageOrientation = detectOrientation();
-
-				window.addEventListener("resize", function(){
-					pageOrientation = detectOrientation();
-
-					/* Force translation fix*/
-					/*if(isBrigingFooterUp == false && footerAnimation == null && pageOrientation == "portrait")
-						element[0].style.transform = 'translate(0px, 200px)';*/
-				});
-
-
-				/* Before any animation, set the footer limits*/
-				if(pageOrientation == "portrait"){
-					footerAnimationLimits = 200;
-				}
-				else{
-					footerAnimationLimits = 150;
-				}
-
-				// Remove the transition configuration when page had no scroll
-				if(scope.isFixed )
-					element[0].style.transform = '';
-
-				/* Set the initial transition*/
-				else
-					element[0].style.transform = 'translate(0px, ' + footerAnimationLimits + 'px)';
-
-
-				/* Animation process to footer transition */
-				var animationProcess = function(){
-
-					footerAnimation = setInterval(function(){
-
-						// Limits of animation, according orientation and scroll position
-						// Bringing footer up
-						if(isBrigingFooterUp == true){
-
-							if(footerAnimationCurrentTop >= footerAnimationLimits - 20){
-								footerAnimationCurrentTop = footerAnimationLimits;
-								clearInterval(footerAnimation);
-								footerAnimation = null;
-							}
-							else{
-								footerAnimationCurrentTop = footerAnimationCurrentTop + 20;	
-							}
-
-							
-						}
-						
-						// Bringing footer down
-						else{
-
-							if( footerAnimationCurrentTop <= 0){
-								footerAnimationCurrentTop = -5;
-								clearInterval(footerAnimation);
-								footerAnimation = null;
-							}
-							else{
-								footerAnimationCurrentTop = footerAnimationCurrentTop - 20;	
-							}
-						}
-
-						element[0].style.transform = 'translate(0px, ' + (footerAnimationLimits - footerAnimationCurrentTop) + 'px)';
-
-					}, 30);
-				}
-				
-
 			}
 		}
 	}

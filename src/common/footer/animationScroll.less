@@ -1,0 +1,27 @@
+@keyframes hideFooter{
+	from {
+		transform: translate(0%, 0%);
+	}
+
+	to{
+		transform: translate(0%, 150%);	
+	}
+}
+
+@keyframes showFooter{
+	from {
+		transform: translate(0%, 150%);
+	}
+
+	to{
+		transform: translate(0%, 0%);	
+	}
+}
+
+.hide-footer{
+	.mix-animation(hideFooter);   
+}
+
+.show-footer{
+	.mix-animation(showFooter);   
+}
