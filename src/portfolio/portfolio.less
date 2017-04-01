@@ -1,10 +1,5 @@
-/*.page-content{
-	width: 100%;
-	padding: @headerHeight + 35 0 0 0;
-	font-family: @fontFamily_Default;
-	margin: 0 0 @footerHeight 0;
-	float: left;
-
+.portfolio-page{
+	margin-top: 175px;
 
 	.case-list{
 		width: 90%;
@@ -12,12 +7,11 @@
 
 		.case{
 			width: 100%;
-			float: left;
 			margin: 0 0 50px 0;
 
 			.case-image{
-				width: 100%;
-    			max-width: 200px;
+    			max-width: 150px;
+    			max-height: 125px;
     			margin: 0 auto 10px auto;
     			display: block;
 			}
@@ -35,22 +29,28 @@
 				.case-title{
 					text-transform: uppercase;
 					font-size: 25px;
+					font-family: @fontFamily_Titles;
+					text-transform: uppercase;
+					font-weight: 100;
+					color: hsl(100, 0%, 20%);
 				}
 
 				.case-type{
-					color: hsl(100, 0%, 45%);
 					font-size: 16px;
+					font-family: @fontFamily_Titles;
+					color: hsl(100, 0%, 40%);
 				}
 
 				.case-description{
 					font-size: 18px;
-					color: hsl(100, 0%, 5%);
+					color: hsl(100, 0%, 25%);
 				}
 			}
 		}
 	}
 
 	.smallTabs{
+		position: relative;
 		width: 100%;
 		float: left;
 	}
@@ -60,16 +60,18 @@
 
 @media screen and (orientation: landscape){
 
-	.page-content{
-		padding: 50px 0 0 0;
+	.portfolio-page{
+
+		margin-top: 50px;
 
 		.case-list{
 			width: 100%;
     		float: left;
 
     		.case{
-				max-width: 35%;
+				max-width: 33%;
 				margin: 0 30px 30px 0px;
+				float: left;
 
 				&:nth-child(2n-1){
 					margin: 0 30px 30px 22%;	
@@ -94,4 +96,3 @@
 		}
 	}
 }
-*/

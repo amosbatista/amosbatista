@@ -2591,7 +2591,7 @@
 .page-content {
   width: 100%;
   position: relative;
-  margin: 0 0 250px 0;
+  margin: 110px 0 250px 0;
 }
 @media screen and (orientation: landscape) {
   .page-content {
@@ -3038,8 +3038,8 @@
   background-color: #0a150e;
 }
 .about-page .top-history {
+  margin-top: 200px;
   position: relative;
-  margin: 200px 0 0 0;
   transform: translate(0%, 0%);
 }
 .about-page .top-history .title,
@@ -3105,7 +3105,7 @@
 .breadcrumb {
   font-family: 'Source Serif Pro', sans-serif;
   margin: 30px 0 30px;
-  float: left;
+  height: 35px;
 }
 .breadcrumb .item {
   color: #d9d9d9;
@@ -3130,103 +3130,82 @@
     margin: 0px 0 38px 60px;
   }
 }
-/*.page-content{
-	width: 100%;
-	padding: @headerHeight + 35 0 0 0;
-	font-family: @fontFamily_Default;
-	margin: 0 0 @footerHeight 0;
-	float: left;
-
-
-	.case-list{
-		width: 90%;
-		margin: 0 auto;
-
-		.case{
-			width: 100%;
-			float: left;
-			margin: 0 0 50px 0;
-
-			.case-image{
-				width: 100%;
-    			max-width: 200px;
-    			margin: 0 auto 10px auto;
-    			display: block;
-			}
-
-			.case-detail{
-				width: 100%;
-
-				.case-title,
-				.case-type,
-				.case-description{
-					margin: 0;
-					text-align: center;
-				}
-
-				.case-title{
-					text-transform: uppercase;
-					font-size: 25px;
-				}
-
-				.case-type{
-					color: hsl(100, 0%, 45%);
-					font-size: 16px;
-				}
-
-				.case-description{
-					font-size: 18px;
-					color: hsl(100, 0%, 5%);
-				}
-			}
-		}
-	}
-
-	.smallTabs{
-		width: 100%;
-		float: left;
-	}
+.portfolio-page {
+  margin-top: 175px;
 }
-
-
-
-@media screen and (orientation: landscape){
-
-	.page-content{
-		padding: 50px 0 0 0;
-
-		.case-list{
-			width: 100%;
-    		float: left;
-
-    		.case{
-				max-width: 35%;
-				margin: 0 30px 30px 0px;
-
-				&:nth-child(2n-1){
-					margin: 0 30px 30px 22%;	
-				}
-    			
-				.case-image{
-					margin: 0 0 10px 0;
-				}
-
-				.case-detail{
-					.case-title,
-					.case-type,
-					.case-description{
-						text-align: left;
-					}
-				}
-			}
-		}
-		.smallTabs{
-			width: 75%;
-			margin: 0 0 0 160px;
-		}
-	}
+.portfolio-page .case-list {
+  width: 90%;
+  margin: 0 auto;
 }
-*/
+.portfolio-page .case-list .case {
+  width: 100%;
+  margin: 0 0 50px 0;
+}
+.portfolio-page .case-list .case .case-image {
+  max-width: 150px;
+  max-height: 125px;
+  margin: 0 auto 10px auto;
+  display: block;
+}
+.portfolio-page .case-list .case .case-detail {
+  width: 100%;
+}
+.portfolio-page .case-list .case .case-detail .case-title,
+.portfolio-page .case-list .case .case-detail .case-type,
+.portfolio-page .case-list .case .case-detail .case-description {
+  margin: 0;
+  text-align: center;
+}
+.portfolio-page .case-list .case .case-detail .case-title {
+  font-size: 25px;
+  font-family: 'Fjalla One', sans-serif;
+  text-transform: uppercase;
+  font-weight: 100;
+  color: #333333;
+}
+.portfolio-page .case-list .case .case-detail .case-type {
+  font-size: 16px;
+  font-family: 'Fjalla One', sans-serif;
+  color: #666666;
+}
+.portfolio-page .case-list .case .case-detail .case-description {
+  font-size: 18px;
+  color: #404040;
+}
+.portfolio-page .smallTabs {
+  position: relative;
+  width: 100%;
+  float: left;
+}
+@media screen and (orientation: landscape) {
+  .portfolio-page {
+    margin-top: 50px;
+  }
+  .portfolio-page .case-list {
+    width: 100%;
+    float: left;
+  }
+  .portfolio-page .case-list .case {
+    max-width: 33%;
+    margin: 0 30px 30px 0px;
+    float: left;
+  }
+  .portfolio-page .case-list .case:nth-child(2n-1) {
+    margin: 0 30px 30px 22%;
+  }
+  .portfolio-page .case-list .case .case-image {
+    margin: 0 0 10px 0;
+  }
+  .portfolio-page .case-list .case .case-detail .case-title,
+  .portfolio-page .case-list .case .case-detail .case-type,
+  .portfolio-page .case-list .case .case-detail .case-description {
+    text-align: left;
+  }
+  .portfolio-page .smallTabs {
+    width: 75%;
+    margin: 0 0 0 160px;
+  }
+}
 .small-tabs {
   /* Tab colors */
 }
@@ -3789,7 +3768,8 @@ body {
   overflow: auto;
   background-color: #081109;
 }
-.body-blog-page {
+.body-blog-page,
+.body-portfolio-page {
   overflow: auto;
 }
 .body-gallery-post-page {
