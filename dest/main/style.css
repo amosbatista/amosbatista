@@ -2592,11 +2592,13 @@
   width: 100%;
   position: relative;
   margin: 110px 0 250px 0;
+  z-index: -1;
 }
 @media screen and (orientation: landscape) {
   .page-content {
     width: 90%;
     float: right;
+    margin: 0px 0 250px 0;
     /*border: 1px solid white;*/
   }
 }
@@ -3253,12 +3255,12 @@
 .post {
   position: relative;
   width: 100%;
-  margin: 0 0 15px 0;
+  margin: 0 0 60px 0;
   height: 175px;
-  border-bottom: 1px dotted rgba(46, 138, 0, 0.42);
+  /*border-bottom: 1px dotted hsla(100, 100%, 27%, 0.42);*/
 }
 .post .post-background {
-  width: 45%;
+  width: 35%;
   height: 100%;
   background-size: contain;
   background-repeat: no-repeat;
@@ -3275,10 +3277,10 @@
   font-size: 80%;
 }
 .post .title {
-  width: 45%;
-  text-align: left;
+  width: 55%;
+  text-align: right;
   font-family: 'Fjalla One', sans-serif;
-  font-size: 70%;
+  font-size: 85%;
   padding: 0 15px 25px 0;
   float: right;
   margin: 0;
@@ -3291,14 +3293,14 @@
   font-size: 55%;
   padding: 0 15px 0 0;
   float: right;
-  width: 45%;
+  width: 55%;
 }
 .post .excerpt {
-  font-size: 57%;
+  font-size: 75%;
   color: #295016;
-  padding: 0 30px 0 0;
-  text-align: left;
-  width: 45%;
+  padding: 0 15px 0 0;
+  text-align: right;
+  width: 55%;
   float: right;
   margin: 0;
   text-indent: 25px;
@@ -3316,7 +3318,7 @@
   width: 100%;
   height: 100%;
   box-shadow: inset 0px 0px 300px 60px;
-  z-index: -1;
+  /*z-index: -1;*/
   background-size: cover;
 }
 .featured .category {
@@ -3332,18 +3334,18 @@
 .featured .title {
   position: absolute;
   right: 0px;
-  bottom: 50%;
+  bottom: 18%;
   width: 65%;
   color: #d7eed9;
   text-align: right;
   font-family: 'Fjalla One', sans-serif;
-  font-size: 140%;
+  font-size: 165%;
   padding: 0 15px 0 0;
 }
 .featured .excerpt {
   position: absolute;
   right: 0px;
-  bottom: 20px;
+  bottom: 5px;
   font-size: 77%;
   color: #d7eed9;
   padding: 0 30px 30px 0;
@@ -3356,8 +3358,7 @@
     width: 50%;
     position: absolute;
     top: 0;
-    left: 110px;
-    box-shadow: 0px 3px 1px 0px #172b0d;
+    left: 0px;
     border: none;
   }
   .featured .post-background {
@@ -3367,20 +3368,21 @@
     font-size: 170%;
   }
   .sub-featureds {
-    width: 28%;
+    width: 95%;
     position: absolute;
-    top: 40px;
-    right: 0px;
-    background-color: #c2ffcf;
+    top: 10px;
+    left: 0px;
+    background-color: #dfece2;
     padding: 20px 0 0 20px;
-    box-shadow: 0px 1px 1px 0px #172b0d;
     border: none;
+    z-index: -10;
   }
   .sub-featureds .sub-featured {
     height: 180px;
     position: relative;
-    width: 100%;
+    width: 45%;
     float: right;
+    clear: right;
     border-bottom: none;
   }
   .sub-featureds .sub-featured .post-background {
@@ -3393,14 +3395,14 @@
   .sub-featureds .sub-featured .title {
     font-size: 100%;
     width: 100%;
-    padding: 0;
+    padding: 10px 20px 0 0;
   }
   .sub-featureds .sub-featured .excerpt {
     width: 100%;
-    padding: 0 0 0 10px;
+    padding: 0 20px 0 10px;
   }
   .post-list {
-    margin: 430px 0 0 150px;
+    margin: 535px 0 0 150px;
     width: 69%;
   }
   .post-list .post .post-background {
@@ -3421,12 +3423,6 @@
   }
 }
 @media screen and (min-width: 900px) {
-  .sub-featureds {
-    width: 34%;
-    position: absolute;
-    top: 100px;
-    right: 0px;
-  }
   .sub-featureds .sub-featured {
     height: 150px;
   }
@@ -3439,11 +3435,9 @@
   }
   .sub-featureds .sub-featured .title {
     width: 53%;
-    padding: 0;
   }
   .sub-featureds .sub-featured .excerpt {
     width: 53%;
-    padding: 0;
   }
   .post-list {
     width: 80%;

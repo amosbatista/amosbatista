@@ -4,7 +4,8 @@
   "description": "My personal blog",
   "main": "gulpfile.js",
   "dependencies": {
-    "gulp": "^3.9.1"
+    "gulp": "^3.9.1",
+    "moment": "^2.18.1"
   },
   "devDependencies": {
     "angular-resource": "^1.6.2",

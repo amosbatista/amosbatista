@@ -1,7 +1,9 @@
 angular.module("site.blog").factory('postSRV',[
 	'postBySlugResource',
+	'dataSRV',
 	function(
-		resource
+		resource,
+		objData
 	){
 		return {
 			getPost: function(filters){
@@ -25,7 +27,7 @@ angular.module("site.blog").factory('postSRV',[
 								excerpt: dataReturn[0].excerpt.rendered
 									.replace('<p>', '')
 									.replace('</p>', ''),
-								createdDate: dataReturn[0].date,
+								createdDate: objData.formatarDataMesExtenso(post.date),
 								content: dataReturn[0].content.rendered,
 								/*all: dataReturn[0]*/
 							});

@@ -2,8 +2,11 @@
 (if page orientation is landscape) posts*/
 angular.module("site.blog").factory('subFeaturedPostListSRV',[
 	'postListResource',
+	'dataSRV',
 	function(
-		resource
+		resource,
+		objData
+
 	){
 		return {
 			getList: function(filters){
@@ -32,7 +35,7 @@ angular.module("site.blog").factory('subFeaturedPostListSRV',[
 									excerpt: post.excerpt.rendered
 										.replace('<p>', '')
 										.replace('</p>', ''),
-									createdDate: post.date,
+									createdDate: objData.formatarDataMesExtenso(post.date),
 									postName: post.slug,
 								}
 							})
