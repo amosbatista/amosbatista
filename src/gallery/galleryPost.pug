@@ -1,16 +1,18 @@
 div(my-header)
 
 // The content
-.gallery-post
+.page-content.gallery
 
-	.photo-cover
+	.gallery-post
 
-		img.featured-img(ng-src="{{post.mainImage}}")
-		
-		h1.title
-			|{{post.title}}
+		.photo-cover
 
-		p.excerpt
-			|{{post.excerpt}}
+			img.featured-img(ng-src="{{post.mainImage}}")
+			
+			h1.title
+				|{{post.title}}
 
-div(my-footer)
+			p.excerpt
+				|{{post.excerpt}}
+
+div(my-footer is-fixed)

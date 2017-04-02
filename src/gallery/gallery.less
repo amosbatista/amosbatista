@@ -1,5 +1,7 @@
-/*.gallery.page-content{
+.gallery{
 	padding: 0;
+	margin-top: 35px;
+	z-index: 1;
 
 	.post-background{
 		width: 100%;
@@ -11,9 +13,9 @@
 
 	}
 
-	.eucld-alg-hoverEffect{
+	.hover-effect{
 		z-index: 1;
-		transition: all 1.8s ease;
+		transition: all 0.9s ease;
 
 		&:hover {
 			z-index: 50;
@@ -21,7 +23,16 @@
 		}
 	}
 
-	/* Scale effects, when Euclidean Algorithm* /
+	.scale-size-default{
+		transform: none;
+
+		&:hover {
+			transform: scale(1.2, 1.2);
+		}
+			
+	}
+
+	/* Scale effects, when Euclidean Algorithm*/
 	.scale-size-0{
 		transform: none;
 
@@ -84,8 +95,11 @@
 		}
 			
 	}
+}
 
-
-
-
-}*/
+@media screen and (orientation: landscape){
+	.gallery{
+		position: fixed;
+		width: 100%;
+	}	
+}

@@ -65,7 +65,8 @@ angular.module('site.gallery').directive('galleryTile', function(){
 						left: params.currentX,
 						width: params.blockWidth,
 						height: params.blockHeight
-					}
+					},
+					class: 'hover-effect scale-size-default'
 				});				
 
 				// Go to the next line, when filled the width
@@ -319,49 +320,33 @@ angular.module('site.gallery').directive('galleryTile', function(){
 			}
 
 			
-
-			
-
-			window.addEventListener("resize", function(){
+			var processTile = function(){
 
 				scope.processedPostList = [];
-
-				/*scope.$digest();*/
 
 				var postList = originalPostlist.slice();
 
 				var _containerWidth = element.parent()[0].offsetWidth;
 				var _containerHeight = element.parent()[0].offsetHeight;
 
-				if(_containerWidth > 700 && _containerHeight > 400){
 
-					euclideanTileAlgorithm({
-						plotArea: {
-							point1: {
-								x: 0, y: 0,
-							},
-							point2: {
-								x: _containerWidth, y: _containerHeight,
-								//x: 1920, y: 1080,
-							}
-						},
-						imageList: postList
-					});	
-				}
+				squareTileAlgorithm({
+					imageList: postList,
+					currentX: 0,
+					currentY: 0,
+					containerWidth: _containerWidth,
+					containerHeight: _containerHeight
+				})	
 
-				else{
+			}
+			
 
-					squareTileAlgorithm({
-						imageList: postList,
-						currentX: 0,
-						currentY: 0,
-						containerWidth: _containerWidth,
-						containerHeight: _containerHeight
-					})	
-				}
-
+			window.addEventListener("resize", function(){
+				processTile();
 				scope.$digest();
 			});
+
+			processTile();
 		}
 	}
 });

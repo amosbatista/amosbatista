@@ -17,6 +17,11 @@ angular.module('common.footer').directive("myFooter", [
 
 				scope.isFixed = scope.isFixed || false;
 
+				// Set the footer visible, when fixed
+				if(scope.isFixed)
+					element[0].classList.add('show-footer');
+
+
 				/* Links redirects*/
 				var footerLinkToHome = function(){
 					locationObj.path('/');
