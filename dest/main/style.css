@@ -3695,7 +3695,7 @@
   }
 }
 .gallery-post {
-  padding: 100px 0 0 0;
+  padding: 50px 0 0 0;
   width: 90%;
   margin: auto;
   float: none;
@@ -3708,6 +3708,7 @@
 .gallery-post .photo-cover .featured-img {
   display: block;
   max-width: 90%;
+  max-height: 330px;
   margin: auto;
   padding: 30px 0 0 0;
 }
@@ -3729,9 +3730,10 @@
 }
 @media screen and (orientation: landscape) {
   .gallery-post {
-    width: 80%;
-    margin: 0 3.5%;
-    float: right;
+    padding: 10px 0 0 0;
+  }
+  .gallery-post .photo-cover .featured-img {
+    max-height: 425px;
   }
 }
 /* Body classes, to be user to the body directive */
