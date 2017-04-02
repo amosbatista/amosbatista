@@ -6,13 +6,13 @@ angular.module('site.portfolio').config( [
 
 		state
 
-			.state('portfolio', {
+			.state('portfolios', {
 				templateUrl: "portfolio.html",
 				controller: "portfolioCtrl",
 				url: '/portfolio'
 			})
 
-			.state('portfolio.masterrow', {
+			.state('masterrow', {
 				templateUrl: "masterrow.html",
 				controller: "masterrowCtrl",
 				url: '/masterrow'

@@ -52961,7 +52961,7 @@ angular.module('site.home').controller('homeCtrl', [
 		}
 
 		scope.goToPortfolio = function(){
-			state.go('portfolio');
+			state.go('portfolios');
 		}
 
 		scope.goToBlog = function(){
@@ -53102,11 +53102,11 @@ angular.module("site.home").config( [
 
 angular.module('site.portfolio', []);
 angular.module('site.portfolio').controller('portfolioCtrl', function(){
-	
+		
 })
 
 angular.module('site.portfolio').controller('masterrowCtrl', function(){
-	
+		
 })
 angular.module('site.portfolio').config( [
 	'$stateProvider',
@@ -53116,13 +53116,13 @@ angular.module('site.portfolio').config( [
 
 		state
 
-			.state('portfolio', {
+			.state('portfolios', {
 				templateUrl: "portfolio.html",
 				controller: "portfolioCtrl",
 				url: '/portfolio'
 			})
 
-			.state('portfolio.masterrow', {
+			.state('masterrow', {
 				templateUrl: "masterrow.html",
 				controller: "masterrowCtrl",
 				url: '/masterrow'

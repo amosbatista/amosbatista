@@ -10,7 +10,7 @@ angular.module('site.home').controller('homeCtrl', [
 		}
 
 		scope.goToPortfolio = function(){
-			state.go('portfolio');
+			state.go('portfolios');
 		}
 
 		scope.goToBlog = function(){
