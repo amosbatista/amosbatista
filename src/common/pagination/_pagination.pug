@@ -1,0 +1,4 @@
+ul.pagination
+	li.pagination-item(ng-repeat="pageLink in paginationList")
+		a.pagination-item-link(href="#" ng-click="toExecutePagination(pageLink.pageDestination)")
+			|{{pageLink.value}}

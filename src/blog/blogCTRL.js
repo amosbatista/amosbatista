@@ -17,5 +17,7 @@ angular.module("site.blog").controller("blogCtrl", [
 		scope.subFeatured_2 = subFeatureds[1];	
 
 		scope.postList = postList;
+
+		scope.totalPages = postList[0].maxPages;
 	}
 ])

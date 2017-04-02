@@ -52219,7 +52219,9 @@ angular.module('common', [
 	'common.header',
 	'common.footer',
 	'common.easyScroll',
-	'common.objData'
+	'common.objData',
+	'common.pagination',
+	'common.postList'
 	]
 );
 /* The directive that set the footer link scroll animation
@@ -52678,6 +52680,153 @@ angular.module('common.objData').factory('dataSRV', function (){
 
 	};
 });
+angular.module("common.pagination", []);
+
+angular.module("common.pagination").factory("paginationSrv", function(){
+
+	return function (_currentPage, totalPages){
+
+		var _pagArray = [];
+
+		// First
+		if( _currentPage != 1){
+			_pagArray.push({
+				value: '1',
+				pageDestination: 1
+			});
+		}
+
+		// Ellipsis start
+		if (_currentPage > 3){
+
+			_pagArray.push({
+				value: '...',
+				pageDestination: _currentPage - 3
+			});
+		}
+
+		
+
+		// Page before 2
+		if((_currentPage - 2) > 1){
+			_pagArray.push({
+				value: (_currentPage - 2),
+				pageDestination: _currentPage - 2
+			});
+		}
+
+		// Page before
+		if((_currentPage - 1) > 1){
+			_pagArray.push({
+				value: _currentPage - 1,
+				pageDestination: _currentPage - 1
+			});
+		}
+
+		// Current page
+		_pagArray.push({
+			value: _currentPage,
+			pageDestination: _currentPage
+		});
+
+		// Page after
+		if( (_currentPage + 1) < totalPages){
+			_pagArray.push({
+				value: _currentPage + 1,
+				pageDestination: _currentPage + 1
+			});
+		}
+
+		// Page after 2
+		if( (_currentPage + 2) < totalPages){
+			_pagArray.push({
+				value: _currentPage + 2,
+				pageDestination: _currentPage + 2
+			});
+		}
+
+		// Ellipsis end
+		if ((totalPages - _currentPage) >= 3 ){
+
+			_pagArray.push({
+				value: '...',
+				pageDestination: _currentPage + 3
+			});
+		}
+
+		// Last page
+		if( _currentPage != totalPages){
+			_pagArray.push({
+				value: totalPages,
+				pageDestination: totalPages
+			});
+		}
+
+		return {
+			currentPage: _currentPage,
+			pagList: _pagArray
+		};
+	}	
+})
+
+angular.module("common.pagination").directive("pagination", 
+	[
+		'paginationSrv',
+		function(
+			pagination
+		){
+
+		return {
+			templateUrl: "_pagination.html",
+			restrict: "E",
+			replace: true,
+			scope: {
+				totalPages: "=",
+				paginationFunction: "="
+			},
+
+			link: function(scope, element){
+				scope.paginationList = pagination(1, scope.totalPages).pagList;
+
+				// Execute the user function to process the function with the page info
+				scope.toExecutePagination = function(pageToGo){
+					paginationFunction(pageToGo);
+					scope.paginationList = pagination(pageToGo, scope.totalPages);
+				}
+			}
+		}
+	}
+]);
+angular.module("common.postList", []);
+
+angular.module("common.postList").factory("postListResource", [
+	'$resource',
+	'env',
+	function(
+		resource,
+		env
+	){
+		return resource(env.config.wordPressAPIURL + env.config.postList,
+		{},
+		{
+			list: {
+				method: 'GET',
+				isArray: true,
+				transformResponse: function(data, headersGetter, status){
+					
+					data = JSON.parse(data);
+
+					data.map( function(row){
+						row.header = headersGetter;
+						return row;
+					});
+
+		            return data;
+		        }
+			}
+		});
+	}
+]);
 angular.module("site.about", []);
 angular.module('site.about').controller('aboutCtrl', [
 	'$scope',
@@ -53270,6 +53419,8 @@ angular.module("site.blog").controller("blogCtrl", [
 		scope.subFeatured_2 = subFeatureds[1];	
 
 		scope.postList = postList;
+
+		scope.totalPages = postList[0].maxPages;
 	}
 ])
 /*The service is the same of post list, but only get the featured posts*/
@@ -53345,29 +53496,16 @@ angular.module("site.blog").controller("postCtrl", [
 		scope.post = post;
 	}
 ])
-angular.module("site.blog").factory("postListResource", [
-	'$resource',
-	'env',
-	function(
-		resource,
-		env
-	){
-		return resource(env.config.wordPressAPIURL + env.config.postList,
-		{},
-		{
-			list: {
-				method: 'GET',
-				isArray: true
-			}
-		});
-	}
-]);
+
+// All post list
 angular.module("site.blog").factory('postListSRV',[
 	'postListResource',
 	'dataSRV',
+	'env',
 	function(
 		resource,
-		objData
+		objData,
+		configObj
 	){
 		return {
 			getList: function(filters){
@@ -53375,10 +53513,13 @@ angular.module("site.blog").factory('postListSRV',[
 					resource.list(
 						{
 							tags: filters.tagList['blog'],
+							page: filters.page,
+							per_page: configObj.config.postPerPage,
 							'_embed': 1 // Bring all media and another embed data into response
 
 						},
 						function(dataReturn){
+							console.log('DAdos retornados', dataReturn);
 
 							dataReturn = dataReturn.map(function(post){
 								return {
@@ -53394,6 +53535,7 @@ angular.module("site.blog").factory('postListSRV',[
 										.replace('</p>', ''),
 									createdDate: objData.formatarDataMesExtenso(post.date),
 									postName: post.slug,
+									maxPages: post.header('X-WP-TotalPages'),
 									all: post
 								}
 							});
@@ -53508,7 +53650,8 @@ angular.module("site.blog").config([
 					postlist: ['postListService', 'tags', function(service, tags){
 						return service.getList({
 							currentPage: 0,
-							tagList: tags
+							tagList: tags,
+							page: 1
 						});
 					}]
 				}
@@ -54154,7 +54297,7 @@ angular.module('site.gallery').directive('galleryTile', function(){
 		}
 	}
 });
-angular.module("site.gallery").factory("postListResource", [
+/*angular.module("site.gallery").factory("postListResource", [
 	'$resource',
 	'env',
 	function(
@@ -54170,7 +54313,7 @@ angular.module("site.gallery").factory("postListResource", [
 			}
 		});
 	}
-]);
+]);*/
 angular.module("site.gallery").config([
 	'$stateProvider',
 	function(

@@ -34,7 +34,8 @@ angular.module("site.blog").config([
 					postlist: ['postListService', 'tags', function(service, tags){
 						return service.getList({
 							currentPage: 0,
-							tagList: tags
+							tagList: tags,
+							page: 1
 						});
 					}]
 				}

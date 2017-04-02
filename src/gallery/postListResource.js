@@ -1,4 +1,4 @@
-angular.module("site.gallery").factory("postListResource", [
+/*angular.module("site.gallery").factory("postListResource", [
 	'$resource',
 	'env',
 	function(
@@ -14,4 +14,4 @@ angular.module("site.gallery").factory("postListResource", [
 			}
 		});
 	}
-]);
+]);*/
