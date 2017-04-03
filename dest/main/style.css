@@ -2338,6 +2338,22 @@
 
 /* For space in bottom, for the footer */
 /* Set an animation that will make the element stay where animation finishes */
+.pagination {
+  width: 100%;
+  float: left;
+}
+.pagination .pagination-list {
+  padding: 0;
+  max-width: 100px;
+  margin: auto;
+}
+.pagination .pagination-list .pagination-item {
+  float: left;
+  margin: 0 10px 0 0;
+  list-style: none;
+  font-family: 'Fjalla One', sans-serif;
+  font-size: 150%;
+}
 @keyframes hide {
   from {
     transform: translate(0%, 0%);
@@ -2591,14 +2607,14 @@
 .page-content {
   width: 100%;
   position: relative;
-  margin: 110px 0 250px 0;
+  margin: 110px 0 350px 0;
   z-index: -1;
 }
 @media screen and (orientation: landscape) {
   .page-content {
     width: 90%;
     float: right;
-    margin: 0px 0 250px 0;
+    margin: 0px 0 350px 0;
     /*border: 1px solid white;*/
   }
 }
