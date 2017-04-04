@@ -2608,7 +2608,7 @@
   width: 100%;
   position: relative;
   margin: 110px 0 350px 0;
-  z-index: -1;
+  z-index: 0;
 }
 @media screen and (orientation: landscape) {
   .page-content {
@@ -3292,7 +3292,14 @@
   font-family: 'Fjalla One', sans-serif;
   font-size: 80%;
 }
-.post .title {
+.post .post-text-area {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  padding: 10px 10px;
+}
+.post .post-text-area .title {
   width: 55%;
   text-align: right;
   font-family: 'Fjalla One', sans-serif;
@@ -3302,7 +3309,7 @@
   margin: 0;
   color: #295016;
 }
-.post .date {
+.post .post-text-area .date {
   margin: 0;
   text-align: right;
   color: #4d7d36;
@@ -3311,7 +3318,7 @@
   float: right;
   width: 55%;
 }
-.post .excerpt {
+.post .post-text-area .excerpt {
   font-size: 75%;
   color: #295016;
   padding: 0 15px 0 0;
@@ -3347,26 +3354,27 @@
   font-family: 'Fjalla One', sans-serif;
   font-size: 80%;
 }
-.featured .title {
+.featured .post-text-area {
   position: absolute;
-  right: 0px;
-  bottom: 18%;
-  width: 65%;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  padding: 10px ;
+}
+.featured .post-text-area .title {
+  position: relative;
+  width: 100%;
   color: #d7eed9;
   text-align: right;
   font-family: 'Fjalla One', sans-serif;
   font-size: 165%;
-  padding: 0 15px 0 0;
 }
-.featured .excerpt {
-  position: absolute;
-  right: 0px;
-  bottom: 5px;
+.featured .post-text-area .excerpt {
+  position: relative;
   font-size: 77%;
   color: #d7eed9;
-  padding: 0 30px 30px 0;
   text-align: right;
-  width: 80%;
+  width: 100%;
 }
 @media screen and (orientation: landscape) {
   .featured {
@@ -3405,15 +3413,22 @@
     width: 100%;
     height: 100px;
   }
-  .sub-featureds .sub-featured .date {
+  .sub-featureds .sub-featured .post-text-area {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    bottom: 0;
+    padding: 10px 10px;
+  }
+  .sub-featureds .sub-featured .post-text-area .date {
     display: none;
   }
-  .sub-featureds .sub-featured .title {
+  .sub-featureds .sub-featured .post-text-area .title {
     font-size: 100%;
     width: 100%;
     padding: 10px 20px 0 0;
   }
-  .sub-featureds .sub-featured .excerpt {
+  .sub-featureds .sub-featured .post-text-area .excerpt {
     width: 100%;
     padding: 0 20px 0 10px;
   }

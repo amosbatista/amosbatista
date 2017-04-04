@@ -10,9 +10,14 @@ div(my-header)
 
 			span.category
 				|{{featured.category}}
-			h3.title
-				|{{featured.title}}
-			p.excerpt(put-html content='featured.excerpt')
+
+			.post-text-area
+
+				p.excerpt(put-html content='featured.excerpt')
+
+				h3.title
+					|{{featured.title}}
+			
 
 
 	// *** Sub-featured posts ***
@@ -23,11 +28,13 @@ div(my-header)
 			
 				span.category
 					|{{subFeatured_1.category}}
-				p.date
-					|{{subFeatured_1.createdDate}}
-				h3.title
-					|{{subFeatured_1.title}}
-				p.excerpt(put-html content='subFeatured_1.excerpt')
+
+				.post-text-area
+					p.date
+						|{{subFeatured_1.createdDate}}
+					h3.title
+						|{{subFeatured_1.title}}
+					p.excerpt(put-html content='subFeatured_1.excerpt')
 
 		a(ui-sref='blogPost({postName: subFeatured_2.postName})')
 			.post.sub-featured
@@ -35,11 +42,13 @@ div(my-header)
 
 				span.category
 					|{{subFeatured_2.category}}
-				p.date
-					|{{subFeatured_1.createdDate}}
-				h3.title
-					|{{subFeatured_2.title}}
-				p.excerpt(put-html content='subFeatured_2.excerpt')
+
+					.post-text-area
+						p.date
+							|{{subFeatured_1.createdDate}}
+						h3.title
+							|{{subFeatured_2.title}}
+						p.excerpt(put-html content='subFeatured_2.excerpt')
 
 
 	// Other posts
@@ -50,11 +59,13 @@ div(my-header)
 
 				span.category
 					|{{post.category}}
-				p.date
-					|{{post.createdDate}}
-				h3.title
-					|{{post.title}}
-				p.excerpt(put-html content='post.excerpt')
+
+					.post-text-area
+						p.date
+							|{{post.createdDate}}
+						h3.title
+							|{{post.title}}
+						p.excerpt(put-html content='post.excerpt')
 
 
 	// Pagination
