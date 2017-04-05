@@ -12,7 +12,7 @@ angular.module("site.blog").factory('subFeaturedPostListSRV',[
 			getList: function(filters){
 				return new Promise (function(resolve, reject){
 
-					var tagList = filters.tagList['sub-featured'] + "," +  filters.tagList['blog'];
+					var tagList = filters.tagList['sub-featured'];
 
 					resource.list(
 						{

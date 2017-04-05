@@ -22,14 +22,18 @@ angular.module("site.blog").factory('postListSRV',[
 						function(dataReturn){
 							console.log('Dos retornados', dataReturn);
 
-							dataReturn = dataReturn.map(function(post){
+							dataReturn = dataReturn.map(function(post, index, theArray){
 
 								// Excluding posts on featured and sub-featured
 								var postToExclude = filters.postsToExclude.find(function(_postToExclude){
 									return _postToExclude.id == post.id;
 								});
 
-								if(!postToExclude ){
+								if(postToExclude ){
+									theArray.splice(index, 1);
+									return null;
+								}
+								else{
 
 									return {
 										mainImage: post._embedded["wp:featuredmedia"] != undefined ? post._embedded["wp:featuredmedia"][0].source_url : '',
@@ -48,7 +52,14 @@ angular.module("site.blog").factory('postListSRV',[
 									}
 								}
 							});
-							
+
+							dataReturn = dataReturn.reduce( function( finalArray, item){
+								if (item != null)
+									finalArray.push(item);
+								return finalArray
+								
+							}, []);
+
 							resolve(dataReturn);
 						}
 					);

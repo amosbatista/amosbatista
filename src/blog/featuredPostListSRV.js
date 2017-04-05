@@ -9,7 +9,7 @@ angular.module("site.blog").factory('featuredPostListSRV',[
 
 				return new Promise (function(resolve, reject){
 
-					var tagList = filters.tagList['featured'] + ',' + filters.tagList['blog'];
+					var tagList = filters.tagList['featured'];
 
 					resource.list(
 						{
