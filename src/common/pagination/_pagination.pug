@@ -1,5 +1,5 @@
 .pagination
 	ul.pagination-list
 		li.pagination-item(ng-repeat="pageLink in paginationList")
-			a.pagination-item-link(href="#" ng-click="toExecutePagination(pageLink.pageDestination)")
+			a.pagination-item-link(href="" ng-click="toExecutePagination(pageLink.pageDestination)" ng-class="{'pagination-selected': pageLink.pageDestination == currentPage}")
 				|{{pageLink.value}}

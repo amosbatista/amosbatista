@@ -15,12 +15,16 @@ angular.module("common.pagination").directive("pagination",
 			},
 
 			link: function(scope, element){
-				scope.paginationList = pagination(1, scope.totalPages).pagList;
+				scope.currentPage = 1;
+
+				scope.paginationList = pagination(scope.currentPage, scope.totalPages).pagList;
 
 				// Execute the user function to process the function with the page info
 				scope.toExecutePagination = function(pageToGo){
-					paginationFunction(pageToGo);
-					scope.paginationList = pagination(pageToGo, scope.totalPages);
+					pageToGo = Number(pageToGo);
+					scope.paginationFunction(pageToGo);
+					scope.paginationList = pagination(pageToGo, scope.totalPages).pagList;
+					scope.currentPage = pageToGo;
 				}
 			}
 		}

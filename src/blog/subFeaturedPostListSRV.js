@@ -12,9 +12,6 @@ angular.module("site.blog").factory('subFeaturedPostListSRV',[
 			getList: function(filters){
 				return new Promise (function(resolve, reject){
 
-					if(filters.currentPage == undefined || filters.currentPage > 1)
-						resolve(null);
-
 					var tagList = filters.tagList['sub-featured'] + "," +  filters.tagList['blog'];
 
 					resource.list(

@@ -21,19 +21,16 @@ angular.module("site.blog").config([
 					
 					subFeaturedPosts: ['subFeaturedService', 'tags', function(service, tags){
 						return service.getList({
-							currentPage: 0,
 							tagList: tags
 						});
 					}],
 					featuredPosts: ['featuredService', 'tags', function(service, tags){
 						return service.getList({
-							currentPage: 0,
 							tagList: tags
 						});
 					}],
 					postlist: ['postListService', 'tags', function(service, tags){
 						return service.getList({
-							currentPage: 0,
 							tagList: tags,
 							page: 1
 						});

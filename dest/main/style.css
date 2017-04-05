@@ -2354,6 +2354,9 @@
   font-family: 'Fjalla One', sans-serif;
   font-size: 150%;
 }
+.pagination .pagination-list .pagination-selected {
+  color: #5dbb62;
+}
 @keyframes hide {
   from {
     transform: translate(0%, 0%);
@@ -2614,7 +2617,7 @@
   .page-content {
     width: 90%;
     float: right;
-    margin: 0px 0 350px 0;
+    margin: 0px 0 250px 0;
     /*border: 1px solid white;*/
   }
 }
@@ -3270,7 +3273,7 @@
 /* Title, exceprtp*/
 .post {
   position: relative;
-  width: 100%;
+  width: 99%;
   margin: 0 0 60px 0;
   height: 175px;
   /*border-bottom: 1px dotted hsla(100, 100%, 27%, 0.42);*/
@@ -3292,14 +3295,7 @@
   font-family: 'Fjalla One', sans-serif;
   font-size: 80%;
 }
-.post .post-text-area {
-  position: absolute;
-  width: 100%;
-  left: 0;
-  bottom: 0;
-  padding: 10px 10px;
-}
-.post .post-text-area .title {
+.post .title {
   width: 55%;
   text-align: right;
   font-family: 'Fjalla One', sans-serif;
@@ -3309,7 +3305,7 @@
   margin: 0;
   color: #295016;
 }
-.post .post-text-area .date {
+.post .date {
   margin: 0;
   text-align: right;
   color: #4d7d36;
@@ -3318,7 +3314,7 @@
   float: right;
   width: 55%;
 }
-.post .post-text-area .excerpt {
+.post .excerpt {
   font-size: 75%;
   color: #295016;
   padding: 0 15px 0 0;
@@ -3356,10 +3352,10 @@
 }
 .featured .post-text-area {
   position: absolute;
-  width: 100%;
+  width: 99%;
   left: 0;
   bottom: 0;
-  padding: 10px ;
+  padding: 1% ;
 }
 .featured .post-text-area .title {
   position: relative;
@@ -3402,12 +3398,13 @@
     z-index: -10;
   }
   .sub-featureds .sub-featured {
-    height: 180px;
+    height: 205px;
     position: relative;
     width: 45%;
     float: right;
     clear: right;
     border-bottom: none;
+    margin: 0px 0 30px 0;
   }
   .sub-featureds .sub-featured .post-background {
     width: 100%;
@@ -3415,8 +3412,8 @@
   }
   .sub-featureds .sub-featured .post-text-area {
     position: absolute;
-    width: 100%;
-    left: 0;
+    width: 50%;
+    right: 0;
     bottom: 0;
     padding: 10px 10px;
   }

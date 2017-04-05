@@ -9,9 +9,6 @@ angular.module("site.blog").factory('featuredPostListSRV',[
 
 				return new Promise (function(resolve, reject){
 
-					if(filters.currentPage == undefined || filters.currentPage > 1)
-						resolve(null);
-
 					var tagList = filters.tagList['featured'] + ',' + filters.tagList['blog'];
 
 					resource.list(

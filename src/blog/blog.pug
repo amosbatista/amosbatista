@@ -43,12 +43,12 @@ div(my-header)
 				span.category
 					|{{subFeatured_2.category}}
 
-					.post-text-area
-						p.date
-							|{{subFeatured_1.createdDate}}
-						h3.title
-							|{{subFeatured_2.title}}
-						p.excerpt(put-html content='subFeatured_2.excerpt')
+				.post-text-area
+					p.date
+						|{{subFeatured_1.createdDate}}
+					h3.title
+						|{{subFeatured_2.title}}
+					p.excerpt(put-html content='subFeatured_2.excerpt')
 
 
 	// Other posts
@@ -60,16 +60,15 @@ div(my-header)
 				span.category
 					|{{post.category}}
 
-					.post-text-area
-						p.date
-							|{{post.createdDate}}
-						h3.title
-							|{{post.title}}
-						p.excerpt(put-html content='post.excerpt')
+				p.date
+					|{{post.createdDate}}
+				h3.title
+					|{{post.title}}
+				p.excerpt(put-html content='post.excerpt')
 
 
 	// Pagination
-	pagination(total-pages="totalPages" pagination-function="postList")
+	pagination(total-pages="totalPages" pagination-function="reprocessPostList")
 
 
 div(my-footer)

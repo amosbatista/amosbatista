@@ -3,11 +3,15 @@ angular.module("site.blog").controller("blogCtrl", [
 	'postlist',
 	'featuredPosts',
 	'subFeaturedPosts',
+	'postListSRV',
+	'tags',
 	function(
 		scope,
 		postList,
 		featured,
-		subFeatureds
+		subFeatureds,
+		postListService,
+		tags
 	){
 		console.log('Response of Wordpress from route', postList);
 		console.log('Featured', featured);
@@ -19,5 +23,16 @@ angular.module("site.blog").controller("blogCtrl", [
 		scope.postList = postList;
 
 		scope.totalPages = postList[0].maxPages;
+
+		scope.reprocessPostList = function(pageToGo){
+
+			postListService.getList({
+				tagList: tags,
+				page: pageToGo
+			}).then(function(newPostList){
+				scope.postList = newPostList;
+				scope.$digest();
+			})
+		}
 	}
 ])

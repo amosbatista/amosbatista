@@ -4,7 +4,7 @@
 
 .post{
 	position: relative;
-	width: 100%;
+	width: 99%;
 	margin: 0 0 60px 0;
 	height: 175px;
 	/*border-bottom: 1px dotted hsla(100, 100%, 27%, 0.42);*/
@@ -29,50 +29,38 @@
 	}
 
 
-	.post-text-area{
+	.title{
+    	width: @rightContentWidth;
+    	text-align: right;
+    	font-family: @fontFamily_Titles;
+		font-size: 85%;
+		padding: 0 15px 25px 0;
+		float: right;
+		margin: 0;
+		color: @outsideTextColor;
+    }
 
-		position: absolute;
-		width: 100%;
-		left: 0;
-		bottom: 0;
-		padding: 10px 10px;
+    .date{
+    	margin: 0;
+    	text-align: right;
+    	color: hsl(100, 40%, 35%);
+    	font-size: 55%;
+    	padding: 0 15px 0 0;
+    	float: right;
+    	width: @rightContentWidth;
 
+    }
 
-		.title{
-	    	width: @rightContentWidth;
-	    	text-align: right;
-	    	font-family: @fontFamily_Titles;
-			font-size: 85%;
-			padding: 0 15px 25px 0;
-			float: right;
-			margin: 0;
-			color: @outsideTextColor;
-	    }
-
-	    .date{
-	    	margin: 0;
-	    	text-align: right;
-	    	color: hsl(100, 40%, 35%);
-	    	font-size: 55%;
-	    	padding: 0 15px 0 0;
-	    	float: right;
-	    	width: @rightContentWidth;
-
-	    }
-
-	    .excerpt{
-	    	font-size: 75%;
-	    	color: @outsideTextColor;
-	    	padding: 0 15px 0 0;
-	    	text-align: right;
-	    	width: @rightContentWidth;
-	    	float: right;
-	    	margin: 0;
-	    	text-indent: 25px;
-	    }
-
-
-	}
+    .excerpt{
+    	font-size: 75%;
+    	color: @outsideTextColor;
+    	padding: 0 15px 0 0;
+    	text-align: right;
+    	width: @rightContentWidth;
+    	float: right;
+    	margin: 0;
+    	text-indent: 25px;
+    }
 
 	
 
@@ -111,10 +99,10 @@
 
 	.post-text-area{
 		position: absolute;
-		width: 100%;
+		width: 99%;
 		left: 0;
 		bottom: 0;
-		padding: 10px ;
+		padding: 1% ;
 
 		.title{
 			position: relative;
@@ -169,12 +157,13 @@
 		z-index: -10;
 
 		.sub-featured{
-			height: 180px;
+			height: 205px;
 			position: relative;
 			width: 45%;
 			float: right;	
 			clear: right;
 			border-bottom: none;
+			margin: 0px 0 30px 0;
 
 			.post-background{
 				width: 100%;
@@ -184,8 +173,8 @@
 			.post-text-area{
 
 				position: absolute;
-				width: 100%;
-				left: 0;
+				width: 50%;
+				right: 0;
 				bottom: 0;
 				padding: 10px 10px;
 
