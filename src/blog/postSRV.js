@@ -27,7 +27,7 @@ angular.module("site.blog").factory('postSRV',[
 								excerpt: dataReturn[0].excerpt.rendered
 									.replace('<p>', '')
 									.replace('</p>', ''),
-								createdDate: objData.formatarDataMesExtenso(post.date),
+								createdDate: objData.formatarDataMesExtenso(dataReturn[0].date),
 								content: dataReturn[0].content.rendered,
 								/*all: dataReturn[0]*/
 							});
