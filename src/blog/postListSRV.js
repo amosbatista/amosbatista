@@ -20,24 +20,32 @@ angular.module("site.blog").factory('postListSRV',[
 
 						},
 						function(dataReturn){
-							console.log('DAdos retornados', dataReturn);
+							console.log('Dos retornados', dataReturn);
 
 							dataReturn = dataReturn.map(function(post){
-								return {
-									mainImage: post._embedded["wp:featuredmedia"] != undefined ? post._embedded["wp:featuredmedia"][0].source_url : '',
-									category: post._embedded["wp:term"].find( function (termList){
-										return termList.find( function(term){
-											return term.taxonomy == 'category';	
-										});
-									})[0].name,
-									title: post.title.rendered,
-									excerpt: post.excerpt.rendered
-										.replace('<p>', '')
-										.replace('</p>', ''),
-									createdDate: objData.formatarDataMesExtenso(post.date),
-									postName: post.slug,
-									maxPages: post.header('X-WP-TotalPages'),
-									all: post
+
+								// Excluding posts on featured and sub-featured
+								var postToExclude = filters.postsToExclude.find(function(_postToExclude){
+									return _postToExclude.id == post.id;
+								});
+
+								if(!postToExclude ){
+
+									return {
+										mainImage: post._embedded["wp:featuredmedia"] != undefined ? post._embedded["wp:featuredmedia"][0].source_url : '',
+										category: post._embedded["wp:term"].find( function (termList){
+											return termList.find( function(term){
+												return term.taxonomy == 'category';	
+											});
+										})[0].name,
+										title: post.title.rendered,
+										excerpt: post.excerpt.rendered
+											.replace('<p>', '')
+											.replace('</p>', ''),
+										createdDate: objData.formatarDataMesExtenso(post.date),
+										postName: post.slug,
+										maxPages: post.header('X-WP-TotalPages'),
+									}
 								}
 							});
 							

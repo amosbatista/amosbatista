@@ -29,10 +29,15 @@ angular.module("site.blog").config([
 							tagList: tags
 						});
 					}],
-					postlist: ['postListService', 'tags', function(service, tags){
+					postlist: ['postListService', 'tags', 'subFeaturedPosts', 'featuredPosts', function(service, tags, subFeatureds, featureds){
+						var _postsToExclude = [];
+						_postsToExclude = _postsToExclude.concat(subFeatureds);
+						_postsToExclude.push(featureds);
+
 						return service.getList({
 							tagList: tags,
-							page: 1
+							page: 1,
+							postsToExclude: _postsToExclude
 						});
 					}]
 				}

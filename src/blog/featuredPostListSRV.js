@@ -30,7 +30,7 @@ angular.module("site.blog").factory('featuredPostListSRV',[
 									.replace('<p>', '')
 									.replace('</p>', ''),
 								postName: dataReturn[0].slug,
-								all: dataReturn[0]
+								id: dataReturn[0].id,
 							});
 						}
 					);

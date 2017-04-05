@@ -34,6 +34,7 @@ angular.module("site.blog").factory('subFeaturedPostListSRV',[
 										.replace('</p>', ''),
 									createdDate: objData.formatarDataMesExtenso(post.date),
 									postName: post.slug,
+									id: post.id
 								}
 							})
 							

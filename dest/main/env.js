@@ -4,5 +4,5 @@ envConfig = {
 	postList: 'posts',
 	tagList: 'tags',
 
-	postPerPage: 2
+	postPerPage: 10
 };

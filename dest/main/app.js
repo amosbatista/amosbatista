@@ -53474,7 +53474,7 @@ angular.module("site.blog").factory('featuredPostListSRV',[
 									.replace('<p>', '')
 									.replace('</p>', ''),
 								postName: dataReturn[0].slug,
-								all: dataReturn[0]
+								id: dataReturn[0].id,
 							});
 						}
 					);
@@ -53535,24 +53535,32 @@ angular.module("site.blog").factory('postListSRV',[
 
 						},
 						function(dataReturn){
-							console.log('DAdos retornados', dataReturn);
+							console.log('Dos retornados', dataReturn);
 
 							dataReturn = dataReturn.map(function(post){
-								return {
-									mainImage: post._embedded["wp:featuredmedia"] != undefined ? post._embedded["wp:featuredmedia"][0].source_url : '',
-									category: post._embedded["wp:term"].find( function (termList){
-										return termList.find( function(term){
-											return term.taxonomy == 'category';	
-										});
-									})[0].name,
-									title: post.title.rendered,
-									excerpt: post.excerpt.rendered
-										.replace('<p>', '')
-										.replace('</p>', ''),
-									createdDate: objData.formatarDataMesExtenso(post.date),
-									postName: post.slug,
-									maxPages: post.header('X-WP-TotalPages'),
-									all: post
+
+								// Excluding posts on featured and sub-featured
+								var postToExclude = filters.postsToExclude.find(function(_postToExclude){
+									return _postToExclude.id == post.id;
+								});
+
+								if(!postToExclude ){
+
+									return {
+										mainImage: post._embedded["wp:featuredmedia"] != undefined ? post._embedded["wp:featuredmedia"][0].source_url : '',
+										category: post._embedded["wp:term"].find( function (termList){
+											return termList.find( function(term){
+												return term.taxonomy == 'category';	
+											});
+										})[0].name,
+										title: post.title.rendered,
+										excerpt: post.excerpt.rendered
+											.replace('<p>', '')
+											.replace('</p>', ''),
+										createdDate: objData.formatarDataMesExtenso(post.date),
+										postName: post.slug,
+										maxPages: post.header('X-WP-TotalPages'),
+									}
 								}
 							});
 							
@@ -53661,10 +53669,15 @@ angular.module("site.blog").config([
 							tagList: tags
 						});
 					}],
-					postlist: ['postListService', 'tags', function(service, tags){
+					postlist: ['postListService', 'tags', 'subFeaturedPosts', 'featuredPosts', function(service, tags, subFeatureds, featureds){
+						var _postsToExclude = [];
+						_postsToExclude = _postsToExclude.concat(subFeatureds);
+						_postsToExclude.push(featureds);
+
 						return service.getList({
 							tagList: tags,
-							page: 1
+							page: 1,
+							postsToExclude: _postsToExclude
 						});
 					}]
 				}
@@ -53725,6 +53738,7 @@ angular.module("site.blog").factory('subFeaturedPostListSRV',[
 										.replace('</p>', ''),
 									createdDate: objData.formatarDataMesExtenso(post.date),
 									postName: post.slug,
+									id: post.id
 								}
 							})
 							
