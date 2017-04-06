@@ -2,10 +2,10 @@ angular.module('common.header', []);
 
 angular.module('common.header').directive("myHeader", [
 	'$timeout',
-	'$location',
+	'$state',
 	function(
 		timeout,
-		locationObj
+		state
 	){
 		return {
 			restrict: "A",
@@ -15,43 +15,59 @@ angular.module('common.header').directive("myHeader", [
 
 				/* Links redirects*/
 				var headerLinkToHome = function(){
-					locationObj.path('/');
+					state.go('home')
+				}
+
+				var headerLinkToGallery = function(){
+					state.go('gallery')
+				}
+
+				var headerLinkToAbout = function(){
+					state.go('about')
+				}
+
+				var headerLinkToBlog = function(){
+					state.go('blog')
+				}
+
+				var headerLinkToPortfolio = function(){
+					state.go('portfolios')
 				}
 
 				var headerLinkList = [
 					{
 						name: 'Home',
-						location: '/',
+						location: 'home',
 						iconClass: 'fa-home',
 						linkFunction: headerLinkToHome,
 						linkClass: 'link-home'
 					},
 					{
 						name: 'About',
-						location: '/about',
+						location: 'about',
 						iconClass: 'fa-arrow-up',
-						linkFunction: headerLinkToHome,
+						linkFunction: headerLinkToAbout,
 						linkClass: 'link-about'
 					},
 					{
 						name: 'Gallery',
-						location: '/gallery',
+						location: 'gallery',
 						iconClass: 'fa-arrow-right',
-						linkFunction: headerLinkToHome,
+						linkFunction: headerLinkToGallery,
 						linkClass: 'link-gallery'
 					},
 					{
 						name: 'Portfolio',
-						location: '/portfolio',
+						location: 'portfolios',
 						iconClass: 'fa-arrow-left',
-						linkFunction: headerLinkToHome,
+						linkFunction: headerLinkToPortfolio,
 						linkClass: 'link-portfolio'
 					},
 					{
 						name: 'Blog',
-						location: '/blog',
+						location: 'blog',
 						iconClass: 'fa-arrow-down',
-						linkFunction: headerLinkToHome,
+						linkFunction: headerLinkToBlog,
 						linkClass: 'link-blog'
 					},
 					
@@ -59,7 +75,7 @@ angular.module('common.header').directive("myHeader", [
 
 				// Set all links to show (remove the link of current page)
 				scope.headerLinkToShow = headerLinkList.filter( function (link ){
-					return link.location != locationObj.path();
+					return link.location != state.current.name;
 				});
 
 

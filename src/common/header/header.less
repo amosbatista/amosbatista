@@ -3,14 +3,15 @@
 .header{
 	position: fixed;
 	width: 100%;
-	height: @headerHeight;
+	/*height: @headerHeight;*/
 	padding: 10px;
 	top: 0;
 	left: 0;
 	background-color: hsl(142, 0%, 100%);
 	margin: 0;
 	z-index: 2;
-	box-shadow: 10px 1px 6px 0px @corSombraHeaderFooter;
+	border-bottom: 4px solid @corSombraHeaderFooter;
+
 
 	.link-home,
 	.link-portfolio,
@@ -18,10 +19,19 @@
 	.link-gallery,
 	.link-about
 	{
-		list-style: none;
-		position: absolute;
-		margin: 0 10px 0 0;
+		
+		margin: 0px 0 10px 0;
 		font-size: 30px;
+		float: left;
+		clear: left;
+
+		/* Move 2 of links to the right side*/
+		&:nth-of-type(2),
+		&:nth-of-type(4){
+			float: right;
+			clear: right;
+			margin: 0px 20px 10px 0;
+		}
 
 		.fa{
 			margin: 0 10px 0 0;
@@ -34,28 +44,10 @@
 			text-decoration: none;
 			font-size: 15px;
 		}
+
+
 	}
 
-	.link-home{
-		top: 10px;
-		left: 10px;
-	}
-
-	.link-portfolio,
-	.link-about{
-		bottom: 10px;
-		left: 10px;
-	}
-
-	.link-blog{
-		bottom: 10px;
-		right: 20px;
-	}
-
-	.link-gallery{
-		top: 10px;
-		right: 20px;
-	}
 
 }
 
@@ -63,46 +55,8 @@
 @media screen and (min-width: 475px){
 
 	.header{
-		height: auto;
 		width: 98%;
 		padding: 15px;
-
-		.link-home,
-		.link-portfolio,
-		.link-blog,
-		.link-gallery,
-		.link-about{
-			position: relative;
-			float: right;
-		}
-
-		.link-home{
-			top: initial;
-			left: initial;
-			float: left;
-		}
-
-		.link-portfolio{
-			bottom: initial;
-			left: initial;
-		}
-
-		.link-blog{
-			bottom: initial;
-			right: initial;
-		}
-
-		.link-gallery{
-			top: initial;
-			right: initial;
-		}
-
-		.link-about{
-			bottom: initial;
-    		left: initial;
-		}
-
-
 
 	}
 
@@ -114,10 +68,11 @@
 
 	.header{
 		position: fixed;
-		top: @topSpacing_Landscape;
+		top: 115px;
 		left: 0;
 		width: 65px;
-		box-shadow: 2px 2px 8px 0px @corSombraHeaderFooter;
+		border-top: 1px solid @corBordaDiscreta_H_F;
+		border-right: 1px solid @corBordaDiscreta_H_F;
 
 		.link-home,
 		.link-portfolio,
@@ -126,9 +81,18 @@
 		.link-about
 		{
 			float: none;
+			clear: none;
 			width: 100%;
 			text-align: center;
 			margin: 0 0 10px 0;
+
+			/* Clear of selector style*/
+			&:nth-of-type(2),
+			&:nth-of-type(4){
+				float: none;
+				clear: none;
+				margin: 0 0 10px 0;				
+			}
 
 			.fa{
 				width: 100%;

@@ -2,9 +2,9 @@
 angular.module('common.footer', []);
 
 angular.module('common.footer').directive("myFooter", [
-	'$location',
+	'$state',
 	function(
-		locationObj
+		state
 	){
 		return {
 			restrict: "A",
@@ -22,10 +22,28 @@ angular.module('common.footer').directive("myFooter", [
 					element[0].classList.add('show-footer');
 
 
+				
 				/* Links redirects*/
 				var footerLinkToHome = function(){
-					locationObj.path('/');
+					state.go('home')
 				}
+
+				var footerLinkToGallery = function(){
+					state.go('gallery')
+				}
+
+				var footerLinkToAbout = function(){
+					state.go('about')
+				}
+
+				var footerLinkToBlog = function(){
+					state.go('blog')
+				}
+
+				var footerLinkToPortfolio = function(){
+					state.go('portfolios')
+				}
+
 
 				var linkList = [
 					{
@@ -38,32 +56,32 @@ angular.module('common.footer').directive("myFooter", [
 						name: 'About',
 						location: '/about',
 						iconClass: 'fa-arrow-up',
-						linkFunction: footerLinkToHome
+						linkFunction: footerLinkToAbout
 					},
 					{
 						name: 'Gallery',
 						location: '/gallery',
 						iconClass: 'fa-arrow-right',
-						linkFunction: footerLinkToHome
+						linkFunction: footerLinkToGallery
 					},
 					{
 						name: 'Portfolio',
 						location: '/portfolio',
 						iconClass: 'fa-arrow-left',
-						linkFunction: footerLinkToHome
+						linkFunction: footerLinkToPortfolio
 					},
 					{
 						name: 'Blog',
 						location: '/blog',
 						iconClass: 'fa-arrow-down',
-						linkFunction: footerLinkToHome
+						linkFunction: footerLinkToBlog
 					},
 					
 				];
 
 				// Set all links to show (remove the link of current page)
 				scope.linkToShow = linkList.filter( function (link ){
-					return link.location != locationObj.path();
+					return link.location != state.current.name;
 				});
 
 				/* Event to detect the apperance of footer */

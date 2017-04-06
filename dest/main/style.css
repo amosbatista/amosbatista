@@ -2337,6 +2337,7 @@
 }
 
 /* For space in bottom, for the footer */
+/* Space between top and header (only Landscape)*/
 /* Set an animation that will make the element stay where animation finishes */
 .pagination {
   width: 100%;
@@ -2386,24 +2387,39 @@
 .header {
   position: fixed;
   width: 100%;
-  height: 90px;
+  /*height: @headerHeight;*/
   padding: 10px;
   top: 0;
   left: 0;
   background-color: #ffffff;
   margin: 0;
   z-index: 2;
-  box-shadow: 10px 1px 6px 0px #4b774b;
+  border-bottom: 4px solid #0a2e0a;
 }
 .header .link-home,
 .header .link-portfolio,
 .header .link-blog,
 .header .link-gallery,
 .header .link-about {
-  list-style: none;
-  position: absolute;
-  margin: 0 10px 0 0;
+  margin: 0px 0 10px 0;
   font-size: 30px;
+  float: left;
+  clear: left;
+  /* Move 2 of links to the right side*/
+}
+.header .link-home:nth-of-type(2),
+.header .link-portfolio:nth-of-type(2),
+.header .link-blog:nth-of-type(2),
+.header .link-gallery:nth-of-type(2),
+.header .link-about:nth-of-type(2),
+.header .link-home:nth-of-type(4),
+.header .link-portfolio:nth-of-type(4),
+.header .link-blog:nth-of-type(4),
+.header .link-gallery:nth-of-type(4),
+.header .link-about:nth-of-type(4) {
+  float: right;
+  clear: right;
+  margin: 0px 20px 10px 0;
 }
 .header .link-home .fa,
 .header .link-portfolio .fa,
@@ -2423,66 +2439,20 @@
   text-decoration: none;
   font-size: 15px;
 }
-.header .link-home {
-  top: 10px;
-  left: 10px;
-}
-.header .link-portfolio,
-.header .link-about {
-  bottom: 10px;
-  left: 10px;
-}
-.header .link-blog {
-  bottom: 10px;
-  right: 20px;
-}
-.header .link-gallery {
-  top: 10px;
-  right: 20px;
-}
 @media screen and (min-width: 475px) {
   .header {
-    height: auto;
     width: 98%;
     padding: 15px;
-  }
-  .header .link-home,
-  .header .link-portfolio,
-  .header .link-blog,
-  .header .link-gallery,
-  .header .link-about {
-    position: relative;
-    float: right;
-  }
-  .header .link-home {
-    top: initial;
-    left: initial;
-    float: left;
-  }
-  .header .link-portfolio {
-    bottom: initial;
-    left: initial;
-  }
-  .header .link-blog {
-    bottom: initial;
-    right: initial;
-  }
-  .header .link-gallery {
-    top: initial;
-    right: initial;
-  }
-  .header .link-about {
-    bottom: initial;
-    left: initial;
   }
 }
 @media screen and (orientation: landscape) {
   .header {
     position: fixed;
-    top: 0px;
+    top: 115px;
     left: 0;
     width: 65px;
-    box-shadow: 2px 2px 8px 0px #4b774b;
+    border-top: 1px solid #eef7ee;
+    border-right: 1px solid #eef7ee;
   }
   .header .link-home,
   .header .link-portfolio,
@@ -2490,8 +2460,24 @@
   .header .link-gallery,
   .header .link-about {
     float: none;
+    clear: none;
     width: 100%;
     text-align: center;
+    margin: 0 0 10px 0;
+    /* Clear of selector style*/
+  }
+  .header .link-home:nth-of-type(2),
+  .header .link-portfolio:nth-of-type(2),
+  .header .link-blog:nth-of-type(2),
+  .header .link-gallery:nth-of-type(2),
+  .header .link-about:nth-of-type(2),
+  .header .link-home:nth-of-type(4),
+  .header .link-portfolio:nth-of-type(4),
+  .header .link-blog:nth-of-type(4),
+  .header .link-gallery:nth-of-type(4),
+  .header .link-about:nth-of-type(4) {
+    float: none;
+    clear: none;
     margin: 0 0 10px 0;
   }
   .header .link-home .fa,
@@ -2550,7 +2536,9 @@
   position: relative;
   display: block;
   height: 200px;
-  box-shadow: 3px -3px 5px 0px #4b774b;
+  border-top: 4px solid #0a2e0a;
+  border-left: 1px solid #eef7ee;
+  border-right: 1px solid #eef7ee;
 }
 .footer-container .footer .page-title {
   position: absolute;
@@ -2606,7 +2594,6 @@
     margin: 0 0 0 10px;
   }
 }
-/* Space between top and header (only Landscape)*/
 .page-content {
   width: 100%;
   position: relative;
