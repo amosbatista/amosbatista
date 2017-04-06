@@ -5,6 +5,8 @@ var flatten = require('gulp-flatten');
 var concatCss = require('gulp-concat');
 var jsConcat = require('gulp-concat');
 var plumber = require('gulp-plumber');
+var ftp = require('vinyl-ftp');
+var gutil = require( 'gulp-util' );
 
 
 /* Paths */
@@ -120,6 +122,32 @@ gulp.task ('fontAwesome_Fonts', function(){
 
 
 
+
+
+// Final process, to send all the built files to FTP
+var conn = ftp.create( {
+    host:     'amosbatista.com',
+    user:     'u813102338',
+    password: '',
+    parallel: 10,
+    log:      gutil.log
+} );
+
+gulp.task ('ftpTask', function(){
+
+
+	return gulp.src([
+			destinationFolder + "/*.*",
+			destinationFolder + "/**/*.*"
+		])
+		.pipe( conn.newer( '/public_html' ) ) // only upload newer files 
+        .pipe( conn.dest( '/public_html' ) );
+
+});
+ 
+
+
+
 /* Concatenate CSS. Unify all css, after copy project style and plugins to the same folder*/
 gulp.task ('concatenateCSS', function(){
 
@@ -143,3 +171,4 @@ gulp.watch( imageSource, ['image']);
 
 // Main task
 gulp.task ('default', ['pug', 'less', 'concatenateCSS', 'app', 'env', 'fontAwesome_CSS', 'fontAwesome_Fonts', 'image']);
+gulp.task ('ftp', ['ftpTask']);
