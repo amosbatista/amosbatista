@@ -129,7 +129,7 @@ var conn = ftp.create( {
     host:     'amosbatista.com',
     user:     'u813102338',
     password: '',
-    parallel: 10,
+    parallel: 1,
     log:      gutil.log
 } );
 

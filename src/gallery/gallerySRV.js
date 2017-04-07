@@ -29,7 +29,6 @@ angular.module('site.gallery').factory('gallerySRV', [
 										.replace('</p>', ''),
 									createdDate: post.date,
 									postName: post.slug,
-									all: post
 								}
 							});
 							
