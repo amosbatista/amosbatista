@@ -175,22 +175,71 @@
 	}
 
 	.icon{
-		font-size: 15px;
+		font-size: 50px;
 	}
 
 
-
-	@media screen and (min-width: 400px) and (max-width: 699px) {
-		.icon{
-			font-size: 35px;
-		}
-	}
-
-
-	@media screen and (min-width: 700px) {
-		.icon{
-			font-size: 50px;
-		}
-	}
 }
 	
+
+
+/* Desktop screen */
+@media screen and (max-resolution: 1dppx) {
+
+	#homeContainer{
+
+		.content{
+			font-size: 25px;
+		}
+
+		#linkAbout{
+			top: 0px;
+	    	left: 40px;
+		}
+		
+		
+		#linkGallery{
+			top: 40px;
+	    	right: 30px;
+		}
+
+		#linkBlog{
+			bottom: 40px;
+			right: 30px;
+		}
+
+		#linkPortfolio{
+			bottom: 40px;
+	    	left: 50px;
+		}
+
+		#page-title {
+
+			.name{
+				font-size: 75px;
+			}
+
+			.license-info{
+				font-size: 20px;
+			}
+
+			.code-comment{
+				font-size: 65px;
+			}
+
+			.comment-position-javascript{
+				left: -37px;
+    			top: -122px;
+			}
+
+			.comment-position-visual-basic{
+				left: 0px;
+			}
+		}
+
+		.icon{
+			font-size: 25px;
+		}
+
+	}	
+}

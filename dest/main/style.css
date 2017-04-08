@@ -2996,16 +2996,47 @@
   opacity: 0.9;
 }
 #homeContainer .icon {
-  font-size: 15px;
+  font-size: 50px;
 }
-@media screen and (min-width: 400px) and (max-width: 699px) {
-  #homeContainer .icon {
-    font-size: 35px;
+/* Desktop screen */
+@media screen and (max-resolution: 1dppx) {
+  #homeContainer .content {
+    font-size: 25px;
   }
-}
-@media screen and (min-width: 700px) {
+  #homeContainer #linkAbout {
+    top: 0px;
+    left: 40px;
+  }
+  #homeContainer #linkGallery {
+    top: 40px;
+    right: 30px;
+  }
+  #homeContainer #linkBlog {
+    bottom: 40px;
+    right: 30px;
+  }
+  #homeContainer #linkPortfolio {
+    bottom: 40px;
+    left: 50px;
+  }
+  #homeContainer #page-title .name {
+    font-size: 75px;
+  }
+  #homeContainer #page-title .license-info {
+    font-size: 20px;
+  }
+  #homeContainer #page-title .code-comment {
+    font-size: 65px;
+  }
+  #homeContainer #page-title .comment-position-javascript {
+    left: -37px;
+    top: -122px;
+  }
+  #homeContainer #page-title .comment-position-visual-basic {
+    left: 0px;
+  }
   #homeContainer .icon {
-    font-size: 50px;
+    font-size: 25px;
   }
 }
 .about-bg {
@@ -3632,7 +3663,7 @@ body {
 }
 .body-home-page {
   overflow: hidden;
-  background-color: #53ac57;
+  background-color: #ffffff;
 }
 .body-about-page {
   overflow: auto;
