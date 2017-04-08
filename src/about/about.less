@@ -6,7 +6,7 @@
 .about-page{
 
 	.top-history{
-		margin-top: 200px;
+		margin-top: 500px;
 
 		position: relative;
 		transform: translate(0%, 0%);
@@ -19,13 +19,13 @@
 		.title{
 			font-family: @fontFamily_Titles;
 			text-transform: uppercase;
-			font-size: 30px;
+			font-size: 50px;
 			text-align: center;
 			font-weight: 500;
 			letter-spacing: -3px;
 
 			&::first-letter{
-				font-size: 110px;
+				font-size: 130px;
 			}
 		}
 
@@ -34,7 +34,7 @@
 	    	margin: 0 auto;
 	    	font-family: @fontFamily_Default;
 	    	font-style: italic;
-	    	font-size: 87%;
+	    	font-size: 66%;
 
 
 	    	&:before
@@ -49,7 +49,42 @@
 
 }
 
+/* Desktop screen */
+@media screen and (max-resolution: 1dppx) {
 
+	.about-page{
+
+	.top-history{
+		margin-top: 210px;
+
+
+		.title,
+		.content{
+			
+		}
+
+		.title{
+			
+
+			&::first-letter{
+				
+			}
+		}
+
+		.content{
+			
+
+	    	&:before
+	    	{
+				
+			}
+
+		}
+	}
+
+}
+
+}
 
 
 

@@ -17,6 +17,7 @@ angular.module('common.easyScroll').directive('easyScrollContentLink', [
 		// Return to initial animation
 		timeout( function(){
 			element[0].classList.remove('easy-scroll-show-link');
+			element[0].classList.add('scroll-link');
 		}, 500); // Same time of CSS
 	}
 
@@ -24,6 +25,7 @@ angular.module('common.easyScroll').directive('easyScrollContentLink', [
 	// The function process to hide the link
 	var scrollAndHideProcessFunction = function(scope, element){
 		element[0].classList.remove('easy-scroll-show-link');
+		element[0].classList.remove('scroll-link');
 		element[0].classList.add('easy-scroll-hide-link');
 	}
 

@@ -81,14 +81,14 @@ angular.module("site").directive('body', [
 
 				switch (direction){
 					case "down":
-						if( element[0].scrollTop <= 60 ){
+						if( element[0].scrollTop  <= 60 ){
 							element[0].scrollTop = 60;
 							scope.$broadcast ('easyScrollDown');
 						}
 						break;
 
 					case "up":
-						if( element[0].scrollTop <= 5 ){
+						if( element[0].scrollTop  <= 5 ){
 							element[0].scrollTop = 0;
 							scope.$broadcast ('easyScrollUp');
 						}
