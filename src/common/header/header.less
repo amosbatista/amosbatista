@@ -3,8 +3,7 @@
 .header{
 	position: fixed;
 	width: 100%;
-	/*height: @headerHeight;*/
-	padding: 10px;
+	padding: 40px 20px 30px;
 	top: 0;
 	left: 0;
 	background-color: hsl(142, 0%, 100%);
@@ -20,21 +19,13 @@
 	.link-about
 	{
 		
-		margin: 0px 0 10px 0;
+		margin: 0 30px 0 0;
 		font-size: 30px;
-		float: left;
-		clear: left;
-
-		/* Move 2 of links to the right side*/
-		&:nth-of-type(2),
-		&:nth-of-type(4){
-			float: right;
-			clear: right;
-			margin: 0px 20px 10px 0;
-		}
+		float: right;
 
 		.fa{
 			margin: 0 10px 0 0;
+			font-size: 50px;
 		}
 
 		.title-paragraph{
@@ -42,35 +33,25 @@
 			text-transform: uppercase;
 			color: black;
 			text-decoration: none;
-			font-size: 15px;
+			font-size: 50px;
 		}
 
-
 	}
 
-
-}
-
-
-@media screen and (min-width: 475px){
-
-	.header{
-		width: 98%;
-		padding: 15px;
-
+	.link-home{
+		float: left;
 	}
-
-	
 }
 
 
 @media screen and (orientation: landscape){
 
 	.header{
+		padding: 15px;
 		position: fixed;
 		top: 115px;
 		left: 0;
-		width: 65px;
+		width: 100px;
 		border-top: 1px solid @corBordaDiscreta_H_F;
 		border-right: 1px solid @corBordaDiscreta_H_F;
 
@@ -86,18 +67,16 @@
 			text-align: center;
 			margin: 0 0 10px 0;
 
-			/* Clear of selector style*/
-			&:nth-of-type(2),
-			&:nth-of-type(4){
-				float: none;
-				clear: none;
-				margin: 0 0 10px 0;				
-			}
 
 			.fa{
 				width: 100%;
 				line-height: 50px;
 				margin: 0;
+				font-size: 25px;
+			}
+
+			.title-paragraph{
+				font-size: 25px;
 			}
 		}
 
@@ -105,4 +84,64 @@
 			margin: 0 0 35px 0;
 		}
 	}
+}
+
+
+
+/* Desktop screen */
+@media screen and (max-resolution: 1dppx) {
+	
+	.header{
+		padding: 10px 2px;
+
+		.link-home,
+		.link-portfolio,
+		.link-blog,
+		.link-gallery,
+		.link-about{
+
+			margin: 0 6px 0 0;
+
+			.fa{
+				margin: 0;
+				font-size: 22px;
+			}
+
+			.title-paragraph{
+				font-size: 22px;
+			}
+
+
+
+		}
+
+	}	
+}
+
+/* Desktop screen */
+@media screen and (max-resolution: 1dppx) and  (orientation: landscape){
+	
+	.header{
+		padding: 5px 2px;
+
+
+		.link-home,
+		.link-portfolio,
+		.link-blog,
+		.link-gallery,
+		.link-about{
+
+			margin: 0 6px 0 0;
+
+			.fa{
+				margin: 0;
+				font-size: 22px;
+			}
+
+			.title-paragraph{
+				font-size: 18px;
+			}
+
+		}
+	}	
 }
