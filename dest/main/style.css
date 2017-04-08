@@ -2566,7 +2566,7 @@
   background-color: #ffffff;
   position: relative;
   display: block;
-  height: 200px;
+  height: 310px;
   border-top: 4px solid #125412;
   border-left: 1px solid #eef7ee;
   border-right: 1px solid #eef7ee;
@@ -2574,9 +2574,9 @@
 .footer-container .footer .page-title {
   position: absolute;
   top: 40px;
-  left: 20px;
+  left: 50px;
   width: 30%;
-  font-size: 17px;
+  font-size: 50px;
   margin: 0;
 }
 .footer-container .footer .link-bar {
@@ -2586,45 +2586,62 @@
   left: 15px;
 }
 .footer-container .footer .link-bar .link {
-  float: left;
-  clear: right;
-  font-size: 20px;
+  font-size: 35px;
   margin: 10px 0;
+  float: right;
   /* Move 2 of links to the right side*/
 }
-.footer-container .footer .link-bar .link:nth-of-type(2),
-.footer-container .footer .link-bar .link:nth-of-type(4) {
-  float: right;
-  margin: 10px 0;
+.footer-container .footer .link-bar .link:nth-of-type(1) {
+  float: left;
 }
 @media screen and (orientation: landscape) {
-  .footer-container {
-    /*transform: translate(0px, @footerHeight_Landscape);*/
-  }
   .footer-container .footer {
-    height: 150px;
+    height: 210px;
   }
   .footer-container .footer .page-title {
-    top: 45px;
-    left: 25px;
+    font-size: 40px;
   }
   .footer-container .footer .link-bar .link {
-    float: right;
-    font-size: 20px;
-    margin: 0 0 0 10px;
-    clear: none;
-    /*The home link will be at left*/
-    /* Clear style of default declaration*/
-  }
-  .footer-container .footer .link-bar .link:nth-of-type(1) {
-    float: left;
-    margin: 0;
-  }
-  .footer-container .footer .link-bar .link:nth-of-type(2),
-  .footer-container .footer .link-bar .link:nth-of-type(4) {
-    margin: 0 0 0 10px;
+    font-size: 30px;
   }
 }
+/*@media screen and (orientation: landscape){
+
+	.footer-container{
+		/*transform: translate(0px, @footerHeight_Landscape);* /
+
+		.footer{
+			height: @footerHeight_Landscape;
+			
+			.page-title{
+				top: 45px;
+				left: 25px;
+			}
+
+			.link-bar{
+			
+				.link{
+					float: right;
+					font-size: 20px;
+					margin: 0 0 0 10px;
+					clear: none;
+
+					/*The home link will be at left* /
+					&:nth-of-type(1){
+						float: left;
+						margin: 0;
+					}
+
+					/* Clear style of default declaration* /
+					&:nth-of-type(2),
+					&:nth-of-type(4){
+						margin: 0 0 0 10px;
+					}
+				}
+			}
+		}
+	}	
+}*/
 .page-content {
   width: 100%;
   position: relative;
@@ -3683,12 +3700,7 @@
   margin: 10px 0;
 }
 /* Body classes, to be user to the body directive */
-html {
-  height: 100vh;
-  width: 100vw;
-}
 body {
-  height: 100vh;
   font-size: 35px;
   margin: 0;
 }

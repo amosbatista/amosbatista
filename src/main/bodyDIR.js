@@ -110,12 +110,12 @@ angular.module("site").directive('body', [
 			var footerAndHeaderEvent = function (direction, lastPosition){
 
 				// Indicate to bring the foot upper or not, if user reached the bottom of the screen
-				if ((element[0].scrollTop + window.outerHeight) >= element[0].scrollHeight )
+				if ((element[0].scrollTop * window.devicePixelRatio + window.outerHeight) >= element[0].scrollHeight )
 					scope.$broadcast ('footerIsRising');
 				else{
 
 					// If direction is up and last position was the bottom
-					if(direction == "up" && ( lastPosition + window.outerHeight >= element[0].scrollHeight))
+					if(direction == "up" && ( lastPosition * window.devicePixelRatio + window.outerHeight >= element[0].scrollHeight))
 						scope.$broadcast ('footerIsHiding');
 				}
 

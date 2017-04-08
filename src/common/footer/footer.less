@@ -15,7 +15,7 @@
 		background-color: hsl(142, 0%, 100%);
 		position: relative;
 		display: block;
-		height: @footerHeight;
+		height: 310px;
 		border-top: 4px solid @corSombraHeaderFooter;
 		border-left: 1px solid @corBordaDiscreta_H_F;
 		border-right: 1px solid @corBordaDiscreta_H_F;
@@ -24,9 +24,9 @@
 		.page-title{
 			position: absolute;
 			top: 40px;
-			left: 20px;
+			left: 50px;
 			width: 30%;
-			font-size: 17px;
+			font-size: 50px;
 			margin: 0;
 		}
 
@@ -37,16 +37,34 @@
 			left: 15px;
 
 			.link{
-				float: left;
-				clear: right;
-				font-size: 20px;
+				font-size: 35px;
 				margin: 10px 0;
+				float: right;
 
 				/* Move 2 of links to the right side*/
-				&:nth-of-type(2),
-				&:nth-of-type(4){
-					float: right;
-					margin: 10px 0;
+				&:nth-of-type(1){
+					float: left;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (orientation: landscape){
+	
+	.footer-container{
+		
+		.footer{
+			height: 210px;
+
+			.page-title{
+				font-size: 40px;
+			}
+
+			.link-bar{
+
+				.link{
+					font-size: 30px;
 				}
 			}
 		}
@@ -54,11 +72,10 @@
 }
 
 
-
-@media screen and (orientation: landscape){
+/*@media screen and (orientation: landscape){
 
 	.footer-container{
-		/*transform: translate(0px, @footerHeight_Landscape);*/
+		/*transform: translate(0px, @footerHeight_Landscape);* /
 
 		.footer{
 			height: @footerHeight_Landscape;
@@ -76,13 +93,13 @@
 					margin: 0 0 0 10px;
 					clear: none;
 
-					/*The home link will be at left*/
+					/*The home link will be at left* /
 					&:nth-of-type(1){
 						float: left;
 						margin: 0;
 					}
 
-					/* Clear style of default declaration*/
+					/* Clear style of default declaration* /
 					&:nth-of-type(2),
 					&:nth-of-type(4){
 						margin: 0 0 0 10px;
@@ -91,4 +108,4 @@
 			}
 		}
 	}	
-}
+}*/
