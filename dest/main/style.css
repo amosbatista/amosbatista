@@ -2848,6 +2848,18 @@
     transform: translate(25%, 0%);
   }
 }
+#homeContainer .link-swing #linkAbout .icon {
+  animation: swingUp 0.9s ease infinite;
+}
+#homeContainer .link-swing #linkPortfolio .icon {
+  animation: swingLeft 0.9s ease infinite;
+}
+#homeContainer .link-swing #linkGallery .icon {
+  animation: swingRight 0.9s ease infinite;
+}
+#homeContainer .link-swing #linkBlog .icon {
+  animation: swingDown 0.9s ease infinite;
+}
 #homeContainer {
   position: absolute;
   width: 100%;
@@ -2863,40 +2875,28 @@
   opacity: 1;
   transition: opacity 0.7s ease-in;
 }
-#homeContainer .link-swing #linkAbout .icon {
-  animation: swingUp 0.9s ease infinite;
-}
-#homeContainer .link-swing #linkPortfolio .icon {
-  animation: swingLeft 0.9s ease infinite;
-}
-#homeContainer .link-swing #linkGallery .icon {
-  animation: swingRight 0.9s ease infinite;
-}
-#homeContainer .link-swing #linkBlog .icon {
-  animation: swingDown 0.9s ease infinite;
-}
 #homeContainer #linkAbout {
-  top: 10px;
-  left: 10px;
+  top: 50px;
+  left: 80px;
 }
 #homeContainer #linkGallery {
-  top: 70px;
-  right: 10px;
+  top: 90px;
+  right: 70px;
   display: flex;
   align-items: center;
 }
 #homeContainer #linkBlog {
-  bottom: 10px;
-  right: 10px;
+  bottom: 70px;
+  right: 50px;
 }
 #homeContainer #linkPortfolio {
   bottom: 70px;
-  left: 10px;
+  left: 100px;
   display: flex;
   align-items: center;
 }
 #homeContainer .content {
-  font-size: 20px;
+  font-size: 50px;
   display: block;
 }
 #homeContainer #linkAbout .icon {
@@ -2907,106 +2907,44 @@
   margin: 5px 10px 0 10px;
 }
 #homeContainer #page-title {
-  max-width: 30%;
+  max-width: 65%;
   position: absolute;
-  top: 50%;
-  left: 50%;
-  margin: -60px 0px 0 -20%;
+  top: 38%;
+  left: 22%;
+  /*margin: -60px 0px 0 -20%;*/
 }
 #homeContainer #page-title .license-info,
 #homeContainer #page-title .name {
-  /*margin: 0 0 0 40px;*/
+  margin: 0 0 0 40px;
 }
 #homeContainer #page-title .name {
-  font-size: 25px;
+  font-size: 125px;
   line-height: 1;
 }
 #homeContainer #page-title .license-info {
-  font-size: 15px;
-  display: none;
+  font-size: 45px;
   font-family: 'Source Serif Pro', sans-serif;
 }
 #homeContainer #page-title .code-comment {
-  font-size: 30px;
+  font-size: 125px;
   color: green;
   position: absolute;
   font-family: 'Fjalla One', sans-serif;
   opacity: 0;
 }
 #homeContainer #page-title .comment-position-visual-basic {
-  left: -11px;
-  top: 22px;
+  left: -50px;
+  top: -8px;
   line-height: 1;
 }
 #homeContainer #page-title .comment-position-javascript {
-  left: -20px;
-  top: -35px;
+  left: -107px;
+  top: -242px;
   line-height: 3;
 }
 #homeContainer #page-title .show-comment-animated {
   animation: commentShow 1s ease-out 0.1s;
   opacity: 1;
-}
-@media screen and (min-width: 200px) and (max-width: 699px) {
-  #homeContainer #linkGallery {
-    top: 30px;
-    right: 10px;
-  }
-  #homeContainer #linkPortfolio {
-    bottom: 30px;
-    left: 10px;
-  }
-}
-@media screen and (min-width: 400px) and (max-width: 699px) {
-  #homeContainer #page-title {
-    margin: -110px 0 0 -25.5%;
-  }
-  #homeContainer .icon {
-    font-size: 35px;
-  }
-}
-@media screen and (min-width: 700px) {
-  #homeContainer #page-title {
-    margin: -100px 0 0 -25.5%;
-  }
-  #homeContainer .icon {
-    font-size: 50px;
-  }
-  #homeContainer #linkAbout {
-    top: 20px;
-    left: 50px;
-  }
-  #homeContainer #linkGallery {
-    top: 50px;
-    right: 20px;
-  }
-  #homeContainer #linkBlog {
-    bottom: 20px;
-    right: 50px;
-  }
-  #homeContainer #linkPortfolio {
-    bottom: 50px;
-    left: 20px;
-  }
-}
-@media screen and (min-width: 400px) {
-  #homeContainer #page-title .name {
-    font-size: 75px;
-    margin: 0px;
-  }
-  #homeContainer #page-title .license-info {
-    display: block;
-  }
-  #homeContainer #page-title .code-comment {
-    font-size: 75px;
-    left: -25px;
-    top: 5px;
-  }
-  #homeContainer #page-title .comment-position-javascript {
-    left: -70px;
-    top: -145px;
-    line-height: 3;
-  }
 }
 @keyframes commentShow {
   0% {
@@ -3683,13 +3621,18 @@
   margin: 10px 0;
 }
 /* Body classes, to be user to the body directive */
+html {
+  height: 100vh;
+  width: 100vw;
+}
 body {
-  font-size: 25px;
+  height: 100vh;
+  font-size: 35px;
   margin: 0;
 }
 .body-home-page {
   overflow: hidden;
-  background-color: #ffffff;
+  background-color: #53ac57;
 }
 .body-about-page {
   overflow: auto;
