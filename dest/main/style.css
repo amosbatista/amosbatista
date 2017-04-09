@@ -3176,6 +3176,7 @@
   margin: 0 20px 0 0;
   float: left;
   font-size: 18px;
+  padding: 7px 0 0 0;
 }
 .breadcrumb .item a {
   text-decoration: none;
@@ -3187,6 +3188,7 @@
   color: #5eba95;
   font-style: italic;
   font-size: inherit;
+  padding: 0;
 }
 @media screen and (orientation: landscape) {
   .breadcrumb {
