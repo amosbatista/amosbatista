@@ -31,7 +31,7 @@ angular.module('common.header').directive("myHeader", [
 				}
 
 				var headerLinkToPortfolio = function(){
-					state.go('portfolios')
+					state.go('portfolio')
 				}
 
 				var headerLinkList = [

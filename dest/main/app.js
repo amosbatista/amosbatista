@@ -52366,7 +52366,7 @@ angular.module('common.footer').directive("myFooter", [
 				}
 
 				var footerLinkToPortfolio = function(){
-					state.go('portfolios')
+					state.go('portfolio')
 				}
 
 
@@ -52462,7 +52462,7 @@ angular.module('common.header').directive("myHeader", [
 				}
 
 				var headerLinkToPortfolio = function(){
-					state.go('portfolios')
+					state.go('portfolio')
 				}
 
 				var headerLinkList = [
@@ -53150,7 +53150,7 @@ angular.module('site.home').controller('homeCtrl', [
 		}
 
 		scope.goToPortfolio = function(){
-			state.go('portfolios');
+			state.go('portfolio');
 		}
 
 		scope.goToBlog = function(){
@@ -53305,7 +53305,7 @@ angular.module('site.portfolio').config( [
 
 		state
 
-			.state('portfolios', {
+			.state('portfolio', {
 				templateUrl: "portfolio.html",
 				controller: "portfolioCtrl",
 				url: '/portfolio'

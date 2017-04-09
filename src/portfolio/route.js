@@ -6,7 +6,7 @@ angular.module('site.portfolio').config( [
 
 		state
 
-			.state('portfolios', {
+			.state('portfolio', {
 				templateUrl: "portfolio.html",
 				controller: "portfolioCtrl",
 				url: '/portfolio'

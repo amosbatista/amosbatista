@@ -41,7 +41,7 @@ angular.module('common.footer').directive("myFooter", [
 				}
 
 				var footerLinkToPortfolio = function(){
-					state.go('portfolios')
+					state.go('portfolio')
 				}
 
 
