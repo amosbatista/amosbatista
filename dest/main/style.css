@@ -3136,6 +3136,11 @@
   content: '"';
   line-height: 3px;
 }
+@media screen and (orientation: landscape) {
+  .about-page .top-history {
+    margin-top: 120px;
+  }
+}
 /* Desktop screen */
 @media screen and (max-resolution: 1dppx) {
   .about-page .top-history {
