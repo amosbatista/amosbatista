@@ -2938,7 +2938,7 @@
   align-items: center;
 }
 #homeContainer .content {
-  font-size: 50px;
+  font-size: 160%;
   display: block;
 }
 #homeContainer #linkAbout .icon {
@@ -2960,15 +2960,16 @@
   margin: 0 0 0 40px;
 }
 #homeContainer #page-title .name {
-  font-size: 125px;
+  font-size: 270%;
   line-height: 1;
 }
 #homeContainer #page-title .license-info {
-  font-size: 45px;
+  font-size: 85%;
   font-family: 'Source Serif Pro', sans-serif;
+  display: none;
 }
 #homeContainer #page-title .code-comment {
-  font-size: 125px;
+  font-size: 270%;
   color: green;
   position: absolute;
   font-family: 'Fjalla One', sans-serif;
@@ -2980,8 +2981,8 @@
   line-height: 1;
 }
 #homeContainer #page-title .comment-position-javascript {
-  left: -107px;
-  top: -242px;
+  left: -40px;
+  top: -182px;
   line-height: 3;
 }
 #homeContainer #page-title .show-comment-animated {
@@ -3039,6 +3040,25 @@
 }
 #homeContainer .icon {
   font-size: 50px;
+}
+@media screen and (orientation: landscape) {
+  #homeContainer #page-title {
+    left: 35%;
+  }
+  #homeContainer #page-title .name {
+    font-size: 175%;
+  }
+  #homeContainer #page-title .code-comment {
+    font-size: 175%;
+  }
+  #homeContainer #page-title .comment-position-javascript {
+    left: 0px;
+    top: -112px;
+  }
+  #homeContainer .content {
+    font-size: 100%;
+    display: block;
+  }
 }
 /* Desktop screen */
 @media screen and (max-resolution: 1dppx) {
