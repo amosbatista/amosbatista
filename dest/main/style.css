@@ -2596,7 +2596,22 @@
 }
 @media screen and (orientation: landscape) {
   .footer-container .footer {
-    height: 240px;
+    height: 120px;
+  }
+  .footer-container .footer .page-title {
+    font-size: 40%;
+    top: 20px;
+  }
+  .footer-container .footer .link-bar .link {
+    font-size: 70%;
+  }
+}
+/* Desktop screen */
+@media screen and (max-resolution: 1dppx) {
+  .footer-container .footer .page-title {
+    font-size: 100%;
+    top: 13px;
+    left: 70px;
   }
 }
 /*@media screen and (orientation: landscape){
