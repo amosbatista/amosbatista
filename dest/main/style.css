@@ -2669,7 +2669,7 @@
 }
 @media screen and (orientation: landscape) {
   .page-content {
-    width: 90%;
+    width: 85%;
     float: right;
     margin: 0px 0 250px 0;
     /*border: 1px solid white;*/
@@ -3361,7 +3361,7 @@
 }
 .featured .post-text-area .title {
   position: relative;
-  width: 100%;
+  width: 90%;
   color: #d7eed9;
   text-align: right;
   font-family: 'Fjalla One', sans-serif;
@@ -3412,14 +3412,13 @@
     margin: 0px 0 30px 0;
   }
   .sub-featureds .sub-featured .post-background {
-    width: 100%;
+    width: 49%;
     height: 100px;
   }
   .sub-featureds .sub-featured .post-text-area {
-    position: absolute;
-    width: 50%;
-    right: 0;
-    bottom: 0;
+    position: relative;
+    width: 44%;
+    float: right;
     padding: 10px 10px;
   }
   .sub-featureds .sub-featured .post-text-area .date {
@@ -3602,7 +3601,7 @@
 }
 .blog-post .top-history {
   position: relative;
-  margin: 120px 0 0 0;
+  margin: 340px 0 0 0;
 }
 .blog-post .top-history .featured-img {
   max-width: 360px;
@@ -3694,11 +3693,6 @@
     opacity: 0.7;
   }
 }
-@media screen and (min-width: 475px) {
-  .blog-post .top-history {
-    margin: 80px 0 0 0;
-  }
-}
 @media screen and (orientation: landscape) {
   .blog-post {
     width: 90%;
@@ -3708,8 +3702,11 @@
     margin: 0px 0 0 0;
   }
   .blog-post .top-history .featured-img {
-    max-height: 375px;
+    max-height: 275px;
     max-width: 100%;
+  }
+  .blog-post .top-history .title {
+    font-size: 100%;
   }
 }
 .gallery {
