@@ -13,15 +13,17 @@ var gutil = require( 'gulp-util' );
 var pugOrigin = ["src/*.pug", "src/**/*.pug"];
 var lessMainOrigin = ["src/main/main.less"];
 var lessOrigin = ["src/**/*.less"];
-/*var pluginCSSOrigin = [
-	'node_modules/font-awesome/css/font-awesome.css'
-];*/
+var pluginCSSOrigin = [
+	'node_modules/masterrow/dist/masterrow.css'
+];
 var cssPostLessOrigin = ["cssProcess/*.css"];
 var jsOrigin = [
 	"node_modules/angular/angular.js",
 	"node_modules/angular-resource/angular-resource.js",
 	"node_modules/angular-ui-router/release/angular-ui-router.js",
 	"node_modules/moment/min/moment-with-locales.js",
+	"node_modules/masterrow/dist/masterrow.js",
+	"node_modules/angular-masterrow/dist/angular-masterrow.js",
 
 	"src/plugins/*.js",
 	"src/common/main.js",
@@ -170,5 +172,5 @@ gulp.watch( imageSource, ['image']);
 
 
 // Main task
-gulp.task ('default', ['pug', 'less', 'concatenateCSS', 'app', 'env', 'fontAwesome_CSS', 'fontAwesome_Fonts', 'image']);
+gulp.task ('default', ['pug', 'less', 'cssPlugin', 'concatenateCSS', 'app', 'env', 'fontAwesome_CSS', 'fontAwesome_Fonts', 'image']);
 gulp.task ('ftp', ['ftpTask']);

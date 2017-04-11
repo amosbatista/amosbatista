@@ -52579,6 +52579,3451 @@ return hooks;
 
 })));
 
+"use strict";
+/*
+	
+	MasterRow
+	
+	MasterRow is a open-source library that allows the easy creation and configuration 
+	of a dynamic table.
+
+	Author: Amos Batista
+	Website: http://amosbatista.com/
+	Source code: https://github.com/amosbatista/MasterRow
+
+*/
+
+/*
+	The declaration of the object, that will receive the parameters. 
+*/
+var MasterRow = function (theOptions){
+
+	// The container
+	var theContainer = null;
+
+	// Table that MasterRow will keep, to generate data to export
+	var theExport = {
+		actualPage: 0,
+		excelTable: {},
+		pdfTable: [],
+		toPrintPDF: false
+	};
+
+	/* The function user set in the toProcessData function, that will be processed each time 
+	MasterRow needs to refresh data (after pagination or filtering) */
+	var theDataProcessFunction = {};
+
+	// The indication that the page is full loaded. If yes, MasterRow is authorized to load data
+	//var isWindowLoaded = false;
+
+	// Filter control
+	var _filtersDOMReference = [];
+
+	// Id objects reference
+	var objectsDOMReference = {};
+
+
+	var formInputAutoCompleteRef = "";
+
+	/*Variable of column link, to memorizate the last column information. That serves to set the columns, and it's filters,
+	when any filter return no data*/
+	var lastColumnFormation = [];
+
+	// Memory of last detailed row, when detailation is on
+	var lastRowDetailExpanded = '';
+
+	// Constants
+	var sortingConsts = {
+		c_sorting_disabled: 'Disabled sorting',
+		c_sorting_asc: 'Ascending sorting',
+		c_sorting_desc: 'Descending sorting'	
+	}
+
+	var exportFormatConst = {
+		c_csv: 'CSV',
+		c_excel: 'XLS'
+	};
+
+	var lastFiltering = {};
+	var lastSorting = undefined;
+
+
+	/* Masterrow hold the data loaded, to wait the entire window loads.*/
+	var theLoadedData = null;
+
+	/* The indicator user function is still executing. 
+	If true, Masterrow must show a waiting screen */
+	var isDataLoading = false;
+
+
+
+
+	/* Helpers */
+
+	// Function that returns true/false, if the obect exist or is undefined or null
+	var itExist = function (obj){
+
+		if(obj == undefined || obj == null)
+			return false;
+		else
+			return true;
+	}
+
+	// Replace empty values with empty string
+	var replaceEmptyWithString = function(value){
+		if(!itExist (value))
+			return '';
+		else
+			return value;
+	}
+
+	// Function that creates the pagination array
+	var generatePagination = function (_currentPage, totalPages){
+
+		var _pagArray = [];
+
+		// First
+		if( _currentPage != 1){
+			_pagArray.push({
+				value: '1',
+				pageDestination: 1
+			});
+		}
+
+		// Ellipsis start
+		if (_currentPage > 3){
+
+			_pagArray.push({
+				value: '...',
+				pageDestination: _currentPage - 3
+			});
+		}
+
+		
+
+		// Page before 2
+		if((_currentPage - 2) > 1){
+			_pagArray.push({
+				value: (_currentPage - 2),
+				pageDestination: _currentPage - 2
+			});
+		}
+
+		// Page before
+		if((_currentPage - 1) > 1){
+			_pagArray.push({
+				value: _currentPage - 1,
+				pageDestination: _currentPage - 1
+			});
+		}
+
+		// Current page
+		_pagArray.push({
+			value: _currentPage,
+			pageDestination: _currentPage
+		});
+
+		// Page after
+		if( (_currentPage + 1) < totalPages){
+			_pagArray.push({
+				value: _currentPage + 1,
+				pageDestination: _currentPage + 1
+			});
+		}
+
+		// Page after 2
+		if( (_currentPage + 2) < totalPages){
+			_pagArray.push({
+				value: _currentPage + 2,
+				pageDestination: _currentPage + 2
+			});
+		}
+
+		// Ellipsis end
+		if ((totalPages - _currentPage) >= 3 ){
+
+			_pagArray.push({
+				value: '...',
+				pageDestination: _currentPage + 3
+			});
+		}
+
+		// Last page
+		if( _currentPage != totalPages){
+			_pagArray.push({
+				value: totalPages,
+				pageDestination: totalPages
+			});
+		}
+
+		return {
+			currentPage: _currentPage,
+			pagList: _pagArray
+		};
+	};
+
+	// Generate the export filename
+	var generateFileName = function (extension){
+		var dateObj = new Date();
+
+		var fileName = "";
+
+		if (theOptions.exporting.fileName != "")
+			fileName = theOptions.exporting.fileName + "_";
+
+		
+		fileName = fileName
+		+ dateObj.getFullYear() + ""
+		+ dateObj.getMonth() + ""
+		+ dateObj.getDate() + "_"
+		+ dateObj.getHours() + ""
+		+ dateObj.getMinutes() + ""
+		+ dateObj.getSeconds() + "."
+		+ extension;
+
+		return fileName;
+
+	};
+
+	// Replace a column name to its personalized option
+	var getPersonalizedColumnName = function (columnName){
+
+		if( theOptions.personalization.columnRename.length > 0){
+
+			// Only set the personalization, if it is the column. Else, pass the normal value
+			var _personalizedColumn = theOptions.personalization.columnRename.find(function(columnItem){
+				return columnItem.column == columnName;
+			});
+
+			if(itExist (_personalizedColumn))
+				return _personalizedColumn.newColumnName;
+			else
+				return columnName;
+		}
+
+		// Set the value of attribute, it there's no column personalization
+		else{
+			return columnName;
+		}
+	}
+
+	// Detect if the table gets smaller than the container
+	var isMasterrowSmallerThanContainer = function(){
+		return theContainer.parentElement.clientWidth < theContainer.scrollWidth;
+	}
+
+
+
+
+
+
+	/* Validation and preparation */
+
+	// Container validation
+	var validateContainer = function(_theContainer){
+
+		/*if(typeof _containerId != "string")
+			throw ('The property "containerId" must be a string.');*/
+
+		if (! itExist (_theContainer))
+			throw ("The container do not exist. Please, check if you set a correct ID to this element");
+		if (_theContainer.nodeName == "TABLE")	
+			throw("It's not allowed to use a <table> element to hold the MasterRow. Use a more generic element, like <div> tag.");
+
+		// After validation, set the the object
+		return _theContainer;
+	};
+
+	// Container Id validation
+	var validateContainerId = function(_theContainerId){
+
+		if (! itExist (_theContainerId))
+			throw ('The property "containerId" is obligaroty in Masterrow creation.');
+
+		if(typeof _theContainerId != "string")
+			throw ('The property "containerId" must be a string.');
+
+		if(_theContainerId == "")
+			throw ("The property 'containerId' can't be empty.");
+
+		return _theContainerId;
+	};
+
+	// Filter validation
+	var validateFilters = function(_filter){
+
+		if(itExist (_filter)){
+
+			if(typeof _filter != 'object')
+				throw ('The parameter "filters" must be an object.');
+			
+			// Validate the column filter objects
+			_filter.columnFilters = validateColumnsFilterList(_filter.columnFilters);
+
+			return _filter;
+		}
+
+		else{
+			
+			// Return the default value
+			return {
+				columnFilters: []
+			}
+		}
+
+	}
+
+	// Column filter validation
+	var validateColumnsFilterList = function(_columnFilter){
+
+		var validatedColumns = [];
+
+		if (itExist(_columnFilter)){
+
+			// Can receive one filter (an object) or N filters (an array);
+			if(Array.isArray (_columnFilter)){
+
+				_columnFilter.forEach( function (filter){
+					validatedColumns.push(validateColumnFilter(filter));
+				});
+			}
+
+			// If an object, just push it to the array
+			else{
+				validatedColumns.push(validateColumnFilter(_columnFilter));
+			}
+
+			return validatedColumns;
+
+		}
+
+		else{
+			return [];
+		}
+
+	}
+
+	// Individual column validation
+	var validateColumnFilter = function(_filter){
+
+		if(typeof _filter != 'object')
+			throw ('Each filter in the column filter list must be an object.');
+
+		if(!itExist (_filter.column))
+			throw ('Each filter in the column filter list must have a "column" parameter.');
+
+		if(itExist (_filter.autoComplete)){
+
+			if(typeof _filter.autoComplete != 'function')
+				throw ('The "autoComplete" attribute of filter object must be a function.');				
+		}
+
+		if(itExist (_filter.datepicker)){
+
+			if(typeof _filter.datepicker != 'object')
+				throw ('The "datepicker" attribute of filter object must be an object.');
+
+			if( !itExist(_filter.datepicker.dateformat ))
+				_filter.datepicker.dateformat = '%d/%m/%Y';
+		}
+
+		if(itExist (_filter.datePeriod)){
+
+			if(typeof _filter.datePeriod != 'object')
+				throw ('The "datePeriod" attribute of filter object must be an object.');
+
+			if( !itExist(_filter.datePeriod.dateformat ))
+				_filter.datePeriod.dateformat = '%d/%m/%Y';
+			if( !itExist(_filter.datePeriod.value ))
+				_filter.datePeriod.value = {
+					from: '',
+					to: ''
+				};
+		}
+
+		/* Forbid have both 'checkList' and 'select' filters*/
+		if(itExist (_filter.checkList) && itExist (_filter.select))
+			throw ("You can't set both 'checkList' and 'select' together in a filter.");
+
+		if(itExist (_filter.checkList)){
+
+			if( !Array.isArray(_filter.checkList))
+				throw ('The "checkList" attribute of filter object must be an array.');
+
+		}
+
+		if(itExist (_filter.select)){
+
+			if( !Array.isArray(_filter.select))
+				throw ('The "select" attribute of filter object must be an array.');
+
+		}
+
+		return _filter;
+	};
+
+	// Pagination validation
+	var validatePagination = function(_pagination){
+
+		if(itExist(_pagination)){
+
+			if(typeof _pagination != 'object')
+				throw ('The "pagination" parameter must be an object.');
+
+			if(!itExist (_pagination.registerPerPage))
+				throw ('The pagination object must have a "registerPerPage" parameter.');
+
+			if(typeof _pagination.registerPerPage != 'number')
+				throw ('The pagination "registerPerPage" parameter must be a number.');	
+
+			if(!itExist (_pagination.maxPages))
+				_pagination.maxPages = 0;
+
+			if(typeof _pagination.maxPages != 'number')
+				throw ('The pagination "maxPages" parameter must be a number.');
+
+			if(!itExist (_pagination.currentPage))
+				_pagination.currentPage = 1;
+
+			if(typeof _pagination.currentPage != 'number')
+				throw ('The pagination "currentPage" parameter must be a number.');
+
+			if(_pagination.currentPage <= 0)
+				throw ('The pagination "currentPage" must be a number bigger than zero.');
+
+
+			return _pagination;
+		}
+		else{
+
+			return {
+				registerPerPage: 0,
+				currentPage: 1,
+				maxPages: 0
+			};
+		}
+	};
+
+	// Detailing validation
+	var validateDetailing = function (_detailing){
+
+		if(itExist(_detailing)){
+
+			if(!itExist (_detailing.columnsToShow))
+				throw ('The "detailing" object must have a "columnsToShow" parameter.');
+
+			if(!Array.isArray( _detailing.columnsToShow))
+				throw ('The detailing "columnsToShow" parameter must be an Array.');
+
+			if(!itExist(_detailing.detailRowsPerLine))
+				_detailing.detailRowsPerLine = 0;
+
+			if(typeof _detailing.detailRowsPerLine != 'number')
+				throw ('The detailing "detailRowsPerLine" parameter must be a string.');				
+
+			if(itExist(_detailing.noDetail)){
+
+				if(typeof _detailing.noDetail != 'boolean')
+					throw ('The detailing "noDetail" parameter must be a boolean.');									
+			}
+			else
+				_detailing.noDetail = false;
+
+			return _detailing;	
+		}
+
+		// Default value - if nothing is set
+		else{
+			return {
+				columnsToShow: []
+			};
+		}
+		
+	};
+
+	// Personalization
+	var validatePersonalization = function (_personalization){
+
+		if(itExist (_personalization)){
+
+			if(typeof _personalization != 'object')
+				throw ('The "personalization" parameter must be an object.');
+
+			// Validate the personalization parameters
+			_personalization.columnRename = validatePersonalization_ColumnRename(_personalization.columnRename);
+			_personalization.customCellStyle = validatePersonalization_customCellStyle(_personalization.customCellStyle);
+			return _personalization;
+
+		}
+
+		// Default value - if nothing is set
+		else{
+			return {
+				columnRename: []
+			}
+		}
+	};
+
+	var validatePersonalization_ColumnRename = function (_persnColumnRename){
+
+		if(itExist (_persnColumnRename)){
+
+			if( !Array.isArray(_persnColumnRename) )
+				throw ('The personalization parameter "columnRename" must be an array.');
+
+			_persnColumnRename.forEach( function (columnRenameItem, index){
+
+				if (!itExist(columnRenameItem))
+					throw ('The columnRename item [' + index + '] is empty.');
+
+				if(typeof columnRenameItem != 'object')
+					throw ('The columnRename item [' + index + '] must be an object.');
+
+				if (!itExist(columnRenameItem.column))
+					throw ('The columnRename item [' + index + '] must have a "column" attribute.');
+
+				if (typeof columnRenameItem.column != 'string')
+					throw ('The columnRename attribute "column", in item [' + index + '], must be a string.');
+
+
+				if (!itExist(columnRenameItem.newColumnName))
+					throw ('The columnRename item [' + index + '] must have a "newColumnName" attribute.');
+			});
+
+			return _persnColumnRename;
+			
+		}
+
+		else{
+			return [];
+		}
+
+	};
+
+	//Row actions
+	var validateRowActions = function (_rowActions){
+
+		if(itExist(_rowActions)){
+
+			if(typeof _rowActions != 'object')
+				throw ('The "rowAction" parameter must be an object.');
+			if(!itExist(_rowActions.actionColumnName))
+				_rowActions.actionColumnName = 'Actions';
+			if(typeof _rowActions.actionColumnName != 'string')
+				throw ('The "actionColumnName" parameter must be a string.');
+
+			_rowActions.actionList = validateActionList(_rowActions.actionList);
+
+			return _rowActions;
+
+		}
+
+		else{
+
+			return  {
+				actionList: []
+			}
+		}
+	};
+
+	var validateActionList = function(_actionList){
+
+		if(itExist(_actionList)){
+
+			if( !Array.isArray(_actionList) )
+				throw ('The action parameter "actionList" must be an array.');
+
+			var filteredActions = [];
+
+			_actionList.forEach(function(action, index){
+
+				if (!itExist(action))
+					throw ('The actionList item [' + index + '] is empty.');
+				if(typeof action != 'object')
+					throw ('The actionList item [' + index + '] must be an object.');
+				if (!itExist(action.icon))
+					throw ('The actionList item [' + index + '] must have a "icon" attribute.');
+				if(typeof action.icon != 'string')
+					throw ('The actionList attribute "icon", in item [' + index + '] must be a string.');
+
+				action.icon = action.icon.trim();
+
+				if (!itExist(action.toProcessAction))
+					throw ('The actionList item [' + index + '] must have a "toProcessAction" attribute.');
+				if(typeof action.toProcessAction != 'function')
+					throw ('The actionList attribute "toProcessAction", in item [' + index + '] must be a function.');
+
+				filteredActions.push(action);
+
+			});
+
+			return filteredActions;
+
+		}
+
+		else{
+
+			return [];
+		}
+	};
+
+	var validateSorting = function(_sorting){
+
+		if(itExist(_sorting)){
+
+			if( typeof _sorting != 'object' )
+				throw ('The action parameter "actionList" must be an object.');
+
+			if(!itExist(_sorting.enabled))
+				_sorting.enabled = false;
+			else{
+				if(typeof _sorting.enabled != 'boolean')
+					throw ('The enabled parameter must be a boolean.');
+			}
+
+			if(!itExist(_sorting.sortingList)){
+				_sorting.sortingList = [];
+				_sorting.sortingConsts = sortingConsts;
+			}
+			return _sorting;
+
+		}
+
+		else{
+
+			return {
+				enabled: false,
+				sortingList: [],
+				sortingConsts: sortingConsts
+			};
+		}
+	};
+
+	var validateExporting = function (_exporting){
+
+		if(itExist  (_exporting)){
+
+			if( itExist(_exporting.fileName)){
+
+				if(typeof _exporting.fileName != "string")
+					throw ('The "fileName" parameter must be a string.');
+			}
+			else 
+				_exporting.fileName = "";
+
+		}
+
+		return _exporting;
+	};
+
+
+	var validatePersonalization_customCellStyle = function (_customizing){
+
+		if(itExist  (_customizing)){
+
+			if(!Array.isArray(_customizing))
+				throw('The "customCellStyle" paramether must be an Array.');
+			else{
+				_customizing.forEach(function(customizingElem){
+
+					if(!itExist(customizingElem.when))
+						throw('The "when" paramether is mandatory.');
+					if(typeof customizingElem.when != "function")
+						throw('The "when" paramether must be a function.');
+
+					if(!itExist(customizingElem.setClass))
+						throw('The "setClass" paramether is mandatory.');
+					if(typeof customizingElem.setClass != "string")
+						throw('The "setClass" paramether must be a string.');
+
+				})
+			}
+
+
+		}
+		else{
+			_customizing = [];
+		}
+
+		return _customizing;
+	};
+
+
+
+
+
+	/* Data structure format */
+	/* Reformation of data structure. Return the formated data, or null, if the user sent another data. 
+		The function expect this format:
+		data: [
+			[
+				{"column1": "value1"},
+				{"column2": "value2"},
+				{"column3": "value3"},
+				(...)
+				{"columnN": "valueN"},
+			],
+			[
+				{"column1": "value1"},
+				{"column2": "value2"},
+				{"column3": "value3"},
+				(...)
+				{"columnN": "valueN"},
+			],
+			(...)
+		];
+	*/
+	var formatUserData_Standard1 = function(tableData){
+
+		// Validating
+		if(!Array.isArray(tableData))
+			return null;
+
+		if(tableData.length <= 0)
+
+			return {
+				columns: [],
+				rows: []
+			};
+
+		if(!Array.isArray(tableData[0]))
+			return null;				
+
+		if(typeof tableData[0][0] != 'object')
+			return null;
+
+		// Formating
+		var _theColumns = [];
+		var _theRows = [];
+
+		// Column name
+		tableData[0].forEach(function (column){
+			_theColumns.push(Object.keys(column)[0]);
+		});
+
+		// The rows
+		tableData.forEach(function (row){
+
+			var _theCells = [];
+
+			row.forEach( function (cell){
+				_theCells.push(cell[Object.keys(cell)[1]]); // Aways the second column
+			});
+
+			_theRows.push(_theCells);
+
+		});
+
+		return {
+			columns: _theColumns,
+			rows: _theRows
+		};
+
+	};
+
+	/* Reformation of data structure. Return the formated data, or null, if the user sent another data. 
+		The function expect this format:
+		data: [
+			{
+				"column1": "value1",
+				"column2": "value2",
+				"column3": "value3",
+				(...)
+				"columnN": "valueN",
+			},
+			{
+				"column1": "value1",
+				"column2": "value2",
+				"column3": "value3",
+				(...)
+				"columnN": "valueN",
+			},
+			(...)
+		];
+	*/
+	var formatUserData_Standard2 = function(tableData){
+
+		// Validating
+		if(!Array.isArray(tableData))
+			return null;
+
+		if(tableData.length <= 0)
+
+			return {
+				columns: [],
+				rows: []
+			};
+
+		if(typeof tableData[0] != 'object')
+			return null;	
+
+		// Formating
+		var _theColumns = [];
+		var _theRows = [];
+
+		// Column name
+		Object.keys(tableData[0]).forEach( function (column){
+			_theColumns.push(column);
+		});
+
+		// The rows
+		tableData.forEach( function (row){
+			var _theCells = [];
+
+			Object.keys(row).forEach(function(column){
+				_theCells.push(row[column]);
+			});
+
+			_theRows.push(_theCells);
+		});
+
+		return {
+			columns: _theColumns,
+			rows: _theRows
+		};
+
+	};
+
+	/* Validation of data structure. Return true/false, if the data sent by user has, or hasn't the following structure:
+		data: {
+			columns: ["column1", "column2", "column3", (...), "columnN"],
+			rows: [
+				["value1", "value2", "value3", (...), "valueN"],
+				["value1", "value2", "value3", (...), "valueN"],
+				["value1", "value2", "value3", (...), "valueN"],
+				(...)
+			]
+		}
+	*/
+	var validateUserData_MainStandard = function(tableData){
+
+		if(!Array.isArray(tableData.columns ))
+			return null;
+		if(!Array.isArray(tableData.rows ))
+			return null;
+		if(tableData.rows.length <= 0)
+
+			return {
+				columns: tableData.columns,
+				rows: []
+			};
+
+		if(!Array.isArray(tableData.rows[0] ))
+			return null;
+
+		return tableData;
+	};
+
+
+
+
+
+
+	/* Transition animation - when we're working in a async process */
+	var startDataLoadingAnimation = function(){		
+
+		// Only if there's a container
+		if(!itExist (theContainer))
+			return;
+
+		var loadingScreen = document.getElementById(objectsDOMReference.loadingScreenReference);
+
+		// Ignore if the screen has been created
+		if(itExist(loadingScreen))
+			return;
+
+		loadingScreen = document.createElement("div");
+		loadingScreen.id = objectsDOMReference.loadingScreenReference
+		loadingScreen.classList.add("masterrow-popup");
+		loadingScreen.classList.add("masterrow-loading-screen");
+
+		var loadingMessage = document.createElement("p");
+		loadingMessage.classList.add("masterrow-busyMessage");
+
+		var loadingContent = document.createTextNode("Por favor, aguarde...");
+		loadingMessage.appendChild(loadingContent);
+		loadingScreen.appendChild(loadingMessage);
+		
+		loadingScreen.classList.add("masterrow-showWithFade");
+		theContainer.appendChild(loadingScreen);
+
+	}
+
+	var stopDataLoadingAnimation = function(){
+
+		var loadingScreen = document.getElementById(objectsDOMReference.loadingScreenReference);
+
+		if(itExist(loadingScreen)){
+			theContainer.removeChild(loadingScreen);
+		}
+
+	}
+
+	// Execute the responsive process (shrink the table if smaller than container)
+	var setMasterrowResponsiveLayout = function(){
+		
+		var theTable = document.getElementById(objectsDOMReference.theTableReference);
+
+		if( !itExist(theTable))
+			return;
+		
+		var isTableSmallerThanContainer = theContainer.parentElement.clientWidth < theTable.scrollWidth;
+			
+		var headerCells = theContainer.getElementsByTagName("th");
+		var cells = theContainer.getElementsByTagName("td");
+
+		for(var headerCellConter = 0; headerCellConter < headerCells.length; headerCellConter ++  ){
+			
+			if(isTableSmallerThanContainer){
+
+				if(headerCells[headerCellConter].className.indexOf("masterrow-actionHeaderColumn") >= 0)
+					headerCells[headerCellConter].classList.add('masterrow-responsive-action-column-version');
+				else
+					headerCells[headerCellConter].classList.add('masterrow-responsive-column-version');
+			}	
+				
+			else{
+				headerCells[headerCellConter].classList.remove('masterrow-responsive-action-column-version');
+				headerCells[headerCellConter].classList.remove('masterrow-responsive-column-version');
+			}
+		}
+
+		for(var cellConter = 0; cellConter < cells.length; cellConter ++  ){
+
+			if(isTableSmallerThanContainer){
+
+				if(cells[cellConter].className.indexOf("masterrow-action-cell") >= 0)
+					cells[cellConter].classList.add('masterrow-responsive-action-column-version');
+				else
+					cells[cellConter].classList.add('masterrow-responsive-column-version');
+			}
+			else{
+				cells[cellConter].classList.remove('masterrow-responsive-action-column-version');
+				cells[cellConter].classList.remove('masterrow-responsive-column-version');
+			}
+		}
+		
+
+	}
+
+
+
+	
+
+
+
+	// Creator of DOM reference
+	var createDOMReference = function (){
+
+		// Creation fo Masterrow objects references
+		objectsDOMReference.theTableReference = theOptions.containerId + "_MasterRowTable";
+
+		objectsDOMReference.exportingReference = "masterrowExporting_" + objectsDOMReference.theTableReference;
+		objectsDOMReference.paginationReference = "masterrowPagination_" + objectsDOMReference.theTableReference;
+		objectsDOMReference.exportScreenReference = "masterRowExportScreen_" + objectsDOMReference.theTableReference;
+		objectsDOMReference.progressBarReference = "masterRowExportProgressBar_" + objectsDOMReference.theTableReference;
+		objectsDOMReference.exportOptionScreenReference = "masterRowExportOptionScreen_" + objectsDOMReference.theTableReference;
+		objectsDOMReference.exportOptionScreenReference = "masterRowExportOptionScreen_" + objectsDOMReference.theTableReference;
+		objectsDOMReference.loadingScreenReference = "masterrow_LoadingScreen_" + objectsDOMReference.theTableReference;
+
+
+
+		// Only set the reference if there's not any filter
+		if(_filtersDOMReference.length <= 0 ){
+
+			theOptions.filters.columnFilters.forEach( function (filter){
+
+				_filtersDOMReference.push ({
+					id: filter.column,
+					linkDOMReference: 'masterrowFilterLink_' + objectsDOMReference.theTableReference + "_" + filter.column,
+					formDOMReference: 'masterrowFormLink_' + objectsDOMReference.theTableReference + "_" + filter.column,
+					inputDOMReference: 'masterrowInputLink_' + objectsDOMReference.theTableReference + "_" + filter.column,
+					autoCompleteDOMReference: 'masterrowAutoComplList_' + objectsDOMReference.theTableReference + "_" + filter.column,
+					checkListReference: 'masterrowcheckList_' + objectsDOMReference.theTableReference + "_" + filter.column,
+					selectReference: 'masterrowSelect_' + objectsDOMReference.theTableReference + "_" + filter.column,
+					inputDOMReference_dtFrom: 'masterrowInputLink_dtFrom_' + objectsDOMReference.theTableReference + "_" + filter.column,
+					inputDOMReference_dtTo: 'masterrowInputLink_dtTo' + objectsDOMReference.theTableReference + "_" + filter.column,
+
+					isShown: false,
+					isActivated: false
+				});
+			});	
+		}
+	}
+
+
+
+
+	/* Data formating */
+	var formatReceivedData = function (theData){
+
+		// User data format
+		var formatedData = formatUserData_Standard1(theData.data);
+
+		if(itExist (formatedData))
+			theData.data = formatedData;
+		else{
+
+			formatedData = formatUserData_Standard2(theData.data);
+
+			if(itExist (formatedData))
+				theData.data = formatedData;
+			else{
+
+				formatedData = validateUserData_MainStandard(theData.data);
+
+				if(itExist (formatedData))
+					theData.data = formatedData;
+				else
+					throw ("Error in export processing, during data formating.");
+			}
+		}
+
+		return theData;
+	}
+
+
+
+
+
+	/*The callback function that receives your data, from async, non-async or refresh, validate 
+	and generate data to the table.*/
+	var userDataProcess = function( receivedData ){
+
+		// Consider the data is loaded
+		isDataLoading = false;
+
+		// Local function, to throw errors and stop the animation.
+		var throwAndStopAnimation = function(message){
+			stopDataLoadingAnimation();	
+			throw(message);
+		};
+
+
+		// Received data validation
+		if( !itExist(receivedData) )
+			throwAndStopAnimation ('MasterRow must receive some data or function, from the "callback" function.');
+
+		if( !itExist(receivedData.data) )
+			throwAndStopAnimation ('The data parameter must return any data.');
+
+		// User data format
+		receivedData = formatReceivedData(receivedData);
+
+		// Validate the metadata
+		if( itExist(receivedData.metadata) ){
+
+			if( itExist(receivedData.metadata.maxPages) ){
+
+				if(typeof receivedData.metadata.maxPages != 'number')
+					throwAndStopAnimation ('The maxPages metadata must be a number format');
+
+				theOptions.pagination.maxPages = receivedData.metadata.maxPages;
+			}
+
+			if( itExist(receivedData.metadata.totalRegisters) ){
+
+				if(typeof receivedData.metadata.totalRegisters != 'number')
+					throwAndStopAnimation ('The totalRegisters metadata must be a number format');
+
+				theOptions.pagination.totalRegister = receivedData.metadata.totalRegisters;
+			}
+		}
+
+
+		// Set the main object and check if container exist
+		theContainer = document.getElementById(theOptions.containerId);
+
+		if(itExist (theContainer)){
+			createTableProcess(receivedData);			
+		}
+
+		// If the container still not exist, keep the data loaded
+		else
+			theLoadedData = receivedData;
+	}
+
+
+
+
+
+
+
+	/* The user function processor */
+	// The internal function, that will execute the user function to process data
+	var userFunctionProcessor = function ( userExtractFunction ){
+
+		// Validate one more time the MasterRow configuration
+		theOptions.containerId = validateContainerId(theOptions.containerId);
+		theOptions.filters = validateFilters(theOptions.filters);
+		theOptions.pagination = validatePagination(theOptions.pagination);
+		theOptions.detailing = validateDetailing(theOptions.detailing);
+		theOptions.personalization = validatePersonalization(theOptions.personalization);
+		theOptions.rowAction = validateRowActions(theOptions.rowAction);
+		theOptions.sorting = validateSorting(theOptions.sorting);
+		theOptions.exporting = validateExporting(theOptions.exporting);
+
+		// Set the filter DOM reference - For the filter creation in table
+		createDOMReference();
+
+		// Preparing the parameters
+		var processFunctionParameters = {};
+
+		// Set the filters
+		if(theOptions.filters.columnFilters.length > 0){
+
+			processFunctionParameters.filters = {};
+
+			// Prepare the filter object, before send
+			theOptions.filters.columnFilters.forEach(function (filter){
+				processFunctionParameters.filters[filter.column] = {};
+				processFunctionParameters.filters[filter.column].value = replaceEmptyWithString(filter.value);
+				processFunctionParameters.filters[filter.column].autoComplete = filter.autoComplete;
+				processFunctionParameters.filters[filter.column].datepicker = filter.datepicker;
+				processFunctionParameters.filters[filter.column].datePeriod = filter.datePeriod;
+				processFunctionParameters.filters[filter.column].checkList = filter.checkList;
+				processFunctionParameters.filters[filter.column].select = filter.select;
+			});
+		}
+
+		if(theOptions.pagination.registerPerPage > 0 )
+			processFunctionParameters.pagination = theOptions.pagination;
+
+		// Set the callback, if user opt to generate the table after his process is done
+		processFunctionParameters.callback = userDataProcess;
+
+		// Sending the sorting structure
+		processFunctionParameters.sorting = {};
+
+		if(theOptions.sorting.enabled == true){
+
+			processFunctionParameters.sorting.sortingList = [];
+
+			theOptions.sorting.sortingList.forEach(function (sortingItem){
+				processFunctionParameters.sorting[sortingItem.column] = sortingItem.sortingType;
+			});
+		}
+		/*processFunctionParameters.sorting = theOptions.sorting;*/
+
+		// Execute the user function, sending our parameters to user application
+		var receivedData = userExtractFunction(processFunctionParameters);
+
+		if( itExist(receivedData) )
+			userDataProcess (receivedData);
+
+		// Else not, the user are about to bring data after; start the animation transation
+		else{
+			isDataLoading = true;
+			startDataLoadingAnimation();
+		}
+	};
+
+	// Function to process the table creation
+	var createTableProcess = function(receivedData){
+
+		// If there's no data, create the empty table
+		if(receivedData.data.rows.length <= 0 ){
+			destroyPagination();
+			createTableNoRows();
+		}
+
+		else{
+
+			// Goes to the table creation module
+			createTable(receivedData);
+
+			// Create the table info
+			createTableInfo(receivedData);
+
+			// If filtering and sorting are different, goes to the fisrt page
+			if(!(JSON.stringify(theOptions.filters) === JSON.stringify(lastFiltering))){
+				lastFiltering = JSON.parse(JSON.stringify(theOptions.filters));
+				theOptions.pagination.currentPage = 1;
+			}
+
+			if(!(JSON.stringify(theOptions.sorting) === JSON.stringify(lastSorting))){
+
+				// Check if it is the firsrt time Masterrow is checking sort
+				if(! itExist(lastSorting) ){
+					lastSorting = JSON.parse(JSON.stringify(theOptions.sorting));
+				}
+				else{
+					lastSorting = JSON.parse(JSON.stringify(theOptions.sorting));
+					theOptions.pagination.currentPage = 1;
+				}
+							
+			}
+
+			// If it was set, create the pagination
+			if( theOptions.pagination.registerPerPage > 0 && theOptions.pagination.maxPages > 0)
+				createPagination();
+			else
+				destroyPagination();
+
+			// Memorize the column formation
+			lastColumnFormation = receivedData.data.columns;
+
+			// Create the export link and operation
+			if( itExist( theOptions.exporting ))
+				createExporting();
+		}
+
+		// Responsive detect
+		setMasterrowResponsiveLayout();
+
+		// Rebuild the filter indication
+		filterActivationIndication();
+
+		// If there's some animation transition, stop it
+		stopDataLoadingAnimation();
+	}
+
+
+
+
+	/* The table creation */
+	// Get the column last formation and generate the table. If there's not even column, show an error message 
+	var createTableNoRows = function(){
+
+		if(lastColumnFormation.length > 0){
+
+			var dataToSend = {
+				data: {
+					rows: [],
+					columns: lastColumnFormation
+				},
+				metadata: {}
+			}
+
+			createTable( dataToSend );
+		}
+		else{
+
+			var theTable = document.getElementById(objectsDOMReference.theTableReference);
+
+			// Fisrt of all, destroy the table, if it exist
+			if (theTable != null)
+				theContainer.removeChild(document.getElementById(objectsDOMReference.theTableReference));
+
+			// Create the table element
+			theTable = document.createElement("table");
+			theTable.id = objectsDOMReference.theTableReference;
+			theTable.classList.add ("masterrow");
+
+			// In the end, add the table to the container
+			theContainer.appendChild(theTable);
+
+			// Sending a null indication, that there's nothing to show.
+			createTableBody(null, theTable, false);
+
+		}
+
+	};
+
+	// Function to verify if detailing is activated, and if the column must be show
+	var isColumnInsideDetailing = function (column){
+
+		if(theOptions.detailing.columnsToShow.length > 0 ){
+
+			var columnFindInDetailing = theOptions.detailing.columnsToShow.find( function (detailingItem){
+				return detailingItem == column;
+			});
+
+			return itExist(columnFindInDetailing);
+		}
+		else{
+			return true; // Aways show all data, if there's no detailing
+		}
+
+	};
+
+
+	/* Table main structure, headers, and other <html> objects creation. */
+	var createTable = function (tableData){
+		var hasOptions = false;
+		var theTable = document.getElementById(objectsDOMReference.theTableReference);
+
+		// Fisrt of all, destroy the table, if it exist
+		if (theTable != null)
+			theContainer.removeChild(document.getElementById(objectsDOMReference.theTableReference));
+
+		// Create the table element
+		theTable = document.createElement("table");
+		theTable.id = objectsDOMReference.theTableReference;
+		theTable.classList.add ("masterrow") ;
+
+		// Creation of the table header
+		var tableTHead = document.createElement("thead");
+		tableTHead.classList.add ("masterrow-header");
+
+		var tableHeadRow = document.createElement("tr");
+		tableHeadRow.classList.add ("masterrow-headerRow");
+
+		// Column definition
+		tableData.data.columns.forEach(function (column){
+
+			// If detail is activated, only create this column if it is set
+			if(isColumnInsideDetailing(column)){
+
+				var tableHeadColumn = document.createElement("th");
+				tableHeadColumn.classList.add ("masterrow-headerColumn");
+
+
+				// Header text - If personalization is set, change the value
+				var columnContent = undefined;
+
+				columnContent = document.createTextNode(getPersonalizedColumnName(column));
+				
+				var headContent = document.createElement("div");
+				headContent.classList.add ("masterrow-headerColumn-content");
+				headContent.appendChild(columnContent);
+
+				var headOptions = document.createElement("div");
+				headOptions.classList.add ("masterrow-headerColumn-options");
+				
+				/* Sorting Option*/
+				// Creating the sorting list
+				if( theOptions.sorting.enabled == true ){
+					/*var columnLinkWithSorting = createSortingLink ( index );
+					columnLinkWithSorting.appendChild(columnContent);
+					tableHeadColumn.appendChild(columnLinkWithSorting);	*/
+					headOptions = createSortingLink ( column, headOptions, tableHeadColumn);
+					hasOptions = true;
+				}
+				/*else{
+					tableHeadColumn.appendChild(columnContent);		
+				}*/
+
+
+				/* Filter Option*/
+				//Search the column that's have the same index of column filter
+				var theColumnFilter = theOptions.filters.columnFilters.find( function (filter){
+					return filter.column == column;
+				});
+
+				if(theColumnFilter != null){
+
+					// Create the objects and events
+					headOptions.appendChild ( createColumnFilterLink( theColumnFilter ) );
+					headOptions.appendChild ( createColumnFilterForm( theColumnFilter ) );	
+					hasOptions = true;
+				}
+
+				
+				tableHeadColumn.appendChild(headContent);
+
+				if(hasOptions)
+					tableHeadColumn.appendChild(headOptions);
+				
+				tableHeadRow.appendChild(tableHeadColumn);	
+			}	
+		});
+
+		// Create the action column
+		if(theOptions.rowAction.actionList.length > 0){
+			var actionColumn = document.createElement("th");
+			actionColumn.classList.add ("masterrow-headerColumn");
+			actionColumn.classList.add ("masterrow-actionHeaderColumn");
+			actionColumnTitle = document.createTextNode(theOptions.rowAction.actionColumnName);
+			actionColumn.appendChild(actionColumnTitle);
+			tableHeadRow.appendChild(actionColumn);	
+		}
+
+		tableTHead.appendChild(tableHeadRow);
+		theTable.appendChild(tableTHead);
+
+		// So, add the table to the container
+		theContainer.appendChild(theTable);
+
+		// After setup of table header to the container, set the datapicker elements, if it's set
+		theOptions.filters.columnFilters.forEach(function(filter){
+
+			if(itExist(filter.datepicker)){
+
+				var filterDOMRef = _filtersDOMReference.find(function(filterRef){
+					return filterRef.id == filter.column;
+				});
+
+				var filterFormInput = document.getElementById(filterDOMRef.inputDOMReference);
+
+				createDatepickerInput (filterFormInput, filter);
+			}
+			else{
+
+				if(itExist(filter.datePeriod)){
+
+					var filterDOM_Date_Ref = _filtersDOMReference.find(function(filterRef){
+						return filterRef.id == filter.column;
+					});
+
+					var filterFormInputs = {
+						inputFrom: document.getElementById(filterDOM_Date_Ref.inputDOMReference_dtFrom),
+						inputTo: document.getElementById(filterDOM_Date_Ref.inputDOMReference_dtTo)
+					}
+
+					createDatePeriodInput (filterFormInputs, filter);
+				}
+			}
+
+		});
+
+		// Each time I create the table header, I must create the content
+		createTableBody(tableData.data, theTable, false);
+
+	};
+
+	// Creation of table info
+	var createTableInfo = function (tableData){
+
+		// Only create the table info, if there's a total register
+		if(!itExist(tableData.metadata) || !itExist (tableData.metadata.totalRegisters) || tableData.metadata.totalRegisters <= 0 )
+			return;
+
+		var paragraphInfo = document.createElement("p");
+		paragraphInfo.classList.add("masterrow-tableInfo");
+
+		var content = document.createTextNode(tableData.data.rows.length + " de " + tableData.metadata.totalRegisters + " registros.");
+		paragraphInfo.appendChild(content);
+
+		var theTable = document.getElementById(objectsDOMReference.theTableReference);
+		theTable.appendChild(paragraphInfo);
+
+	};
+
+	// Function to create the sorting link
+	var createSortingLink = function (column, optionsElement, columnHeader){
+
+		// Setting an additional style for activated link
+		var actualSortingLink = theOptions.sorting.sortingList.find(function (sortingItem){
+			return sortingItem.column == column;
+		});
+
+		if(!itExist(actualSortingLink)){
+			actualSortingLink = {
+				column: column,
+				sortingType: theOptions.sorting.sortingConsts.c_sorting_disabled
+			};
+
+			theOptions.sorting.sortingList.push (actualSortingLink);
+
+		}
+
+
+		// Create the link
+		var sortingLink = document.createElement("a");
+		sortingLink.classList.add("masterrow-sorting");
+		sortingLink.href = "";
+		sortingLink.setAttribute ('column', column);
+		/*sortingLink.appendChild(cellContent);*/
+		
+
+		// Setting an additional style for the column
+		var actualSortingLink = theOptions.sorting.sortingList.find(function (sortingItem){
+			return sortingItem.column == column;
+		});
+
+		if(actualSortingLink.sortingType != theOptions.sorting.sortingConsts.c_sorting_disabled)
+			columnHeader.classList.add("masterrow-sorting-activated");
+
+
+		// The click event
+		sortingLink.addEventListener("click", function (sortingEvent){
+			sortingEvent.preventDefault();
+			sortingEvent.stopPropagation();
+
+			// At click, change the status os sorting
+			var columnName = sortingEvent.currentTarget.getAttribute("column");
+			var columnToSort = theOptions.sorting.sortingList.find(function (sortingColumns){
+				return sortingColumns.column == columnName;
+			});
+
+			switch (columnToSort.sortingType){
+
+				case theOptions.sorting.sortingConsts.c_sorting_disabled:
+					theOptions.sorting.sortingList.find(function (sortingColumns){
+						return sortingColumns.column == columnName;
+					}).sortingType = theOptions.sorting.sortingConsts.c_sorting_asc;
+					break;
+
+				case theOptions.sorting.sortingConsts.c_sorting_asc:
+					theOptions.sorting.sortingList.find(function (sortingColumns){
+						return sortingColumns.column == columnName;
+					}).sortingType = theOptions.sorting.sortingConsts.c_sorting_desc;
+					break;
+
+				case theOptions.sorting.sortingConsts.c_sorting_desc:
+					theOptions.sorting.sortingList.find(function (sortingColumns){
+						return sortingColumns.column == columnName;
+					}).sortingType = theOptions.sorting.sortingConsts.c_sorting_disabled;
+					break;
+			}
+
+			// Execute the user processment function, to refresh the data by tis function
+			userFunctionProcessor(theDataProcessFunction);
+
+		});
+
+		// Create the icon, according status of sorting
+		switch (actualSortingLink.sortingType){
+
+			case theOptions.sorting.sortingConsts.c_sorting_disabled:
+				var sortingIconAsc = document.createElement("span");
+				sortingIconAsc.classList.add("fa");
+				sortingIconAsc.classList.add("fa-caret-up");
+				sortingLink.appendChild(sortingIconAsc);
+
+				var sortingIconDesc = document.createElement("span");
+				sortingIconDesc.classList.add("fa");
+				sortingIconDesc.classList.add("fa-caret-down");		
+				sortingLink.appendChild(sortingIconDesc);
+
+				break;
+
+			case theOptions.sorting.sortingConsts.c_sorting_asc:
+				var sortingIcon = document.createElement("span");
+				sortingIcon.classList.add("fa");
+				sortingIcon.classList.add("fa-caret-up");
+				sortingLink.appendChild(sortingIcon);
+
+				/*var emptyContent = document.createElement("span");
+				emptyContent.classList.add("masterrow-sorting-emptyContent");
+				sortingLink.appendChild(emptyContent);*/
+
+				break;
+
+			case theOptions.sorting.sortingConsts.c_sorting_desc:
+				var sortingIcon = document.createElement("span");
+				sortingIcon.classList.add("fa");
+				sortingIcon.classList.add("fa-caret-down");
+				sortingLink.appendChild(sortingIcon);
+
+				/*var emptyContent = document.createElement("span");
+				emptyContent.classList.add("masterrow-sorting-emptyContent");
+				sortingLink.appendChild(emptyContent);*/
+
+				break;
+		}
+
+		// Adding the link and the icon to the header
+		optionsElement.appendChild(sortingLink);
+		return optionsElement;
+			
+	};
+
+	/* Function to create the table rows. Receive a data object 
+	(It can come from MasterRow original data or from some filter) */
+	var createTableBody = function(tableData, theTable, forceColumnInExport){
+
+		// Creation of the rows
+		var tableTBody = document.createElement("tbody");
+		tableTBody.classList.add ("masterrow-body");
+
+		// If there's no data (even columns) to show, set a message error
+		if( !itExist(tableData) ){
+
+			var tableRow = document.createElement("tr");
+			tableRow.classList.add ("masterrow-row");
+
+			var tableCell = document.createElement("td");
+			tableCell.classList.add ("masterrow-cell");
+
+			var noDataText = document.createTextNode("Não existe nenhum registro a ser exibido.");
+			tableCell.appendChild(noDataText);
+			tableRow.appendChild(tableCell);
+			tableTBody.appendChild(tableRow);
+			theTable.appendChild(tableTBody);
+
+			return;
+
+		}
+
+
+		// Watch if there's some value to show
+		if(!itExist(tableData.rows) || tableData.rows.length <= 0  ){
+
+			var tableRow = document.createElement("tr");
+			tableRow.classList.add ("masterrow-row");
+
+			var tableCell = document.createElement("td");
+			tableCell.classList.add ("masterrow-cell");
+
+			// Create a big cell, to expand the entire table
+			tableCell.setAttribute('colspan', tableData.columns.length); 
+			var noDataText = document.createTextNode("Não existe nenhum registro a ser exibido.");
+			tableCell.appendChild(noDataText);
+
+			tableRow.appendChild(tableCell);
+
+			tableTBody.appendChild(tableRow);
+		}
+		else{
+
+			// Roll for all data to mount the table
+			tableData.rows.forEach(function (row, index){
+
+				var tableRow = document.createElement("tr");
+				tableRow.classList.add ("masterrow-row");
+
+				// Row style
+				if(index % 2 == 0)
+					tableRow.classList.add ("masterrow-row-even");
+				else
+					if(index % 2 == 0)
+					tableRow.classList.add ("masterrow-row-odd");
+
+				// Configurate the detail expand
+				if (theOptions.detailing.columnsToShow.length > 0 && theOptions.detailing.detailRowsPerLine > 0 && forceColumnInExport == false && theOptions.detailing.noDetail != true)
+					tableRow = createTableDetail(tableRow, row, index, tableData);
+
+
+				// Adding each column
+				tableData.columns.forEach(function (column, index){
+
+					// If detailing is activated, only create this column if it is set
+					if(isColumnInsideDetailing(column) || forceColumnInExport == true){
+						var tableCell = document.createElement("td");
+						tableCell.classList.add ("masterrow-cell");
+
+						// Setup the cell customizing
+						if(itExist(theOptions.personalization.customCellStyle) && theOptions.personalization.customCellStyle.length > 0){
+
+							var cellCustomClass = document.createElement("span");
+
+							theOptions.personalization.customCellStyle.forEach(function (customCellStyle){
+
+								// Execute the 'when' function. If return true, set the custom class
+								if( customCellStyle.when(row[index]) == true ){
+									cellCustomClass.classList.add(customCellStyle.setClass);
+								}
+							});
+
+							var cellContent = document.createTextNode(row[index]);
+							cellCustomClass.appendChild(cellContent);
+							tableCell.appendChild(cellCustomClass);	
+						}
+						else{
+
+							var cellContent = document.createTextNode(row[index]);
+							tableCell.appendChild(cellContent);	
+						}
+
+						tableRow.appendChild(tableCell);
+					};
+
+				});
+
+				// Create the actions for this row (hide if Exporting)
+				if(theOptions.rowAction.actionList.length > 0 && forceColumnInExport == false)
+					tableRow.appendChild(createTableBody_RowActions (theOptions.rowAction.actionList, row, tableData.columns));
+
+				tableTBody.appendChild(tableRow);
+
+			});				
+		} 
+
+		theTable.appendChild(tableTBody);
+	}
+
+	// Creation of action list for some row
+	var createTableBody_RowActions = function(actionList, row, columns){
+
+		// Create a new cell
+		var actionCell = document.createElement("td");
+		actionCell.classList.add ("masterrow-cell");
+		actionCell.classList.add ("masterrow-action-cell");
+
+		actionList.forEach (function (action){
+			var actionLink = document.createElement("a");
+			actionLink.classList.add ("masterrow-action-link");
+			actionLink.href = '';
+
+			var actionIcon = document.createElement("i");
+			actionIcon.classList.add ("masterrow-action-icon");
+			actionIcon.classList.add ("fa");
+
+			// Get the icon name and set it as a Font Awesome data
+			if(action.icon != '')
+				actionIcon.classList.add ("fa-" + action.icon);
+			else
+				actionIcon.classList.add ("fa-cogs"); // The default icon is a cog
+
+			actionLink.appendChild(actionIcon);
+
+			// Set the click event. When activate, execute the function set for this action
+			actionLink.addEventListener( 'click', function(event){
+
+				// Tell the page to not activate the link
+				event.preventDefault();	
+				event.stopPropagation();	
+
+
+				// Prepare the row object, before send
+				var rowToAction = {};
+
+				columns.forEach(function (column, columnIndex){
+					rowToAction[column] = row[columnIndex];
+				});
+
+
+				action.toProcessAction(rowToAction);
+
+			});
+
+			actionCell.appendChild(actionLink);
+
+		});
+
+		return actionCell;
+
+	};
+	
+	// Function that creates an internal list of all data from one row
+	var createTableDetail = function(tableRow, row, index, tableData){
+
+		var detailCell = document.createElement("td");
+		detailCell.classList.add ("masterrow-detail");
+		detailCell.classList.add ("masterrow-cell-hidden");
+		detailCell.setAttribute('colspan', row.length);
+
+		// List
+		var detailList = document.createElement("ul");
+		detailList.classList.add ("masterrow-detail-list");
+
+		var detailListRow = undefined;
+
+		tableData.columns.forEach(function(column, columnIndex, columnArray){
+
+			// Insert a break line, if there's a breaking line paramether
+			if(theOptions.detailing.detailRowsPerLine > 0){
+
+				// Also, just insert if is the break column
+				if((columnIndex ) % theOptions.detailing.detailRowsPerLine == 0 || !itExist(detailListRow)){
+
+					if(itExist(detailListRow))
+						detailList.appendChild(detailListRow);
+
+					detailListRow = document.createElement("div");
+					detailListRow.classList.add("masterrow-detail-listrow");
+				}
+
+			}
+
+			// Item
+			var detailListItem = document.createElement("li");
+			detailListItem.classList.add ("masterrow-detail-listItem");
+
+			// Title
+			var detailTitle = document.createElement('span');
+			detailTitle.classList.add('masterrow-detail-columnTitle');
+
+			// If there's personalization, set into the detail title, too
+			var detailTitleText = document.createTextNode(getPersonalizedColumnName(column) + ": ");
+
+			detailTitle.appendChild(detailTitleText);
+			detailListItem.appendChild(detailTitle);
+
+			// Content
+			var detailContent = document.createTextNode(row[columnIndex]);
+			detailListItem.appendChild(detailContent);
+
+			if(theOptions.detailing.detailRowsPerLine > 0){
+				detailListRow.appendChild(detailListItem);
+
+				// Append the group, if breaks a new line, or at end if list
+				if( (columnIndex + 1) >= columnArray.length)
+					detailList.appendChild(detailListRow);
+			}
+			else{
+				detailList.appendChild(detailListItem);	
+			}
+			
+		});
+
+		detailCell.appendChild(detailList);
+		tableRow.appendChild(detailCell);
+
+		// Setup of click-and-show event 
+		tableRow.setAttribute('detailIndexId', index);
+		tableRow.id = "masterRowRowDetail_" + index;
+
+		tableRow.addEventListener('click', function(event){
+
+			// Hide the element who is actually expanded
+			var rowActuallyOpened = document.getElementById(lastRowDetailExpanded);
+
+			if(itExist(rowActuallyOpened)){
+				var colsToHide = rowActuallyOpened.childNodes;
+				
+				for(columnIndex = 0; columnIndex < colsToHide.length; columnIndex++){
+
+					// For the last opened, hide the detail, and show the column
+					if(colsToHide[columnIndex].classList.contains('masterrow-cell'))
+						colsToHide[columnIndex].classList.remove('masterrow-cell-hidden');
+					else
+						colsToHide[columnIndex].classList.add('masterrow-cell-hidden');
+				}
+
+			}
+			
+			/* If needs to close the same row user had clicked
+			if(itExist(rowActuallyOpened) && rowActuallyOpened.id == event.currentTarget.id){
+				lastRowDetailExpanded = '';
+			}
+			else{*/
+				// Show the element detail 
+				var colsToShow = event.currentTarget.childNodes;
+
+				for(columnIndex = 0; columnIndex < colsToShow.length; columnIndex++){
+
+					// For the column, hide the column, and show the detail
+					if(colsToShow[columnIndex].classList.contains('masterrow-cell'))
+						colsToShow[columnIndex].classList.add('masterrow-cell-hidden');
+					else
+						colsToShow[columnIndex].classList.remove('masterrow-cell-hidden');
+				}	
+				lastRowDetailExpanded = event.currentTarget.id;	
+			//}	
+			
+		});
+
+		return tableRow;	
+
+	};
+
+
+
+
+
+
+
+
+
+	/* Table filtering*/
+	// Function that create the link to call its respective filter form
+	var createColumnFilterLink = function( filter ){
+
+		var filterLinkReference = _filtersDOMReference.find( function(filterItem){
+			return filterItem.id == filter.column;
+		});
+
+		// Create the link
+		var filterLink = document.createElement('a');
+		filterLink.id = filterLinkReference.linkDOMReference;
+
+		filterLink.classList.add('masterrow-filtering-link');
+		filterLink.href = '';
+
+		// Set a atribute with the same name of the form
+		filterLink.setAttribute('filterReferenceName', filter.column);
+
+		// Create the icon element
+		var filterLinkIcon = document.createElement('i');
+		filterLinkIcon.classList.add('fa');
+		filterLinkIcon.classList.add('fa-filter');
+
+		filterLink.appendChild(filterLinkIcon);
+
+		// Create an event, to show it's respective form
+		filterLink.addEventListener('click', function (event){
+			
+			// Tell the page to not activate the link
+			event.preventDefault();	
+			event.stopPropagation();
+
+			// Hide any form is shown
+			var formToHideReference = _filtersDOMReference.find( function(filterItem){
+				return filterItem.isShown == true;
+			});
+
+			if (itExist (formToHideReference)){
+				document.getElementById(formToHideReference.formDOMReference).classList.remove('masterrow-filtering-form-activate');
+
+				_filtersDOMReference.find( function(filterItem){
+					return filterItem.isShown == true;
+				}).isShown = false;
+			}
+
+			// Show the current form
+			var formToShowReference = _filtersDOMReference.find( function(filterItem){
+				return filterItem.id == event.currentTarget.getAttribute('filterReferenceName');
+			});
+
+			// If the current filter is the same as the last opened before, user just want to toggle.
+			if(formToShowReference != formToHideReference){
+				var formToShow = document.getElementById(formToShowReference.formDOMReference);	
+				formToShow.classList.add('masterrow-filtering-form-activate');
+
+				_filtersDOMReference.find( function(filterItem){
+					return filterItem.id == event.currentTarget.getAttribute('filterReferenceName');
+				}).isShown = true;	
+
+				// Set focus to the form input
+				var objToFocus = formToShow.getElementsByTagName("input")[0];
+
+				if (itExist(objToFocus))
+					objToFocus.focus();
+				else{
+					objToFocus = formToShow.getElementsByTagName("select")[0];
+
+					if(itExist(objToFocus))
+						objToFocus.focus();
+				}
+
+			}
+
+		});
+
+		// Send the created element
+		return filterLink;
+
+	};
+
+	// Function to create the filter form, next to the table header
+	var createColumnFilterForm = function (filter) {
+
+		var filterFormReference = _filtersDOMReference.find( function(filterItem){
+			return filterItem.id == filter.column;
+		});
+
+		// Create the form
+		var filterForm = document.createElement('form');
+		filterForm.id = filterFormReference.formDOMReference;
+		filterForm.classList.add('masterrow-filtering');
+		filterForm.setAttribute ('filterReferenceName', filter.column); // Reference when read the input value
+
+		// Label
+		var filterFormLabel = document.createElement('label');
+		filterFormLabel.classList.add('masterrow-filtering-label');
+
+		var labelContent = document.createTextNode('Buscar por ' + getPersonalizedColumnName(filter.column) + ':');
+
+		filterFormLabel.appendChild(labelContent);
+
+		filterForm.appendChild(filterFormLabel);
+
+		// Checklist
+		if (itExist(filter.checkList)){
+
+			filter.checkList.forEach(function (option){
+				var checkItem = document.createElement('input');
+				checkItem.classList.add('masterrow-filtering-check');
+				checkItem.type = "checkbox";
+				checkItem.name = option.name;
+
+				/* Set the field value */
+				checkItem.checked = option.value;
+				checkItem.setAttribute ('filterReferenceName', filterFormReference.checkListReference);
+
+				var checkParagraph = document.createElement("p");
+				checkParagraph.classList.add('masterrow-filtering-check-paragraph');
+
+				var checkText = document.createElement("label");
+				checkText.classList.add('masterrow-filtering-check-text');
+
+
+				var checkContent = document.createTextNode(option.name);
+				checkParagraph.appendChild(checkItem);
+				checkText.appendChild(checkContent);
+				checkParagraph.appendChild(checkText);
+
+				filterForm.appendChild(checkParagraph);
+
+			});
+
+		}
+
+		else{
+
+			// Select
+			if (itExist(filter.select)){
+
+				var selectObj = document.createElement('select');
+				selectObj.classList.add('masterrow-filtering-select');
+				/*selectObj.setAttribute ('filterReferenceName', filterFormReference.selectReference);*/
+				selectObj.id = filterFormReference.selectReference;
+
+				/* Create an empty element */
+				var selectEmptyOption = document.createElement('option');
+				selectEmptyOption.classList.add('masterrow-filtering-select-option');
+				selectEmptyOption.value = '';
+
+				/* Create the options */
+				filter.select.forEach(function (option){
+					var selectOption = document.createElement('option');
+					selectOption.classList.add('masterrow-filtering-select-option');
+					selectOption.value = option.value;
+
+					var selectCaption = document.createTextNode(option.name);
+					selectOption.appendChild( selectCaption);
+					selectObj.appendChild (selectOption);
+				});
+
+				var selectCaption = document.createTextNode('');
+				selectEmptyOption.appendChild( selectCaption);
+				selectObj.appendChild (selectEmptyOption);
+
+				// Event to not allow the form to close, when choose any option
+				// selectObj.addEventListener("click", function(){
+				// 	event.stopPropagation();
+				// })
+
+
+				/* Set the field value */
+				var selectedOption = filter.select.find(function (option){
+					return option.selected == true;
+				});
+
+				if(itExist (selectedOption))
+					selectObj.value = selectedOption.value;
+				else
+					selectObj.value = '';
+
+				filterForm.appendChild(selectObj);
+			}
+
+			else{
+
+				// Field
+				if(itExist(filter.datePeriod)){
+
+					var filterFormInput_FROM = document.createElement('input');
+					filterFormInput_FROM.classList.add('masterrow-filtering-input');
+					filterFormInput_FROM.id = filterFormReference.inputDOMReference_dtFrom;
+					filterFormInput_FROM.setAttribute ('filterReferenceName', filter.column);
+					filterFormInput_FROM.setAttribute ('autocomplete', 'off');
+
+					// Set the field value
+					filterFormInput_FROM.value = theOptions.filters.columnFilters.find( function (optionFilter){
+						return optionFilter.column == filter.column;
+					}).datePeriod.value.from;
+
+					if ( filterFormInput_FROM.value == 'undefined')
+						filterFormInput_FROM.value = '';
+
+					var filterFormInput_TO = document.createElement('input');
+					filterFormInput_TO.classList.add('masterrow-filtering-input');
+					filterFormInput_TO.id = filterFormReference.inputDOMReference_dtTo;
+					filterFormInput_TO.setAttribute ('filterReferenceName', filter.column);
+					filterFormInput_TO.setAttribute ('autocomplete', 'off');
+
+					// Set the field value
+					filterFormInput_TO.value = theOptions.filters.columnFilters.find( function (optionFilter){
+						return optionFilter.column == filter.column;
+					}).datePeriod.value.to;
+
+					if ( filterFormInput_TO.value == 'undefined')
+						filterFormInput_TO.value = '';
+
+					var filterParagraph_FROM = document.createElement("p");
+					var filterParagraph_TO = document.createElement("p");
+					filterParagraph_FROM.appendChild(filterFormInput_FROM);
+					filterParagraph_TO.appendChild(filterFormInput_TO);
+
+					filterForm.appendChild(filterParagraph_FROM);
+					filterForm.appendChild(filterParagraph_TO);
+				}
+
+				else{
+
+					var filterFormInput = document.createElement('input');
+					filterFormInput.classList.add('masterrow-filtering-input');
+					filterFormInput.id = filterFormReference.inputDOMReference;
+					filterFormInput.setAttribute ('filterReferenceName', filter.column);
+					filterFormInput.setAttribute ('autocomplete', 'off');
+
+					// Set the field value
+					filterFormInput.value = theOptions.filters.columnFilters.find( function (optionFilter){
+						return optionFilter.column == filter.column;
+					}).value;
+
+					if ( filterFormInput.value == 'undefined')
+						filterFormInput.value = '';
+
+					// If the filter have an option to autocomplete list, create it
+					if (itExist (filter.autoComplete))
+						filterFormInput = createFilterAutoComplete(filterFormInput, filter);
+
+					filterForm.appendChild(filterFormInput);			
+				}
+			}
+		}
+
+		
+
+
+		// Reset button
+		var filterFormButtonReset = document.createElement('button');
+		filterFormButtonReset.classList.add('masterrow-filtering-button');
+		filterFormButtonReset.classList.add('button-reset');
+		filterFormButtonReset.setAttribute ('filterReferenceName', filter.column);
+		filterFormButtonReset.setAttribute('type', 'reset');
+
+		var resetButtonIcon = document.createElement('i');
+		resetButtonIcon.classList.add('fa');
+		resetButtonIcon.classList.add('fa-eraser');
+		filterFormButtonReset.appendChild(resetButtonIcon);
+
+		var resetButtonContent = document.createTextNode('Limpar');
+		filterFormButtonReset.appendChild(resetButtonContent);
+
+		filterForm.appendChild(filterFormButtonReset);
+
+
+		// Submit button
+		var filterFormButtonSubmit = document.createElement('button');
+		filterFormButtonSubmit.classList.add('masterrow-filtering-button');
+		filterFormButtonSubmit.classList.add('button-submit');
+		filterFormButtonSubmit.setAttribute('type', 'submit');
+
+		var submitButtonIcon = document.createElement('i');
+		submitButtonIcon.classList.add('fa');
+		submitButtonIcon.classList.add('fa-search');
+		filterFormButtonSubmit.appendChild(submitButtonIcon);
+
+		var submitButtonContent = document.createTextNode('Buscar');
+		filterFormButtonSubmit.appendChild(submitButtonContent);
+
+		filterForm.appendChild(filterFormButtonSubmit);
+
+		// Blocking the hide effect, at form click
+		filterForm.addEventListener("click", function(event){
+			event.stopPropagation();
+		})
+
+		// Setup the filter function, provided by the user
+		filterForm.addEventListener('submit', function (event){
+
+			// Tell the page to not activate the link
+			event.preventDefault();
+			//event.stopPropagation();
+
+			// Set the filterReference value
+			var filterReference = _filtersDOMReference.find( function(filterItem){
+				return filterItem.id == event.currentTarget.getAttribute ('filterReferenceName');
+			});
+
+
+			/* Get the value by filter name*/
+			if(itExist(filter.select)){
+
+				var selectList = theOptions.filters.columnFilters.find( function (optionFilter){
+					return optionFilter.column == filter.column;
+				}).select;
+
+				var selectDOM = document.getElementById(filterReference.selectReference);
+
+				/* Set the value of object (Value is set into the list, 
+				because it passed the object by reference*/
+				selectList.forEach( function (optionFilter){
+
+					if(optionFilter.value.toString() == selectDOM.value)
+						optionFilter.selected = true;
+					else
+						optionFilter.selected = false;
+				});
+			}
+
+			else{
+
+				if(itExist(filter.checkList)){
+
+					var allInputElements = document.getElementsByTagName('input');
+					var checkSetList = [];
+
+					for(cont = 0; cont < allInputElements.length; cont ++ ){
+
+						if ( itExist(allInputElements[cont].getAttribute("filterReferenceName")) && allInputElements[cont].getAttribute("filterReferenceName") == "masterrowcheckList_" + filterReference.id){
+
+							checkSetList.push({
+								name: allInputElements[cont].name,
+								value: allInputElements[cont].checked
+							});	
+						}
+
+					};
+
+					theOptions.filters.columnFilters.find( function (optionFilter){
+						return optionFilter.column == filter.column;
+					}).checkList = checkSetList;
+				}
+
+				else{
+
+					if(itExist(filter.datePeriod)){
+
+						theOptions.filters.columnFilters.find( function (optionFilter){
+							return optionFilter.column == filter.column;
+						}).datePeriod.value = {
+							from: document.getElementById(filterReference.inputDOMReference_dtFrom).value,
+							to: document.getElementById(filterReference.inputDOMReference_dtTo).value
+						}
+					}
+					else{
+
+						theOptions.filters.columnFilters.find( function (optionFilter){
+							return optionFilter.column == filter.column;
+						}).value = document.getElementById(filterReference.inputDOMReference).value;
+					}
+				}
+			}
+
+
+			// Hide the form
+			event.currentTarget.classList.remove('masterrow-filtering-form-activate');
+
+			_filtersDOMReference.find( function(filterItem){
+				return filterItem.id == event.currentTarget.getAttribute ('filterReferenceName');
+			}).isShown = false;
+
+			// Set this filter as active
+			_filtersDOMReference.find( function(filterItem){
+				return filterItem.id == event.currentTarget.getAttribute ('filterReferenceName');
+			}).isActivated = true;
+
+			// Execute the user processment function, to refresh the data by tis function
+			userFunctionProcessor(theDataProcessFunction);
+
+		});
+
+		// Setup the reset function (call the original data)
+		filterFormButtonReset.addEventListener('click', function (event){
+
+			// Tell the page to not activate the link
+			event.preventDefault();
+			//event.stopPropagation();
+
+
+			// Set the filterReference value
+			var filterReference = _filtersDOMReference.find( function(filterItem){
+				return filterItem.id == event.currentTarget.getAttribute ('filterReferenceName');
+			});
+
+			// Set the filter value
+			if(itExist(filter.select)){
+
+				var selectList = theOptions.filters.columnFilters.find( function (optionFilter){
+					return optionFilter.column == filter.column;
+				}).select;
+
+				var selectDOM = document.getElementById(filterReference.selectReference);
+				selectDOM.value = '';
+
+				/* Set the value of object (Value is set into the list, 
+				because it passed the object by reference*/
+				selectList.forEach( function (optionFilter){
+					optionFilter.selected = false;
+				});
+			}
+
+			else{
+
+
+
+				if(itExist(filter.checkList)){
+
+					var allInputElements = document.getElementsByTagName('input');
+					var checkSetList = [];
+
+					for(cont = 0; cont < allInputElements.length; cont ++ ){
+
+						if ( itExist(allInputElements[cont].getAttribute("filterReferenceName")) && allInputElements[cont].getAttribute("filterReferenceName") == "masterrowcheckList_" + filterReference.id){
+
+							checkSetList.push({
+								name: allInputElements[cont].name,
+								value: true
+							});	
+						}
+
+					};
+
+					theOptions.filters.columnFilters.find( function (optionFilter){
+						return optionFilter.column == filter.column;
+					}).checkList = checkSetList;
+
+				}
+
+				else{
+
+					if(itExist(filter.datePeriod)){
+						theOptions.filters.columnFilters.find( function (optionFilter){
+							return optionFilter.column == filter.column;
+						}).datePeriod.value = {
+							from: '',
+							to: ''
+						}
+
+						document.getElementById(filterReference.inputDOMReference_dtFrom).value = ''
+						document.getElementById(filterReference.inputDOMReference_dtTo).value = ''
+
+					}
+
+					else{
+						theOptions.filters.columnFilters.find( function (optionFilter){
+							return optionFilter.column == filter.column;
+						}).value = ''
+
+						document.getElementById(filterReference.inputDOMReference).value = '';
+					}	
+
+					
+				}
+			}
+			
+			
+			// Hide the form
+			event.currentTarget.parentElement.classList.remove('masterrow-filtering-form-activate');
+
+			_filtersDOMReference.find( function(filterItem){
+				return filterItem.id == event.currentTarget.getAttribute ('filterReferenceName');
+			}).isShown = false;
+
+
+			// Set this filter as deactive
+			_filtersDOMReference.find( function(filterItem){
+				return filterItem.id == event.currentTarget.getAttribute ('filterReferenceName');
+			}).isActivated = false;
+
+			_filtersDOMReference.find( function(filterItem){
+				return filterItem.id == event.currentTarget.getAttribute ('filterReferenceName');
+			}).isActivated = false;
+
+			// Remove the filter indicator (call the element again, because the old form has been destroyed)
+			document.getElementById(filterReference.linkDOMReference).classList.remove('masterrow-filtering-link-activated');
+
+			// Execute the user processment function, to refresh the data by tis function
+			userFunctionProcessor(theDataProcessFunction);
+			
+
+		});		
+
+		return filterForm;
+
+	};
+
+	// Function to set datepicker into the input form
+	var createDatepickerInput = function (inputForm, filter){
+
+		var datePickerObj = {};
+		datePickerObj[inputForm.id] = filter.datepicker.dateformat;
+		
+		datePickerController.destroyDatePicker(inputForm.id);
+
+		datePickerController.createDatePicker({
+		    formElements: datePickerObj 
+		});
+	};
+
+	// Definition of period fields
+	var createDatePeriodInput = function (inputForms, filter){
+
+		var datePickerObj_FROM = {};
+		datePickerObj_FROM[inputForms.inputFrom.id] = filter.datePeriod.dateformat;
+
+		var datePickerObj_TO = {};
+		datePickerObj_TO[inputForms.inputTo.id] = filter.datePeriod.dateformat;
+		
+		datePickerController.destroyDatePicker(inputForms.inputFrom.id);
+		datePickerController.destroyDatePicker(inputForms.inputTo.id);
+
+		datePickerController.createDatePicker({
+		    formElements: datePickerObj_FROM 
+		});
+
+		datePickerController.createDatePicker({
+		    formElements: datePickerObj_TO 
+		});
+	};
+
+
+	// Function to create the autocomplete list and operation
+	var createFilterAutoComplete = function(formInput, filter){
+
+		// Set the reference of autocomplete list
+		formInputAutoCompleteRef = formInput.id;
+
+		formInput.setAttribute('autoCompleteList', _filtersDOMReference.find( function(refItem){
+			return refItem.id == filter.column
+		}).autoCompleteDOMReference); 
+
+		// Event to process the auto complete function
+		formInput.addEventListener ('input', function(event){
+			event.preventDefault();
+			event.stopPropagation();
+
+			// Execute the function set by the developer
+			var autoCompleteArray = filter.autoComplete(event.currentTarget.value, generateAutoCompleteList);
+
+			// Only create the list, if there's some item in the array
+			if(itExist(autoCompleteArray)){
+
+				if(!Array.isArray(autoCompleteArray))
+					throw 'The function defined in "autocomplete" attribute must return an array.';
+				if(autoCompleteArray.length <= 0 )
+					return;
+
+				generateAutoCompleteList(autoCompleteArray);
+
+			}
+			else{
+				return;
+			}
+			
+		});
+
+		return formInput;
+	};
+
+
+	var generateAutoCompleteList = function(autoCompleteArray){
+
+		var filterInput = document.getElementById(formInputAutoCompleteRef);
+
+		// Creating the list
+		var filterList = document.getElementById(filterInput.getAttribute('autoCompleteList'));
+
+		if(itExist(filterList))
+			filterInput.parentElement.removeChild(filterList);
+
+		// List
+		filterList = document.createElement('ul');
+		filterList.id = filterInput.getAttribute('autoCompleteList');
+		filterList.classList.add('masterrow-filtering-autocompleteList');
+		filterList.classList.add('masterrow-hide-autocomplete');
+
+		// Item
+		autoCompleteArray = autoCompleteArray.slice(0, 5);
+
+		autoCompleteArray.forEach( function(autoComlItem){
+			var filterListItem = document.createElement('li');
+			filterListItem.classList.add('masterrow-filtering-autocompleteList-item');
+
+			// Link
+			var filterListItemLink = document.createElement('a');
+			filterListItemLink.href = "";
+			filterListItemLink.classList.add('masterrow-filtering-autocompleteList-link');
+			filterListItemLink.setAttribute('filterField', filterInput.id );
+			filterListItemLink.setAttribute('autoCompleteValue', autoComlItem );
+
+			// Link event
+			filterListItemLink.addEventListener('click', function(autoCompleteEvent){
+				autoCompleteEvent.preventDefault();
+				autoCompleteEvent.stopPropagation();
+
+				// Set the value of the respective field and hide the list
+				var theFormInput = document.getElementById(autoCompleteEvent.currentTarget.getAttribute('filterField'));
+				theFormInput.value = autoCompleteEvent.currentTarget.getAttribute('autoCompleteValue');
+				autoCompleteEvent.currentTarget.parentElement.parentElement.classList.add('masterrow-hide-autocomplete');
+			});
+
+			// Item content
+			var filterListContent = document.createTextNode(autoComlItem);
+
+			filterListItemLink.appendChild(filterListContent);
+			filterListItem.appendChild(filterListItemLink);
+			filterList.appendChild(filterListItem);
+
+		});
+
+		var filterForm = filterInput.parentElement;
+		filterForm.appendChild(filterList);
+		filterList.classList.remove('masterrow-hide-autocomplete');
+
+	}
+
+	// Function to set the activation/deactivation of the filters link
+	var filterActivationIndication = function(){
+
+		// Set the filter icon a indication that filter is in use (call the element again, because the old form has been destroyed)
+		_filtersDOMReference.forEach( function (filterItem){
+
+			var filterDOMRef = document.getElementById(filterItem.linkDOMReference);
+
+			// Only activate the filter, when it's visible
+			if (itExist(filterDOMRef)){
+
+				if( filterItem.isActivated )
+					filterDOMRef.classList.add('masterrow-filtering-link-activated');		
+				else
+					filterDOMRef.classList.remove('masterrow-filtering-link-activated');			
+			}
+			
+			
+		});
+	};
+
+
+
+
+
+
+
+
+	/* Pagination */
+
+	// Pagination element destructor
+	var destroyPagination = function(){
+
+		
+		var thePagination = document.getElementById(objectsDOMReference.paginationReference);
+
+		if (thePagination != null)
+			theContainer.removeChild(thePagination);
+	}
+
+	// Function to create the pagination element
+	var createPagination = function(){
+
+		destroyPagination();
+
+		// Create the element
+		var thePagination = document.createElement('ul');
+		thePagination.classList.add('masterrow-pagination');
+		thePagination.id = objectsDOMReference.paginationReference;
+
+		// Generate the pagination link array
+		var paginationArray = generatePagination(theOptions.pagination.currentPage, theOptions.pagination.maxPages);
+
+		// Create each pagination link
+		paginationArray.pagList.forEach( function (paginationItem ) {
+
+			// li
+			var paginationListItem = document.createElement('li');				
+			paginationListItem.classList.add('masterrow-pagination-item');
+
+			// Set another style, to the current page item
+			if(paginationItem.value == theOptions.pagination.currentPage){
+				paginationListItem.classList.add('masterrow-pagination-item-currentPage');
+
+				// Link content
+				var content = document.createTextNode(paginationItem.value);
+
+				// Appending
+				paginationListItem.appendChild(content);
+			}
+
+			// If it points to another page, create a link to 
+			else{
+
+				// Link
+				var paginationListItemLink = document.createElement('a');
+				paginationListItemLink.href="";
+				paginationListItemLink.setAttribute('pageNumber', paginationItem.pageDestination );
+				paginationListItemLink.classList.add ('masterrow-pagination-item-link');
+
+				// Link content
+				var content = document.createTextNode(paginationItem.value);
+
+				paginationListItemLink.addEventListener('click', function(event){
+
+					// Tell the page to not activate the link
+					event.preventDefault();
+					event.stopPropagation();
+
+					// At click, set the destination page
+					theOptions.pagination.currentPage = Number(event.currentTarget.getAttribute('pageNumber'));
+
+					// And, execute the user function again
+					userFunctionProcessor(theDataProcessFunction);
+
+				});
+
+				// Appending
+				paginationListItemLink.appendChild(content);
+				paginationListItem.appendChild(paginationListItemLink);
+
+			}
+			
+			thePagination.appendChild(paginationListItem);
+		});
+
+		theContainer.appendChild(thePagination);
+
+	}
+
+
+
+
+
+	/* Exporting */
+	// Function to create the exporting link and operation
+	var createExporting = function(){
+
+		// Create the exporting link
+		var exportLink = document.getElementById(objectsDOMReference.exportingReference);
+
+		if(itExist (exportLink) )
+			theContainer.removeChild(exportLink);
+
+		exportLink = document.createElement('a');
+		exportLink.id = objectsDOMReference.exportingReference;
+		exportLink.classList.add('masterrow-export');
+		exportLink.href = "";
+
+		// Icon
+		var exportIcon = document.createElement('i');
+		exportIcon.classList.add('fa');
+		exportIcon.classList.add('fa-download');
+		
+
+		// Content
+		var exportDescription = document.createElement("span");
+		exportDescription.classList.add("masterrow-export-description");
+		var exportContent = document.createTextNode("  Exportar");
+
+		exportDescription.appendChild(exportContent);
+		exportLink.appendChild(exportIcon);
+		exportLink.appendChild(exportDescription);
+
+		// The export process. It's similar with the preparing process
+		exportLink.addEventListener( 'click', function ( exportEvent ) {
+
+			exportEvent.preventDefault();
+			exportEvent.stopPropagation();
+
+			// Cancel the process if there's another process
+			if(theExport.actualPage > 0 )
+				return;
+
+
+			// Create the option screen
+			var mainTable = document.getElementById(objectsDOMReference.theTableReference);
+
+			var exportOptionScreen = document.getElementById(objectsDOMReference.exportOptionScreenReference);
+
+			if(itExist(exportOptionScreen)){
+				mainTable.removeChild(exportOptionScreen);
+			}
+
+			exportOptionScreen = document.createElement("div");
+			exportOptionScreen.classList.add("masterrow-export-option");
+			exportOptionScreen.classList.add("masterrow-popup");
+			exportOptionScreen.id = objectsDOMReference.exportOptionScreenReference;			
+
+			var exportOptionScreenList = document.createElement("ul");
+			exportOptionScreenList.classList.add("masterrow-export-option-list");
+
+			/* Excel Link*/
+			var exportOptionScreenListItem_Excel = document.createElement("li");
+			exportOptionScreenListItem_Excel.classList.add("masterrow-export-option-listItem");
+
+			var link_Excel = document.createElement("a");
+			link_Excel.classList.add("masterrow-export-option-link");
+			link_Excel.href = "";
+			link_Excel.addEventListener("click", exportToExcel);
+
+			var icon_Excel = document.createElement("i");
+			icon_Excel.classList.add("fa");
+			icon_Excel.classList.add("fa-file-excel-o");
+
+			var content_excel = document.createTextNode(" Excel");
+
+			link_Excel.appendChild(icon_Excel);
+			link_Excel.appendChild(content_excel);
+			exportOptionScreenListItem_Excel.appendChild(link_Excel)			;
+			exportOptionScreenList.appendChild(exportOptionScreenListItem_Excel);
+
+			/* PDF Link*/
+			var exportOptionScreenListItem_PDF = document.createElement("li");
+			exportOptionScreenListItem_PDF.classList.add("masterrow-export-option-listItem");
+
+			var link_PDF = document.createElement("a");
+			link_PDF.classList.add("masterrow-export-option-link");
+			link_PDF.href = "";
+			link_PDF.addEventListener("click", exportToPDF);
+
+			var icon_PDF = document.createElement("i");
+			icon_PDF.classList.add("fa");
+			icon_PDF.classList.add("fa-file-pdf-o");
+
+			var content_PDF = document.createTextNode(" PDF");
+			link_PDF.appendChild(icon_PDF);
+			link_PDF.appendChild(content_PDF);
+			exportOptionScreenListItem_PDF.appendChild(link_PDF);
+			exportOptionScreenList.appendChild(exportOptionScreenListItem_PDF);
+
+			/* Print link */
+			var exportOptionScreenListItem_Print = document.createElement("li");
+			exportOptionScreenListItem_Print.classList.add("masterrow-export-option-listItem");
+
+			var link_Print = document.createElement("a");
+			link_Print.classList.add("masterrow-export-option-link");
+			link_Print.href = "";
+			link_Print.addEventListener("click", exportToPrint);
+
+			var icon_Print = document.createElement("i");
+			icon_Print.classList.add("fa");
+			icon_Print.classList.add("fa-print");
+
+			var content_Print = document.createTextNode(" Print");
+			link_Print.appendChild(icon_Print);
+			link_Print.appendChild(content_Print);
+			exportOptionScreenListItem_Print.appendChild(link_Print);
+			exportOptionScreenList.appendChild(exportOptionScreenListItem_Print);
+
+
+			exportOptionScreen.appendChild(exportOptionScreenList);
+			mainTable.appendChild(exportOptionScreen);
+			exportOptionScreen.classList.add("masterrow-showWithFade");
+			
+		});
+
+		theContainer.appendChild(exportLink);
+
+	};
+
+	var createExportProgress = function(){
+
+		var mainTable = document.getElementById(objectsDOMReference.theTableReference);
+		var exportOptionScreen = document.getElementById(objectsDOMReference.exportOptionScreenReference);
+		
+		mainTable.removeChild(exportOptionScreen);
+
+		// Create the info screen
+		if(theOptions.pagination.registerPerPage > 0){
+
+			var mainTable = document.getElementById(objectsDOMReference.theTableReference);
+
+			var exportInfoScreen = document.createElement("div");
+			exportInfoScreen.classList.add("masterrow-export-progress");
+			exportInfoScreen.classList.add("masterrow-popup");
+			exportInfoScreen.id = objectsDOMReference.exportScreenReference;
+
+			var exportInfoProgressBar = document.createElement("div");
+			exportInfoProgressBar.classList.add("masterrow-export-progress-bar");
+			exportInfoProgressBar.id = objectsDOMReference.progressBarReference;
+
+			exportInfoScreen.appendChild(exportInfoProgressBar);
+			mainTable.appendChild(exportInfoScreen);
+			exportInfoScreen.classList.add("masterrow-showWithFade");
+		}
+
+	};
+
+
+	var exportToExcel = function(exportEvent){
+		exportEvent.preventDefault();
+		exportEvent.stopPropagation();
+
+		createExportProgress();
+
+		// Creating the table element to export information
+		theExport.excelTable = document.createElement("table");
+		theExport.excelTable.classList.add("masterrow");
+
+		// Creation of the table header
+		var tableTHead = document.createElement("thead");
+		tableTHead.classList.add ("masterrow-header");
+
+		var tableHeadRow = document.createElement("tr");
+		tableHeadRow.classList.add ("masterrow-headerRow");
+
+		lastColumnFormation.forEach(function (column, columnIndex){
+
+			var tableHeadColumn = document.createElement("th");
+			tableHeadColumn.classList.add ("masterrow-headerColumn");
+
+			var columnContent = document.createTextNode(getPersonalizedColumnName(column));	
+
+			tableHeadColumn.appendChild(columnContent);
+			tableHeadRow.appendChild(tableHeadColumn);
+
+		});
+
+		tableTHead.appendChild(tableHeadRow);
+		theExport.excelTable.appendChild(tableTHead);
+
+		// Generate the rows to export
+		prepareProcessParamToExport(appendExportData_Excel);
+		
+	};
+
+	var exportToPDF = function(exportEvent){
+		exportEvent.preventDefault();
+		exportEvent.stopPropagation();
+
+		createExportProgress();
+
+		// Create the table export
+		theExport.pdfTable = [];
+
+		// Columns
+		var columns = [];
+
+		lastColumnFormation.forEach(function (column, columnIndex){
+			columns.push (getPersonalizedColumnName(column));
+		});
+
+		theExport.pdfTable.push(columns);
+
+		// Generate the rows to export
+		prepareProcessParamToExport(appendExportData_PDF);
+		
+	};
+
+	var exportToPrint = function(exportEvent){
+		exportEvent.preventDefault();
+		exportEvent.stopPropagation();
+
+		theExport.toPrintPDF = true;
+		exportToPDF(exportEvent);
+	};
+
+	// Function that control the export data
+	var prepareProcessParamToExport = function(appendFunction){
+
+		// Preparing the parameters
+		var processFunctionParameters = {};
+
+		// Set the filters
+		if(theOptions.filters.columnFilters.length > 0){
+
+			processFunctionParameters.filters = {};
+
+			// Prepare the filter object, before send
+			theOptions.filters.columnFilters.forEach(function (filter){
+				processFunctionParameters.filters[filter.column] = {};
+				processFunctionParameters.filters[filter.column].value = replaceEmptyWithString(filter.value);
+				processFunctionParameters.filters[filter.column].autoComplete = filter.autoComplete;
+				processFunctionParameters.filters[filter.column].datepicker = filter.datepicker;
+				processFunctionParameters.filters[filter.column].datePeriod = filter.datePeriod;
+			});
+
+			/*processFunctionParameters.filters = theOptions.filters.columnFilters;*/
+		}
+
+		if(theOptions.pagination.registerPerPage > 0 ){
+			theExport.actualPage++;
+
+			processFunctionParameters.pagination = theOptions.pagination;
+			processFunctionParameters.pagination.currentPage = theExport.actualPage;
+
+			// Update the progress bar
+			var progressBar = document.getElementById(objectsDOMReference.progressBarReference);
+			progressBar.style.width = (theExport.actualPage * 100) / theOptions.pagination.maxPages + "%";
+
+		}
+
+		// Set the callback, if user opt to generate the table after his process is done
+		processFunctionParameters.callback = appendFunction;
+
+		// Sending the sorting structure
+		processFunctionParameters.sorting = {};
+
+		if(theOptions.sorting.enabled == true){
+
+			processFunctionParameters.sorting.sortingList = [];
+
+			theOptions.sorting.sortingList.forEach(function (sortingItem){
+				processFunctionParameters.sorting[sortingItem.column] = sortingItem.sortingType;
+			});
+		}
+
+		// Execute the user function, sending our parameters to user application
+		var receivedData = theDataProcessFunction(processFunctionParameters);
+
+		// If user has sent data right now, validate and process right now
+		if( itExist(receivedData) )
+			appendFunction( receivedData );
+
+	};
+
+	/*The function is similar as userDataProcess, but the process can generate data from all the pages.*/
+	var appendExportData_Excel = function (theData){
+
+		var receivedData = formatReceivedData(theData);
+		createTableBody(receivedData.data, theExport.excelTable, true);
+
+		// Generate the data to download, or process the next page, if there's pagination
+		if(theOptions.pagination.registerPerPage > 0 ){
+
+			if(theExport.actualPage < theOptions.pagination.maxPages)
+				prepareProcessParamToExport(appendExportData_Excel);
+			
+			else{
+				exportExcelData();	
+			}
+		}
+		else
+			exportExcelData();
+	};
+
+	/*The function is similar as userDataProcess, but the process can generate data from all the pages.*/
+	var appendExportData_PDF = function (theData){
+
+		var receivedData = formatReceivedData(theData);
+	
+		receivedData.data.rows.forEach( function (row, rowIndex){
+			
+			var rowToAppend = [];
+
+			row.forEach(function (col, colIndex, colList){
+
+				if(col == undefined)
+					rowToAppend.push('undefined');
+				else
+					rowToAppend.push(col.toString());
+			});
+
+			theExport.pdfTable.push(rowToAppend);
+
+		});
+
+		// Generate the data to download, or process the next page, if there's pagination
+		if(theOptions.pagination.registerPerPage > 0 ){
+
+			if(theExport.actualPage < theOptions.pagination.maxPages){
+				prepareProcessParamToExport(appendExportData_PDF);
+			}
+			else{
+				exportPDFData();	
+			}
+		}
+		else
+			exportPDFData();
+	};
+
+	var finishExportScreen = function(){
+
+		// Hide the progress screen and save the screen
+		var exportInfoScreen = document.getElementById(objectsDOMReference.exportScreenReference);
+
+		if(itExist (exportInfoScreen)){
+			exportInfoScreen.classList.remove("masterrow-export-showProgress");
+			var mainTable = document.getElementById(objectsDOMReference.theTableReference);
+			mainTable.removeChild(exportInfoScreen);
+	
+		}
+		
+		theExport.actualPage = 0;
+
+	}
+
+	var aboutToCloseScreen = function(){
+
+		// Hide the progress screen and save the screen
+		var exportInfoScreen = document.getElementById(objectsDOMReference.exportScreenReference);
+
+		if(itExist(exportInfoScreen)){
+			/*var exportInfo_BusyLoad = document.createElement("p");
+			exportInfo_BusyLoad.classList.add("masterrow-busyMessage");
+			var busyContent = document.createTextNode("Exporting all data to the PDF. The process can take 2-3 minutes to finish.");
+			exportInfo_BusyLoad.appendChild(busyContent);
+			exportInfoScreen.appendChild(exportInfo_BusyLoad);	*/
+		}
+	}
+
+	var generateDownloadScreen = function(content, fileName){
+
+		/* Download button */
+		var linkToDownload = document.createElement("a");
+		linkToDownload.classList.add("masterrow-export-button");
+		linkToDownload.classList.add("masterrow-export-downloadClick");
+		linkToDownload.href = content;
+		linkToDownload.download = fileName;
+		linkToDownload.target = '_blank';
+
+		var downloadIcon = document.createElement("i");
+		downloadIcon.classList.add("fa");
+		downloadIcon.classList.add("fa-download");
+
+		var linkContent = document.createTextNode("  Download");
+
+		linkToDownload.appendChild(downloadIcon);
+		linkToDownload.appendChild(linkContent);
+
+		var exportInfoScreen = document.getElementById(objectsDOMReference.exportScreenReference);
+
+		// Create the export screen, if it not exist (in case of a simple table, with pagination)
+		if(!itExist(exportInfoScreen) ){
+			var mainTable = document.getElementById(objectsDOMReference.theTableReference);
+			exportInfoScreen = document.createElement("div");
+			exportInfoScreen.classList.add("masterrow-export-progress");
+			exportInfoScreen.classList.add("masterrow-popup");
+			exportInfoScreen.id = objectsDOMReference.exportScreenReference;
+			mainTable.appendChild(exportInfoScreen);
+			exportInfoScreen.classList.add("masterrow-showWithFade");
+		};
+
+		/* Close button*/
+		var linkToClose = document.createElement("a");
+		linkToClose.classList.add("masterrow-export-button");
+		linkToClose.classList.add("masterrow-export-closeClick");
+		linkToClose.href = "";
+
+		var closeIcon = document.createElement("i");
+		closeIcon.classList.add("fa");
+		closeIcon.classList.add("fa-times");
+
+		var closeContent = document.createTextNode("  Close");
+
+		linkToClose.appendChild(closeIcon);
+		linkToClose.appendChild(closeContent);
+
+		linkToClose.addEventListener("click", function(exportClickEvent){
+			exportClickEvent.preventDefault();
+			exportClickEvent.stopPropagation();
+			finishExportScreen();
+		});
+
+		exportInfoScreen.appendChild (linkToDownload);
+		exportInfoScreen.appendChild (linkToClose);
+
+		/* Forcing the download click, when screen is loaded*/
+		linkToDownload.click();
+	};
+
+	// Function to save the data colected to excel
+	var exportExcelData = function(){
+		var uri = 'data:application/vnd.ms-excel;base64,'
+        var template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
+        var base64 = function(s) { 
+        	return window.btoa(unescape(encodeURIComponent(s))) 
+        }
+        var format = function(s, c) {
+        	return s.replace(/{(\w+)}/g, function(m, p) {
+        		return c[p]; 
+        	})
+        }
+
+        var content = {
+        	worksheet: 'Worksheet', 
+        	table: theExport.excelTable.innerHTML
+       	};
+
+       	content = uri + base64( format (template, content ))
+       	generateDownloadScreen(content, generateFileName("xls"));
+
+		/*generateDownloadScreen("data:application/vnd.ms-excel" + "," + encodeURIComponent(theExport.excelTable.outerHTML), generateFileName("xls"));*/
+		
+	};
+
+	var exportPDFData = function(){
+		
+		// Creating definition
+		var docDefinition = {
+
+			pageOrientation: 'landscape',
+			pageSize: 'A1',	
+
+			content: [
+
+				{
+					table: {	
+						width: '*',
+				        body: theExport.pdfTable
+				    }
+				}
+			],
+			styles: {
+				
+				tableHeader: {
+					bold: true,
+					color: 'black'
+				},
+				
+			}
+			
+		};
+
+		aboutToCloseScreen();
+
+		// Generating for download
+		if(theExport.toPrintPDF == true){
+			pdfMake.createPdf(docDefinition).print();
+			theExport.toPrintPDF = false;
+			finishExportScreen();
+		}
+		else
+
+			pdfMake.createPdf(docDefinition).getBuffer(function(buffer){
+				var blobTypeContent = new Blob([buffer], {type: "octet/stream"});
+				generateDownloadScreen(URL.createObjectURL(blobTypeContent), generateFileName("pdf"));
+			});
+	};
+
+
+
+
+	
+
+
+
+
+	/* Events processment */
+	var loadScreenEventProcess = function(event){
+
+		// Check the container
+		theOptions.containerId = validateContainerId(theOptions.containerId);
+		theContainer = document.getElementById(theOptions.containerId);
+		theContainer = validateContainer(theContainer);
+
+		if(itExist(theLoadedData))
+			userDataProcess(theLoadedData);
+		else{
+
+			if (isDataLoading){
+				startDataLoadingAnimation();
+			}
+			else{
+
+				// Only execute if data process is a function - you can still not set it
+				if (typeof theDataProcessFunction == 'function')
+					userFunctionProcessor( theDataProcessFunction );		
+			}
+		}
+	}
+
+
+	window.addEventListener('resize', function(resizeEvent){
+		setMasterrowResponsiveLayout();
+	});
+
+	// Load events
+	window.addEventListener('load', loadScreenEventProcess);
+
+	// The same event, but when masterrow is inside an environment with jQuery
+	if( itExist (window.jQuery))
+		$(document).ready(loadScreenEventProcess);
+	
+
+	/* When occour click in the window, close the pop-up screen*/
+	window.addEventListener('click', function(event){
+
+		var mainTable = document.getElementById(objectsDOMReference.theTableReference);
+
+		var exportScreen = document.getElementById(objectsDOMReference.exportScreenReference);
+		var exportOptionScreen = document.getElementById(objectsDOMReference.exportOptionScreenReference);
+
+		if(itExist (exportScreen)){
+			mainTable.removeChild(exportScreen);
+		}
+
+		if(itExist (exportOptionScreen)){
+			mainTable.removeChild(exportOptionScreen);
+		}
+
+		_filtersDOMReference.forEach( function (filter){
+			var filterDOM = document.getElementById(filter.formDOMReference);
+			if( itExist (filterDOM))
+				filterDOM.classList.remove('masterrow-filtering-form-activate');
+		});		
+	});
+
+
+
+	/* The exposed functions developers will interact */
+	return {	
+		/* The main function to the developer. This function can receiver, as parameter:
+		- A function, that you will set the data to pass to the MasterRow.
+		- Nothing. MasterRow will execute the original stored function.
+
+		This inner function have a parameter object in this following structure:
+			parameters:{
+				filters [If you had set this field before.]: {
+					column [Set by the developer] (the name of the column): the column name, in the data table,
+					value [Set by the MasterRow]: the value the user has entered in your system. If The filter type is 'datePeriod', it will retorn an object, containing the values
+				},
+				pagination [If user had set this field before.]: {
+					maxPages [Set by the developer]: The maximum rows that MasterRow must show, per page
+					currentPage [Set by the MasterRow]: The current page in the pagination process
+				},
+				callback [Set by the MasterRow]: it's a function the library uses to process the data.
+				In an async process, you must call this function, to tell MasterRow to generate the table.
+				It's useful, when you're bring data from a REST requisition, for example.
+			}
+		
+		User must return data in 2 ways:
+		- By the callback function (explained above).
+		- Returning the data directly in this function (in a non-async process).
+		 
+		In both ways, 
+		{
+			data: the columns and rows that must be show.
+			metadata: configuration object {
+				maxPages: the totalNumber of pages we must set. If user omits this field, ]
+				the pagination link will not be show.
+				totalRegisters: the total of registers returned fromm the api. It's used to show this info at the 
+				footer of the table. If is impossible to set this value, leave it undefined.
+			}
+		}
+		
+		When you don't send data in this function return, to call the callback after, 
+		MasterRow will set a transition animation here; the animation will stop when your process 
+		calls the callback function.
+
+		If a function has been set, this function will store the function you set. MasterRow will process this function,
+		each time occour pagination or filtering.
+
+		 */
+		toProcessData: function ( userExtractFunction ){
+
+			theLoadedData = null;
+
+			if( itExist(userExtractFunction))
+				theDataProcessFunction = userExtractFunction;
+
+			userFunctionProcessor( theDataProcessFunction );
+		},
+
+		/* Table destroyer */
+		end: function(){
+
+			var theTable = document.getElementById(objectsDOMReference.theTableReference);
+			var thePagination = document.getElementById(objectsDOMReference.paginationReference);
+			var exportLink = document.getElementById(objectsDOMReference.exportingReference);
+			var exportScreen = document.getElementById(objectsDOMReference.exportScreenReference);
+			var progressBar = document.getElementById(objectsDOMReference.progressBarReference);
+			var exportOptionScreen = document.getElementById(objectsDOMReference.exportOptionScreenReference);
+
+
+
+			if (itExist(theTable))
+				theContainer.removeChild(theTable);
+
+			if (itExist(thePagination))
+				theContainer.removeChild(thePagination);
+
+			if(itExist (exportLink) )
+				theContainer.removeChild(exportLink);
+
+			if(itExist (exportScreen) )
+				theContainer.removeChild(exportScreen);			
+
+			if(itExist (progressBar) )
+				theContainer.removeChild(progressBar);
+
+			if(itExist (exportOptionScreen) )
+				theContainer.removeChild(exportOptionScreen);
+		},
+
+		// Clear the filters, when user needs to reset all his search
+		clearFilters: function(){
+			
+			theOptions.filters.columnFilters.forEach(function( filter, filterIndex){
+
+				var filterElement = _filtersDOMReference.find(function (_filterElement){
+					return _filterElement.id == filter.column;
+				});
+
+
+				// Remove the link indication
+				filterElement.isActivated = false;
+
+
+				// Clear the field content
+				if(itExist(filter.select)){
+
+					var selectDOM = document.getElementById(filterElement.selectReference);
+
+					if(itExist(selectDOM))
+						selectDOM.value = '';
+
+					/* Set the value of object (Value is set into the list 
+					because it passed the object by reference) */
+					filter.select.forEach( function (optionFilter){
+						optionFilter.selected = false;
+					});
+				}
+				else{
+
+					if(itExist(filter.checkList)){
+
+						var allInputElements = document.getElementsByTagName('input');
+						var checkSetList = [];
+
+						for(cont = 0; cont < allInputElements.length; cont ++ ){
+
+							if ( itExist(allInputElements[cont].getAttribute("filterReferenceName")) && allInputElements[cont].getAttribute("filterReferenceName") == "masterrowcheckList_" + filterElement.id){
+
+								checkSetList.push({
+									name: allInputElements[cont].name,
+									value: true
+								});	
+							}
+
+						};
+
+						filter.checkList = checkSetList;
+					}
+					else{
+
+						if(itExist(filter.datePeriod)){
+
+							filter.datePeriod.value = {
+								from: '',
+								to: ''
+							}
+
+							var dataDe = document.getElementById(filterElement.inputDOMReference_dtFrom);
+
+							if(itExist(dataDe))
+								dataDe.value = '';
+
+							var dataAte = document.getElementById(filterElement.inputDOMReference_dtFrom);
+
+							if(itExist(dataAte))
+								dataAte.value = '';
+
+						}
+
+						else{
+
+							filter.value = ''
+
+							var field = document.getElementById(filterElement.inputDOMReference);
+
+							if(itExist(field))
+								field.value = '';
+						}				
+					}
+				}
+			});
+		},
+
+		/* Function that must be executed at page events. 
+		Masterrow has built-in events, when page is full-loaded (window.load() and jQuery event $(document).ready. 
+		But, if you are setting masterrow in a framework like AngularJs, I suggest you set the events to this function. */
+		pageLoadEventCheck: function(event){
+			loadScreenEventProcess(event);
+		}
+
+	}
+};
+
+/*
+	angular-masterrow
+	Author: Amós Batista
+*/
+
+angular.module('angular-masterrow', [])
+	
+	.directive('masterrow', function(){
+
+
+
+		return {
+			restrict: 'E',
+			link: function (scope, element, attrs){
+				
+				// Generate a random ID code, to allow more than one table.
+				scope.uniqueID = 'mrContainer_' + Math.floor((1 + Math.random()) * 0x10000)
+		      		.toString(16)
+		      		.substring(1);
+
+		      	// Set the element ID, BEFORE start the Masterrow
+		      	element[0].id = scope.uniqueID;
+
+		      	// Options object, to adequate old version of Angular
+		      	if(scope.mrOptions != undefined){
+		      		scope.masterrowOptions = scope.mrOptions;
+		      		scope.masterrowOptions.containerId = scope.uniqueID;
+		      	}
+
+		      	else{
+		      		scope.masterrowOptions = {
+						containerId: scope.uniqueID,
+						filters: scope.mrFilters,
+						pagination: scope.mrPagination,
+						detailing: scope.mrDetailing,
+						personalization: scope.mrPersonalization,
+						rowAction: scope.mrRowAction,
+						sorting: scope.mrSorting,
+						exporting: scope.mrExporting,
+
+						toProcessData: scope.mrToProcessData
+		      		}	
+		      	}
+
+				// Directive parameters from caller
+				var table = new MasterRow(scope.masterrowOptions);
+
+				// Masterrow reload function
+				var reload = function(){
+
+					table.pageLoadEventCheck ();
+
+				}
+
+				// The time directive is loaded, process the function
+				table.toProcessData (scope.masterrowOptions.toProcessData);
+
+
+				/* Event handler. */
+				/*When it receives the broadcast from "angularMasterrowService" service, 
+				execute the function again*/
+				scope.$on('executeFunctionHandler', function(){
+					table.toProcessData ();
+				});
+
+				/* Detection of all Angular Single Page tools. 
+				When the state change, force the Masterrow reload*/
+				// $location
+				scope.$on('$locationChangeSuccess', function(){
+					reload();
+				});
+
+				// $router
+				scope.$on('$routeChangeSuccess', function(){
+					reload();
+				});
+
+				// $ui-router
+				scope.$on('$stateChangeSuccess', function(){
+					reload();
+				});
+
+				// Clear filters processor
+				scope.$on('clearFiltersHandler', function(){
+					table.clearFilters();
+				});
+
+
+				// The destroy event
+				scope.$on('$destroy', function(){
+					scope.masterrowOptions = {};
+
+					table.end();
+				});
+
+
+			},
+
+			template: '<div></div>',
+			scope: {
+				mrFilters: '=',
+				mrPagination: '=',
+				mrDetailing: '=',
+				mrToProcessData: '=',
+				mrPersonalization: '=',
+				mrRowAction: '=',
+				mrSorting: '=',
+				mrExporting: '=',
+
+				// Global Object
+				mrOptions: '='
+
+			}
+		};
+	})
+
+	/* Service necessary to any external controller interact with the directive.*/
+	.factory('angularMasterrowService', [
+		'$rootScope',
+		function(
+			rootScope
+		){
+			return {
+
+				executeProcess: function(){
+					rootScope.$broadcast('executeFunctionHandler');
+				},
+
+				clearFilters: function(){
+					rootScope.$broadcast("clearFiltersHandler");
+				}
+			}
+		}
+	]);
 angular.module('common', [
 	'common.header',
 	'common.footer',
@@ -54923,7 +58368,8 @@ angular.module("site", [
 	'site.portfolio',
 	'site.blog',
 	'site.home',
-	'site.gallery'
+	'site.gallery',
+	"angular-masterrow"
 
 ]);
 

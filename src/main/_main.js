@@ -6,6 +6,7 @@ angular.module("site", [
 	'site.portfolio',
 	'site.blog',
 	'site.home',
-	'site.gallery'
+	'site.gallery',
+	"angular-masterrow"
 
 ]);
