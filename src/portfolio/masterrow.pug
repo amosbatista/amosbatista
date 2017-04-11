@@ -9,37 +9,76 @@ div(my-header)
 			a(ui-sref="portfolios") Portfólio
 		li.item.current Masterrow
 
-	small-tabs.smallTabs
+	.portfolio
+		small-tabs.smallTabs
 
-		tab(tab-name="O que é?")
-			p 
-				strong MasterRow 
-				| é um plug-in feito em JavaScript para a criação de tabelas dinâmicas. 
-			p O desenvolvimento da ferramenta começou em Setembro de 2016, inicialmente para atender necessidade da
-				a(href="https://www.e-htl.com.br/") E-HTL hotelaria.
-			
-		tab(tab-name="A Necessidade")
-			p Trabalhando com diversos sistemas de gerenciamento de dados (relatórios, gráficos), o time de desenvolvimento precisava de uma ferramenta que permitisse agilizar a criação de tabelas e suas operações mais básicas (ordenação, filtagem, etc.)
-			
-		tab(tab-name="Os Outros Produtos")
-			p 
-				|Existem outras ferramentas de tabelas dinâmicas mais conhecidas, como o 
-				a(href="https://datatables.net/") DataTables
-				|, mas, mesmo já consagradas, há algumas limitações.
-			p
-				|Tomando DataTables como exemplo, apesar dela criar tabelas dinâmicas, ela não permite o controle total de seu comportamento.
-			p
-				|Como exemplo, para operações assíncronas (REST), ela não permite o uso de outro objeto para realizar a operação, que não fosse o seu Filtro interno. 
-			p
-				|Com a Paginação, há um problema parecido: não é possível paginar a tabela sem que TODOS os dados já estivessem carregados.
-			p
-				|Por causa destes problemas, e graças ao incentivo da E-HTL, resolvi criar o MasterRow.
+			tab(tab-name="O que é?")
+				p.portfolio-text 
+					strong MasterRow 
+					| é um plug-in feito em JavaScript para a criação de tabelas dinâmicas. 
+				p.portfolio-text O desenvolvimento da ferramenta começou em Setembro de 2016, inicialmente para atender necessidade da 
+					a.portfolio-link(href="https://www.e-htl.com.br/") E-HTL Hotelaria.
 
-		tab(tab-name="O Conceito")
-			p
-				|Ao invés de trabalhar diretamente com um vetor de dados, MasterRow trabalha em cima de uma função criada pelo desenvolvedor.
-			p
-				|Não importa onde, como e quando os dados virão, se por requisição de API, Socket, ou se são apenas dados fixos. Tudo que o servidor precisa fazer é fazer com que a sua função retorne os dados necessário para o MasterRow funcionar.
+				
+			tab(tab-name="A Necessidade")
+				p.portfolio-text Trabalhando com diversos sistemas de gerenciamento de dados (relatórios, gráficos), o time de desenvolvimento precisava de uma ferramenta que permitisse agilizar a criação de tabelas e suas operações mais básicas (ordenação, filtagem, etc.)
+				
+			tab(tab-name="Os Outros Produtos")
+				p.portfolio-text 
+					|Existem outras ferramentas de tabelas dinâmicas mais conhecidas, como o 
+					a.portfolio-link(href="https://datatables.net/") DataTables
+					|, mas, mesmo já consagradas, há algumas limitações.
+				p.portfolio-text
+					|Tomando DataTables como exemplo, apesar dela criar tabelas dinâmicas, ela não permite o controle total de seu comportamento.
+				p.portfolio-text
+					|Como exemplo, para operações assíncronas (REST), ela não permite o uso de outro objeto para realizar a operação, que não fosse o seu Filtro interno. 
+				p.portfolio-text
+					|Com a Paginação, há um problema parecido: não é possível paginar a tabela sem que TODOS os dados já estivessem carregados.
+				p.portfolio-text
+					|Por causa destes problemas, e graças ao incentivo da E-HTL, resolvi criar o MasterRow.
+
+			tab(tab-name="O Conceito")
+				p.portfolio-text
+					|Ao invés de trabalhar diretamente com um vetor de dados, MasterRow trabalha em cima de uma função criada pelo desenvolvedor.
+				p.portfolio-text
+					|Não importa onde, como e quando os dados virão, se por requisição de API, Socket, ou se são apenas dados fixos. Tudo que o servidor precisa fazer é fazer com que a sua função retorne os dados necessário para o MasterRow funcionar.
+
+				p.portfolio-text
+					|Acompanhando as ferramentas concorrentes, MasteRow também oferece recursos de 
+					strong filtros
+					|, 
+					strong paginação
+					|, 
+					strong ordenação
+					|, 
+					strong customização 
+					| de célula de acordo com o seu valor, 
+					strong expansão 
+					| para detalhes e 
+					strong exportação 
+					| de dados. Todas estas funções sempre devem convergir para a função principal.
+
+			tab(tab-name="A Construção")
+				p.portfolio-text
+					strong Masterrow
+					| foi construída em paralelo com o desenvolvimento de outras soluções na E-HTL.
+				p.portfolio-text
+					|A parte mais complicada foi o começo do processo, onde tive que pensar como a ferramenta funcionaria. O MasterRow precisava funcionar com uma função definida pelo usuário desenvolvedor, ao mesmo tempo que ela precisava ser aberta à customização.
+				p.portfolio-text
+					|Foi pensando neste conceito:
+				p.portfolio-text
+					|{Fluxograma}
+				p.portfolio-text
+					|A vantagem de ter trabalhado o projeto com a E-HTL foi que, invariávelmente, a ferramenta já começou com um cliente. Isto permitiu que MasteRow fosse testado em várias situações e com diversos usuários.
+				p.portfolio-text
+					|Mais detalhes sobre a construção: Masterrow foi construído com a ajuda do automatizador de tarefas 
+					a.portfolio-link(href="http://gulpjs.com/") GULP 
+					|, a estilização da tabela foi feita em LESS.
+
+
+
+
+
 		
 
 			

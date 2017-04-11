@@ -2859,11 +2859,13 @@
   animation: hideLd 0.5s ease;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
+  display: none;
 }
 .show-load-screen {
   animation: showLd 0.5s ease;
   animation-iteration-count: 1;
   animation-fill-mode: forwards;
+  display: block;
 }
 @-webkit-keyframes slideUp {
   from {
@@ -3300,6 +3302,14 @@
   width: 100%;
   float: left;
 }
+.portfolio-page .portfolio .portfolio-text {
+  text-indent: 50px;
+  color: #181b18;
+  font-size: 90%;
+}
+.portfolio-page .portfolio .portfolio-text .portfolio-link {
+  border-bottom: 1px dashed #112211;
+}
 @media screen and (orientation: landscape) {
   .portfolio-page {
     margin: 120px auto;
@@ -3358,6 +3368,9 @@
 .small-tabs .small-tab-list .small-tabs-list-item {
   float: left;
   margin: 0 10px;
+}
+.small-tabs .small-tab-list .small-tabs-list-item .tab-link:hover {
+  border-bottom: 1px dashed #112211;
 }
 .small-tabs .before-current {
   color: #d67a5c;
