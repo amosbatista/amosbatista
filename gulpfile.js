@@ -50,6 +50,7 @@ var imageSource = ['img/*.*'];
 var destinationFolder = "dest";
 
 
+
 /* Pug
 Process to HTML and save to the same dest folder */
 gulp.task ('pug', function(){
@@ -128,13 +129,12 @@ gulp.task ('fontAwesome_Fonts', function(){
 var conn = ftp.create( {
     host:     'amosbatista.com',
     user:     'u813102338',
-    password: 'iunarihs45@',
+    password: '',
     parallel: 1,
     log:      gutil.log
 } );
 
 gulp.task ('ftpTask', function(){
-
 
 	return gulp.src([
 			destinationFolder + "/*.*",
