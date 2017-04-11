@@ -13,8 +13,8 @@ angular.module("site.blog").controller("blogCtrl", [
 		postListService,
 		tags
 	){
-		console.log('Response of Wordpress from route', postList);
-		console.log('Featured', featured);
+
+		scope.$emit('toHideLoadScreen');
 
 		scope.featured = featured;
 		scope.subFeatured_1 = subFeatureds[0];	

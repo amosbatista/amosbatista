@@ -25,22 +25,27 @@ angular.module('common.footer').directive("myFooter", [
 				
 				/* Links redirects*/
 				var footerLinkToHome = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('home')
 				}
 
 				var footerLinkToGallery = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('gallery')
 				}
 
 				var footerLinkToAbout = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('about')
 				}
 
 				var footerLinkToBlog = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('blog')
 				}
 
 				var footerLinkToPortfolio = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('portfolio')
 				}
 

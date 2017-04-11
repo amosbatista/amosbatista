@@ -2811,10 +2811,12 @@
 #loadScreen {
   position: fixed;
   top: 45%;
-  left: 45%;
+  left: 45vw;
   padding: 10px;
   width: 150px;
   border-bottom: 4px solid #125412;
+  background-color: white;
+  z-index: 100;
 }
 #loadScreen .loading-message {
   width: 100%;
@@ -2822,7 +2824,7 @@
   font-size: 100%;
   font-family: 'Fjalla One', sans-serif;
   text-transform: uppercase;
-  color: #bfbfbf;
+  color: #404040;
   text-align: center;
 }
 #loadScreen #randomContent {
@@ -2830,7 +2832,7 @@
   margin: 10px auto;
   font-size: 80%;
   font-family: 'Source Serif Pro', sans-serif;
-  color: #bfbfbf;
+  color: #737373;
   border-left: 1px solid #70a970;
 }
 @keyframes hide {
@@ -3370,10 +3372,10 @@
 }
 @media screen and (orientation: landscape) {
   .small-tabs .current-tab {
-    width: 23%;
+    width: 27%;
   }
   .small-tabs .small-tab-list {
-    width: 73%;
+    width: 69%;
     float: right;
   }
 }

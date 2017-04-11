@@ -52351,22 +52351,27 @@ angular.module('common.footer').directive("myFooter", [
 				
 				/* Links redirects*/
 				var footerLinkToHome = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('home')
 				}
 
 				var footerLinkToGallery = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('gallery')
 				}
 
 				var footerLinkToAbout = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('about')
 				}
 
 				var footerLinkToBlog = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('blog')
 				}
 
 				var footerLinkToPortfolio = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('portfolio')
 				}
 
@@ -52447,22 +52452,27 @@ angular.module('common.header').directive("myHeader", [
 
 				/* Links redirects*/
 				var headerLinkToHome = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('home')
 				}
 
 				var headerLinkToGallery = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('gallery')
 				}
 
 				var headerLinkToAbout = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('about')
 				}
 
 				var headerLinkToBlog = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('blog')
 				}
 
 				var headerLinkToPortfolio = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('portfolio')
 				}
 
@@ -52543,7 +52553,7 @@ angular.module('common.loadScreen').directive("loadScreen", [
 
 				scope.$on('toShowLoadScreen', function(){
 					scope.randomMessage = objConfig.config.loadScreenCustomMessages[
-						Math.ceil(
+						Math.floor(
 							Math.random() * objConfig.config.loadScreenCustomMessages.length
 						)
 					];
@@ -53193,14 +53203,17 @@ angular.module('site.home').controller('homeCtrl', [
 		}
 
 		scope.goToPortfolio = function(){
+			scope.$emit('toShowLoadScreen');
 			state.go('portfolio');
 		}
 
 		scope.goToBlog = function(){
+			scope.$emit('toShowLoadScreen');
 			state.go('blog');
 		}
 
 		scope.goToGallery = function(){
+			scope.$emit('toShowLoadScreen');
 			state.go('gallery');
 		}
 	}
@@ -53333,13 +53346,19 @@ angular.module("site.home").config( [
 ])
 
 angular.module('site.portfolio', []);
-angular.module('site.portfolio').controller('portfolioCtrl', function(){
-		
-})
+angular.module('site.portfolio').controller('portfolioCtrl', [
+	"$scope",
+	function(scope){
+		scope.$emit('toHideLoadScreen');
+	}
+]);
 
-angular.module('site.portfolio').controller('masterrowCtrl', function(){
-		
-})
+angular.module('site.portfolio').controller('masterrowCtrl', [
+	'$scope',
+	function(scope){
+		scope.$emit('toHideLoadScreen');
+	}
+])
 angular.module('site.portfolio').config( [
 	'$stateProvider',
 	function(
@@ -53498,8 +53517,8 @@ angular.module("site.blog").controller("blogCtrl", [
 		postListService,
 		tags
 	){
-		console.log('Response of Wordpress from route', postList);
-		console.log('Featured', featured);
+
+		scope.$emit('toHideLoadScreen');
 
 		scope.featured = featured;
 		scope.subFeatured_1 = subFeatureds[0];	
@@ -53963,6 +53982,7 @@ angular.module("site.gallery").controller("galleryCtrl", [
 		scope,
 		gallery
 	){
+		scope.$emit('toHideLoadScreen');
 		scope.gallery = gallery;
 		
 	}
@@ -54598,7 +54618,7 @@ angular.module("site").directive('body', [
 					case 'about':
 						element[0].className = 'body-about-page';
 						break;
-					case 'portfolio':
+					case 'portfolio', 'masterrow':
 						element[0].className = 'body-portfolio-page';
 						break;
 					case 'blog':

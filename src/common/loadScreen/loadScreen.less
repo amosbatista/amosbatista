@@ -2,10 +2,12 @@
 
 	position: fixed;
 	top: 45%;
-	left: 45%;
+	left: 45vw;
 	padding: 10px;
 	width: 150px;
 	border-bottom: 4px solid @corSombraHeaderFooter;
+	background-color: white;
+	z-index: 100;
 
 	.loading-message{
 		width: 100%;
@@ -13,7 +15,7 @@
 		font-size: 100%;
 		font-family: @fontFamily_Titles;
 		text-transform: uppercase;
-		color: hsl(142, 0%, 75%);
+		color: hsl(142, 0%, 25%);
 		text-align: center;
 	}
 
@@ -22,7 +24,7 @@
 		margin: 10px auto;
 		font-size: 80%;
 		font-family: @fontFamily_Default;
-		color: hsl(142, 0%, 75%);
+		color: hsl(142, 0%, 45%);
 		border-left: 1px solid hsl(120, 25%, 55%);
 	}
 }

@@ -14,7 +14,7 @@ angular.module('common.loadScreen').directive("loadScreen", [
 
 				scope.$on('toShowLoadScreen', function(){
 					scope.randomMessage = objConfig.config.loadScreenCustomMessages[
-						Math.ceil(
+						Math.floor(
 							Math.random() * objConfig.config.loadScreenCustomMessages.length
 						)
 					];

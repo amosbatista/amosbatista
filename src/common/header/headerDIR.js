@@ -15,22 +15,27 @@ angular.module('common.header').directive("myHeader", [
 
 				/* Links redirects*/
 				var headerLinkToHome = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('home')
 				}
 
 				var headerLinkToGallery = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('gallery')
 				}
 
 				var headerLinkToAbout = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('about')
 				}
 
 				var headerLinkToBlog = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('blog')
 				}
 
 				var headerLinkToPortfolio = function(){
+					scope.$emit('toShowLoadScreen');
 					state.go('portfolio')
 				}
 

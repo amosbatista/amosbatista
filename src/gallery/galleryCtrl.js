@@ -5,6 +5,7 @@ angular.module("site.gallery").controller("galleryCtrl", [
 		scope,
 		gallery
 	){
+		scope.$emit('toHideLoadScreen');
 		scope.gallery = gallery;
 		
 	}

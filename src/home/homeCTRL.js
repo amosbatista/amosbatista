@@ -13,14 +13,17 @@ angular.module('site.home').controller('homeCtrl', [
 		}
 
 		scope.goToPortfolio = function(){
+			scope.$emit('toShowLoadScreen');
 			state.go('portfolio');
 		}
 
 		scope.goToBlog = function(){
+			scope.$emit('toShowLoadScreen');
 			state.go('blog');
 		}
 
 		scope.goToGallery = function(){
+			scope.$emit('toShowLoadScreen');
 			state.go('gallery');
 		}
 	}
