@@ -128,7 +128,7 @@ gulp.task ('fontAwesome_Fonts', function(){
 var conn = ftp.create( {
     host:     'amosbatista.com',
     user:     'u813102338',
-    password: '',
+    password: 'iunarihs45@',
     parallel: 1,
     log:      gutil.log
 } );

@@ -52221,7 +52221,8 @@ angular.module('common', [
 	'common.easyScroll',
 	'common.objData',
 	'common.pagination',
-	'common.postList'
+	'common.postList',
+	'common.loadScreen'
 	]
 );
 /* The directive that set the footer link scroll animation
@@ -52524,6 +52525,41 @@ angular.module('common.header').directive("myHeader", [
 		}
 	}
 ]);
+/*Load screen, to be used in any Async process*/
+angular.module('common.loadScreen', []);
+/* The directive will work with Angular Events:
+toToggleLoadScreen - Insert a random text and show the screen.
+toHideLoadScreen - Hide the directive*/
+angular.module('common.loadScreen').directive("loadScreen", [
+	'env',
+	function(
+		objConfig
+	){
+		return{
+			restrict: "E",
+			templateUrl: "loadScreen.html",
+			replace: true,
+			link: function (scope, element){
+
+				scope.$on('toShowLoadScreen', function(){
+					scope.randomMessage = objConfig.config.loadScreenCustomMessages[
+						Math.ceil(
+							Math.random() * objConfig.config.loadScreenCustomMessages.length
+						)
+					];
+
+					element[0].classList.add('show-load-screen');
+					element[0].classList.remove('hide-load-screen');
+				});
+
+				scope.$on('toHideLoadScreen', function(){
+					element[0].classList.add('hide-load-screen');
+					element[0].classList.remove('show-load-screen');
+				});
+			}
+		}
+	}
+])
 angular.module('common.objData', []);
 
 angular.module('common.objData').factory('dataSRV', function (){
@@ -52876,7 +52912,11 @@ angular.module('site.about').controller('aboutCtrl', [
 		state
 
 	){
+
+		scope.$emit('toHideLoadScreen');
+
 		scope.goHome = function(){
+			scope.$emit('toShowLoadScreen');
 			state.go('home');
 		}
 	}
@@ -53145,7 +53185,10 @@ angular.module('site.home').controller('homeCtrl', [
 		scope,
 		state
 	){
+		scope.$emit('toHideLoadScreen');
+
 		scope.goToAboutPage = function(){
+			scope.$emit('toShowLoadScreen');
 			state.go('about');
 		}
 

@@ -1,0 +1,61 @@
+#loadScreen{
+
+	position: fixed;
+	top: 45%;
+	left: 45%;
+	padding: 10px;
+	width: 150px;
+	border-bottom: 4px solid @corSombraHeaderFooter;
+
+	.loading-message{
+		width: 100%;
+		margin: 20px 0;
+		font-size: 100%;
+		font-family: @fontFamily_Titles;
+		text-transform: uppercase;
+		color: hsl(142, 0%, 75%);
+		text-align: center;
+	}
+
+	#randomContent{
+		width: 80%;
+		margin: 10px auto;
+		font-size: 80%;
+		font-family: @fontFamily_Default;
+		color: hsl(142, 0%, 75%);
+		border-left: 1px solid hsl(120, 25%, 55%);
+	}
+}
+
+
+@keyframes hide{
+	from {
+		opacity: 1;
+		display: block;
+	}
+
+	to{
+		opacity: 0;
+		display: none;
+	}
+}
+
+@keyframes show{
+	from {
+		opacity: 0;
+		display: none;
+	}
+
+	to{
+		opacity: 1;
+		display: block;
+	}
+}
+
+.hide-load-screen{
+	.mix-animation(hide);   
+}
+
+.show-load-screen{
+	.mix-animation(show);   
+}

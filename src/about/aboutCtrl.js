@@ -6,7 +6,11 @@ angular.module('site.about').controller('aboutCtrl', [
 		state
 
 	){
+
+		scope.$emit('toHideLoadScreen');
+
 		scope.goHome = function(){
+			scope.$emit('toShowLoadScreen');
 			state.go('home');
 		}
 	}

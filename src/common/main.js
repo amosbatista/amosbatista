@@ -4,6 +4,7 @@ angular.module('common', [
 	'common.easyScroll',
 	'common.objData',
 	'common.pagination',
-	'common.postList'
+	'common.postList',
+	'common.loadScreen'
 	]
 );

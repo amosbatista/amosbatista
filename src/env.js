@@ -4,5 +4,11 @@ envConfig = {
 	postList: 'posts',
 	tagList: 'tags',
 
-	postPerPage: 10
+	postPerPage: 10,
+
+	loadScreenCustomMessages: [
+		'O meu servidor me odeia.',
+		'Na verdade, café não ajuda em nada.',
+		'O caos, aguardo parar de ventar.'
+	]
 };

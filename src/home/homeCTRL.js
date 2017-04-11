@@ -5,7 +5,10 @@ angular.module('site.home').controller('homeCtrl', [
 		scope,
 		state
 	){
+		scope.$emit('toHideLoadScreen');
+
 		scope.goToAboutPage = function(){
+			scope.$emit('toShowLoadScreen');
 			state.go('about');
 		}
 
