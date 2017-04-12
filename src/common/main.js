@@ -5,6 +5,8 @@ angular.module('common', [
 	'common.objData',
 	'common.pagination',
 	'common.postList',
-	'common.loadScreen'
+	'common.loadScreen',
+	'common.shareButtons'
+
 	]
 );
