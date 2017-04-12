@@ -14,6 +14,12 @@ angular.module("site.blog").controller("blogCtrl", [
 		tags
 	){
 
+		scope.shareOpt = {
+	  		title: 'Blog amosbatista.com',
+	  		description: 'Todas as minhas atualizações, opiniões e virais, num só lugar.',
+	  		imageName: 'print-blog.jpg'
+		}
+
 		scope.$emit('toHideLoadScreen');
 
 		scope.featured = featured;

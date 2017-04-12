@@ -56574,6 +56574,36 @@ angular.module('common.objData').factory('dataSRV', function (){
 
 	};
 });
+angular.module("common.postList", []);
+
+angular.module("common.postList").factory("postListResource", [
+	'$resource',
+	'env',
+	function(
+		resource,
+		env
+	){
+		return resource(env.config.wordPressAPIURL + env.config.postList,
+		{},
+		{
+			list: {
+				method: 'GET',
+				isArray: true,
+				transformResponse: function(data, headersGetter, status){
+					
+					data = JSON.parse(data);
+
+					data.map( function(row){
+						row.header = headersGetter;
+						return row;
+					});
+
+		            return data;
+		        }
+			}
+		});
+	}
+]);
 angular.module("common.pagination", []);
 
 angular.module("common.pagination").factory("paginationSrv", function(){
@@ -56760,36 +56790,6 @@ angular.module("common.shareButtons").factory("loadFacebookSDK", function(){
 		   	}(document, 'script', 'facebook-jssdk'));
 	}
 })
-angular.module("common.postList", []);
-
-angular.module("common.postList").factory("postListResource", [
-	'$resource',
-	'env',
-	function(
-		resource,
-		env
-	){
-		return resource(env.config.wordPressAPIURL + env.config.postList,
-		{},
-		{
-			list: {
-				method: 'GET',
-				isArray: true,
-				transformResponse: function(data, headersGetter, status){
-					
-					data = JSON.parse(data);
-
-					data.map( function(row){
-						row.header = headersGetter;
-						return row;
-					});
-
-		            return data;
-		        }
-			}
-		});
-	}
-]);
 angular.module("site.about", []);
 angular.module('site.about').controller('aboutCtrl', [
 	'$scope',
@@ -57413,6 +57413,12 @@ angular.module("site.blog").controller("blogCtrl", [
 		tags
 	){
 
+		scope.shareOpt = {
+	  		title: 'Blog amosbatista.com',
+	  		description: 'Todas as minhas atualizações, opiniões e virais, num só lugar.',
+	  		imageName: 'print-blog.jpg'
+		}
+
 		scope.$emit('toHideLoadScreen');
 
 		scope.featured = featured;
@@ -57500,7 +57506,11 @@ angular.module("site.blog").controller("postCtrl", [
 		scope,
 		post
 	){
-		console.log('The loaded post', post);
+		scope.shareOpt = {
+	  		title: post.title,
+	  		description: post.excerpt,
+	  		imageUrl: post.mainImage
+		}
 
 		scope.post = post;
 	}
