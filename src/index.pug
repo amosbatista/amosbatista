@@ -1,8 +1,15 @@
 doctype html
 html(ng-app="site")
-	head
 
+	head
 		meta(charset="utf-8")
+
+		// OG Meta tags (for sharing, like Facebook)
+		meta(property="og:url" content="{{ogMetadata.url}}")
+		meta(property="og:type" content="{{ogMetadata.type}}")
+		meta(property="og:title" content="{{ogMetadata.title}}")
+		meta(property="og:description" content="{{ogMetadata.description}}")
+		meta(property="og:image" content="{{ogMetadata.image}}")
 		
 		title
 			|Amós Batista
