@@ -56760,7 +56760,7 @@ angular.module("common.shareButtons").directive("shareButtons", function(){
 
 					}, 
 					function(response){
-						console.log("FB response", response)
+						//console.log("FB response", response)
 					}
 				);
 
@@ -57548,7 +57548,6 @@ angular.module("site.blog").factory('postListSRV',[
 								});
 
 								if(postToExclude ){
-									theArray.splice(index, 1);
 									return null;
 								}
 								else{

@@ -21,7 +21,7 @@ angular.module("common.shareButtons").directive("shareButtons", function(){
 
 					}, 
 					function(response){
-						console.log("FB response", response)
+						//console.log("FB response", response)
 					}
 				);
 

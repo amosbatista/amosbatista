@@ -30,7 +30,6 @@ angular.module("site.blog").factory('postListSRV',[
 								});
 
 								if(postToExclude ){
-									theArray.splice(index, 1);
 									return null;
 								}
 								else{
