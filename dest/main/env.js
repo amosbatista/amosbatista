@@ -1,5 +1,5 @@
 envConfig = {
-	wordPressAPIURL: 'http://localhost/wordpress/wp-json/wp/v2/',
+	wordPressAPIURL: 'http://amosbatista.com/wordpress/wp-json/wp/v2/',
 
 	postList: 'posts',
 	tagList: 'tags',

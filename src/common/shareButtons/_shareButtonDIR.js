@@ -17,11 +17,11 @@ angular.module("common.shareButtons").directive("shareButtons", function(){
 				  		href: window.location.href,
 				  		title: scope.shareOptions.title,
 				  		description: scope.shareOptions.description,
-				  		image: scope.shareOptions.imageUrl || window.location.origin + "/img/" + scope.shareOptions.imageName
+				  		picture: scope.shareOptions.imageUrl || window.location.origin + "/img/" + scope.shareOptions.imageName
 
 					}, 
 					function(response){
-
+						console.log("FB response", response)
 					}
 				);
 
