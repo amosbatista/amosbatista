@@ -57246,7 +57246,7 @@ angular.module('site.portfolio').controller('masterrowCtrl', [
 		scope.$emit('toHideLoadScreen');
 
 		scope.shareOpt = {
-	  		title: 'Masterrow - Portfólo - amosbatista.com',
+	  		title: 'Masterrow - Portfólio - amosbatista.com',
 	  		description: 'Crie tabelas dinâmicas com esta mais nova ferramenta javaScript.',
 	  		imageName: 'logo.png'
 		}
@@ -57920,7 +57920,7 @@ angular.module("site.gallery").controller("galleryPostCtrl", [
 		scope.post = post;
 
 		scope.shareOpt = {
-	  		title: post.title,
+	  		title: post.title + " - Galeria - amosbatista.com",
 	  		description: post.excerpt,
 	  		imageUrl: post.mainImage
 		}
