@@ -11,6 +11,20 @@ angular.module("common.shareButtons").directive("shareButtons", function(){
 
 			scope.openShare = function(){
 
+				FB.ui(
+					{
+						method: 'share',
+				  		href: window.location.href,
+				  		title: scope.shareOptions.title,
+				  		description: scope.shareOptions.description,
+				  		image: scope.shareOptions.imageUrl || window.location.origin + "/img/" + scope.shareOptions.imageName
+
+					}, 
+					function(response){
+
+					}
+				);
+
 			};
 		}
 	}
