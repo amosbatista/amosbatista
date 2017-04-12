@@ -6,7 +6,8 @@ var concatCss = require('gulp-concat');
 var jsConcat = require('gulp-concat');
 var plumber = require('gulp-plumber');
 var ftp = require('vinyl-ftp');
-var gutil = require( 'gulp-util' );
+
+var ftpCredentials = require("./ftpCredentials");
 
 
 /* Paths */
@@ -128,13 +129,7 @@ gulp.task ('fontAwesome_Fonts', function(){
 
 
 // Final process, to send all the built files to FTP
-var conn = ftp.create( {
-    host:     'amosbatista.com',
-    user:     'u813102338',
-    password: '',
-    parallel: 1,
-    log:      gutil.log
-} );
+var conn = ftp.create( ftpCredentials());
 
 gulp.task ('ftpTask', function(){
 
