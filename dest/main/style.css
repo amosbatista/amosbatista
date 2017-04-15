@@ -3930,12 +3930,13 @@
 }
 .gallery-post {
   width: 100%;
+  margin: 50px 0 60% 0;
 }
 .gallery-post .photo-cover .featured-img {
   display: block;
   max-width: 90%;
   margin: 25px auto;
-  padding: 60px;
+  padding: 60px 10px;
   background-color: white;
   box-shadow: 0px 2px 1px 1px #808080;
 }
@@ -3958,6 +3959,11 @@
 .gallery-post .photo-cover .sharer-zone {
   width: 90%;
   margin: auto;
+}
+@media screen and (orientation: landscape) {
+  .gallery-post {
+    margin: 50px 0 180px 0;
+  }
 }
 /* Body classes, to be user to the body directive */
 body {
