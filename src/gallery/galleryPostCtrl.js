@@ -8,7 +8,7 @@ angular.module("site.gallery").controller("galleryPostCtrl", [
 		scope.post = post;
 
 		scope.shareOpt = {
-	  		title: post.title + " - Galeria - amosbatista.com",
+	  		title: post.title,
 	  		description: post.excerpt,
 	  		imageUrl: post.mainImage
 		}

@@ -56890,8 +56890,8 @@ angular.module('site.portfolio').controller('masterrowCtrl', [
 		scope.$emit('toHideLoadScreen');
 
 		scope.shareOpt = {
-	  		title: 'Masterrow - Portfólio - amosbatista.com',
-	  		description: 'Crie tabelas dinâmicas com esta mais nova ferramenta javaScript.',
+	  		title: 'Portfólio: Masterrow',
+	  		description: 'Crie tabelas dinâmicas com esta mais nova ferramenta JavaScript.',
 	  		imageName: 'logo.png'
 		}
 
@@ -56903,7 +56903,7 @@ angular.module('site.portfolio').controller('portfolioCtrl', [
 	function(scope){
 
 		scope.shareOpt = {
-	  		title: 'Portfolio - amosbatista.com',
+	  		title: 'Meu Portfólio',
 	  		description: 'As minhas maiores criações na área de Desenvolvimento.',
 	  		imageName: 'print-portfolio.jpg'
 		}
@@ -57547,7 +57547,7 @@ angular.module("site.gallery").controller("galleryCtrl", [
 		scope.gallery = gallery;
 
 		scope.shareOpt = {
-	  		title: 'Galeria - amosbatista.com',
+	  		title: 'Galeria - Desenhos, Fotos e outras Artes',
 	  		description: 'A galeria de todas as minhas artes visuais (desenhos, fotos, e outros).',
 	  		imageName: 'print-gallery.jpg'
 		}
@@ -57564,7 +57564,7 @@ angular.module("site.gallery").controller("galleryPostCtrl", [
 		scope.post = post;
 
 		scope.shareOpt = {
-	  		title: post.title + " - Galeria - amosbatista.com",
+	  		title: post.title,
 	  		description: post.excerpt,
 	  		imageUrl: post.mainImage
 		}

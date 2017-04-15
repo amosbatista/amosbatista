@@ -4,8 +4,8 @@ angular.module('site.portfolio').controller('masterrowCtrl', [
 		scope.$emit('toHideLoadScreen');
 
 		scope.shareOpt = {
-	  		title: 'Masterrow - Portfólio - amosbatista.com',
-	  		description: 'Crie tabelas dinâmicas com esta mais nova ferramenta javaScript.',
+	  		title: 'Portfólio: Masterrow',
+	  		description: 'Crie tabelas dinâmicas com esta mais nova ferramenta JavaScript.',
 	  		imageName: 'logo.png'
 		}
 

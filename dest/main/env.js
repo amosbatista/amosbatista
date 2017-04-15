@@ -10,6 +10,7 @@ envConfig = {
 	loadScreenCustomMessages: [
 		'O meu servidor me odeia.',
 		'Na verdade, café não ajuda em nada.',
-		'O caos, aguardo parar de ventar.'
+		'O caos, aguardo parar de ventar.',
+		'Tudo já está decidido. E não fomos nós.'
 	]
 };
