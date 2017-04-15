@@ -1,5 +1,11 @@
 .share-container
+
 	span.share-item.share-title Compartilhe:
-	a.share-item.share-facebook(href="" ng-click="openShare()")
+
+	a.share-item.share-facebook(href="" ng-click="fbShare()")
 		span.logo
 			i.fa.fa-facebook
+
+	a.share-item.share-linkedin(ng-href="{{linkedinShareLink}}" target="_blank")
+		span.logo
+			i.fa.fa-linkedin

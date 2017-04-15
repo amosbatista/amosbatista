@@ -9,7 +9,16 @@ angular.module("common.shareButtons").directive("shareButtons", function(){
 		},
 		link: function (scope, element){
 
-			scope.openShare = function(){
+			// Linkedin
+			scope.linkedinShareLink = 'https://www.linkedin.com/shareArticle?'
+				+ 'mini=true&'
+				+ 'url=' + encodeURI(window.location.href) + '&'
+				+ 'title=' + encodeURI(scope.shareOptions.title) + '&'
+				+ 'summary=' + encodeURI(scope.shareOptions.description) + '&'
+				+ 'source=amosBatista.com';
+
+			// Facebook
+			scope.fbShare = function(){
 
 				FB.ui(
 					{
