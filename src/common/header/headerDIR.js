@@ -63,7 +63,7 @@ angular.module('common.header').directive("myHeader", [
 					},
 					{
 						name: 'Portfolio',
-						location: 'portfolios',
+						location: 'portfolio',
 						iconClass: 'fa-arrow-left',
 						linkFunction: headerLinkToPortfolio,
 						linkClass: 'link-portfolio'

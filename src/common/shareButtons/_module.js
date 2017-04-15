@@ -4,7 +4,6 @@ angular.module("common.shareButtons", []);
 angular.module("common.shareButtons").run([
 	'loadFacebookSDK',
 	function(facebookSDK){
-		console.log("Running the SDK");
 		facebookSDK();
 	}
 ]);

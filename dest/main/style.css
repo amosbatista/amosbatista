@@ -2654,7 +2654,7 @@
 .page-content {
   width: 100%;
   position: relative;
-  margin: 150px 0 350px 0;
+  margin: 150px 0 100% 0;
   z-index: 0;
 }
 .page-content .page-content-subpart {

@@ -54,7 +54,10 @@ angular.module("site").directive('body', [
 					case 'about':
 						element[0].className = 'body-about-page';
 						break;
-					case 'portfolio', 'masterrow':
+					case 'portfolio':
+						element[0].className = 'body-portfolio-page';
+						break;
+					case 'masterrow':
 						element[0].className = 'body-portfolio-page';
 						break;
 					case 'blog':
