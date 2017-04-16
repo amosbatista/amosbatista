@@ -4,6 +4,8 @@ var less = require ('gulp-less');
 var flatten = require('gulp-flatten');
 var concatCss = require('gulp-concat');
 var jsConcat = require('gulp-concat');
+var uglify = require('gulp-uglify');
+var cleanCSS = require('gulp-clean-css');
 var plumber = require('gulp-plumber');
 var ftp = require('vinyl-ftp');
 
@@ -72,6 +74,7 @@ gulp.task ('app', function(){
 	return gulp.src(jsOrigin)
 		.pipe(plumber())
   		.pipe(jsConcat('app.js'))
+  		.pipe(uglify())
 		.pipe(gulp.dest(destinationFolder + '/main'));
 });
 
@@ -151,6 +154,7 @@ gulp.task ('concatenateCSS', function(){
 	return gulp.src(cssPostLessOrigin)
 		.pipe(plumber())
 		.pipe(concatCss('/style.css'))
+		.pipe(cleanCSS())
 		.pipe(gulp.dest(destinationFolder + '/main'));
 });
 

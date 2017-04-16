@@ -6,6 +6,8 @@
   "dependencies": {
     "angular-masterrow": "^1.5.3",
     "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.0.4",
+    "gulp-uglify": "^2.1.2",
     "gulp-util": "^3.0.8",
     "masterrow": "^1.10.5",
     "moment": "^2.18.1"
