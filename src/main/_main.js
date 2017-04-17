@@ -10,3 +10,14 @@ angular.module("site", [
 	"angular-masterrow"
 
 ]);
+
+
+// Script to execute when main module is ready
+angular.module("site").run([
+	"googleAnalyticsSrv",
+	function(
+		googleAnalyt
+	){
+		googleAnalyt();	
+	}
+])
