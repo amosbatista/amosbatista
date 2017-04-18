@@ -6,56 +6,61 @@ angular.module('site.portfolio').directive('smallTabs', function(){
 		transclude: true,
 		replace: true,
 
-		controller: function ($scope){
+		controller: [
+			'$scope',
+			function (
+				$scope
+			){
 
-			$scope.tabList = [];
-			$scope.tabList_Before = [];
-			$scope.tabList_After = [];
-			$scope.currentTabName = '';
+				$scope.tabList = [];
+				$scope.tabList_Before = [];
+				$scope.tabList_After = [];
+				$scope.currentTabName = '';
 
-			return{
-				addTab: function (tabScope){
+				return{
+					addTab: function (tabScope){
 
-					if($scope.tabList.length <= 0){
-						$scope.currentTabName = tabScope.tabName;
-						tabScope.isCurrent = true;
-					}
-
-					else{
-						tabScope.isCurrent = false;	
-
-						// As this function runs only once, push all tabs to the after list
-						$scope.tabList_Before.push (tabScope);
-					}
-					
-					$scope.tabList.push(tabScope);					
-				},
-				selectTab: function(tabScopeToSelect){
-
-					$scope.tabList_Before = [];
-					$scope.tabList_After = [];
-
-					var isSomeTabSelected = false;
-
-					$scope.tabList.forEach( function(scopeItem){
-
-						if(scopeItem.tabName == tabScopeToSelect.tabName){
-							scopeItem.isCurrent = true;
-							$scope.currentTabName = tabScopeToSelect.tabName;
-							isSomeTabSelected = true;
+						if($scope.tabList.length <= 0){
+							$scope.currentTabName = tabScope.tabName;
+							tabScope.isCurrent = true;
 						}
+
 						else{
-							scopeItem.isCurrent = false;
+							tabScope.isCurrent = false;	
 
-							if (isSomeTabSelected == false)
-								$scope.tabList_After.push(scopeItem);
-							else
-								$scope.tabList_Before.push(scopeItem);
+							// As this function runs only once, push all tabs to the after list
+							$scope.tabList_Before.push (tabScope);
 						}
-					});					
-				},
-			};
-		},
+						
+						$scope.tabList.push(tabScope);					
+					},
+					selectTab: function(tabScopeToSelect){
+
+						$scope.tabList_Before = [];
+						$scope.tabList_After = [];
+
+						var isSomeTabSelected = false;
+
+						$scope.tabList.forEach( function(scopeItem){
+
+							if(scopeItem.tabName == tabScopeToSelect.tabName){
+								scopeItem.isCurrent = true;
+								$scope.currentTabName = tabScopeToSelect.tabName;
+								isSomeTabSelected = true;
+							}
+							else{
+								scopeItem.isCurrent = false;
+
+								if (isSomeTabSelected == false)
+									$scope.tabList_After.push(scopeItem);
+								else
+									$scope.tabList_Before.push(scopeItem);
+							}
+						});					
+					},
+				};
+			}
+		],
 		
 	}
 });
