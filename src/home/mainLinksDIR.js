@@ -7,7 +7,8 @@ angular.module('site.home').directive('mainLink', ['$timeout', function(timeout)
 		restrict: "E",
 		scope: {
 			linkName: '@',
-			linkAction: '&'
+			linkAction: '&',
+			linkCaption: "@"
 		},
 		
 
