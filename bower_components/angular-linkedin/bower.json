@@ -1,0 +1,28 @@
+{
+  "name": "angular-linkedin",
+  "version": "0.1.1",
+  "authors": [
+    "Simon Robb <sajrobb@gmail.com>"
+  ],
+  "description": "AngularJS module that wraps the LinkedIn SDK",
+  "main": "src/angular-linkedin.js",
+  "keywords": [
+    "[\"angular\"",
+    "\"linkedin\"",
+    "\"api\"",
+    "\"sdk\"]"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/simonrobb/angular-linkedin",
+  "dependencies": {
+    "angular": "~1.2.0"
+  },
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/components",
+    "test",
+    "tests"
+  ]
+}

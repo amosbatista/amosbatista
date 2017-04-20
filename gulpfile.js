@@ -27,8 +27,7 @@ var jsOrigin = [
 	"node_modules/moment/min/moment-with-locales.js",
 	"node_modules/masterrow/dist/masterrow.js",
 	"node_modules/angular-masterrow/dist/angular-masterrow.js",
-
-	"src/plugins/*.js",
+	"bower_components/angular-linkedin/src/angular-linkedin.js",
 	"src/common/main.js",
 	"src/common/**/*.js",
 	"src/about/*.js",
@@ -38,6 +37,9 @@ var jsOrigin = [
 	"src/gallery/*.js",
 	"src/main/*.js",
 	"!src/env.js" // Excluding environment config
+];
+var jsPluginSource = [
+	'src/plugin/linkedinAPI.js'
 ];
 
 var envScriptFile = 'src/env.js';
@@ -74,15 +76,23 @@ gulp.task ('app', function(){
 	return gulp.src(jsOrigin)
 		.pipe(plumber())
   		.pipe(jsConcat('app.js'))
-  		.pipe(uglify())
+  		//.pipe(uglify())
 		.pipe(gulp.dest(destinationFolder + '/main'));
 });
 
 
-// Process the config scriot
+// Process the config script
 gulp.task ('env', function(){
 
 	return gulp.src(envScriptFile)
+		.pipe(plumber())
+		.pipe(gulp.dest(destinationFolder + '/main'));
+});
+
+// Process the config scriot
+gulp.task ('jsPlugin', function(){
+
+	return gulp.src(jsPluginSource)
 		.pipe(plumber())
 		.pipe(gulp.dest(destinationFolder + '/main'));
 });
@@ -171,5 +181,5 @@ gulp.watch( imageSource, ['image']);
 
 
 // Main task
-gulp.task ('default', ['pug', 'less', 'cssPlugin', 'concatenateCSS', 'app', 'env', 'fontAwesome_CSS', 'fontAwesome_Fonts', 'image']);
+gulp.task ('default', ['pug', 'less', 'cssPlugin', 'concatenateCSS', 'app', 'env', 'fontAwesome_CSS', 'fontAwesome_Fonts', 'image', 'jsPlugin']);
 gulp.task ('ftp', ['ftpTask']);
