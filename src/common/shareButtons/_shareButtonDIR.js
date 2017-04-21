@@ -29,8 +29,13 @@ angular.module("common.shareButtons").directive("shareButtons", [
 						} 
 					};
 
+					var header = {
+						Authorization: 'Bearer ' + linkedinAPI.ENV.auth.anonymous_token
+					}
+
 					linkedinAPI.API.Raw("/people/~/shares?format=json")
 						.method("POST")
+						.header(JSON.stringify(header))
 						.body(JSON.stringify(payload))
 						.result(function(data){
 							console.log("Success", data);
@@ -39,8 +44,14 @@ angular.module("common.shareButtons").directive("shareButtons", [
 							console.log("Error", data);
 						});
 
-
 				}
+
+				// Linkedin Direct Link
+				scope.linkedinShareLink = 'https://www.linkedin.com/cws/share?'
+					 + 'url=' + encodeURI(window.location.href) + '&'
+					 + 'title=' + encodeURI(scope.shareOptions.title) + '&'
+					 + 'summary=' + encodeURI(scope.shareOptions.description) + '&'
+					 + 'source=amosBatista.com';
 
 				// Facebook
 				scope.fbShare = function(){

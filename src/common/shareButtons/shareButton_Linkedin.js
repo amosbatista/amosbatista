@@ -9,8 +9,8 @@ angular.module("common.shareButtons").config([
 		    onLoad: function (sdk) {
 
 		    },
-		    /*authorize: true,
-		    lang: 'en_US'*/
+		    authorize: true,
+		    lang: 'en_US'
 		});
 
 	}
