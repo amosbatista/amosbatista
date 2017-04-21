@@ -1,9 +1,11 @@
 angular.module('site.about').controller('aboutCtrl', [
 	'$scope',
 	'$state',
+	'$rootScope',
 	function(
 		scope,
-		state
+		state,
+		root
 
 	){
 
@@ -13,7 +15,6 @@ angular.module('site.about').controller('aboutCtrl', [
 	  		description: 'Conheça um pouco mais sobre mim e sobre esta página.',
 	  		imageName: 'print-about.jpg'
 		}
-
 
 		scope.goHome = function(){
 			scope.$emit('toShowLoadScreen');

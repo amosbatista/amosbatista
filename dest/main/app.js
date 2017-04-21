@@ -55984,41 +55984,6 @@ angular.module('common.footer').directive("myFooter", [
 		}
 	}
 ]);
-/*Load screen, to be used in any Async process*/
-angular.module('common.loadScreen', []);
-/* The directive will work with Angular Events:
-toToggleLoadScreen - Insert a random text and show the screen.
-toHideLoadScreen - Hide the directive*/
-angular.module('common.loadScreen').directive("loadScreen", [
-	'env',
-	function(
-		objConfig
-	){
-		return{
-			restrict: "E",
-			templateUrl: "loadScreen.html",
-			replace: true,
-			link: function (scope, element){
-
-				scope.$on('toShowLoadScreen', function(){
-					scope.randomMessage = objConfig.config.loadScreenCustomMessages[
-						Math.floor(
-							Math.random() * objConfig.config.loadScreenCustomMessages.length
-						)
-					];
-
-					element[0].classList.add('show-load-screen');
-					element[0].classList.remove('hide-load-screen');
-				});
-
-				scope.$on('toHideLoadScreen', function(){
-					element[0].classList.add('hide-load-screen');
-					element[0].classList.remove('show-load-screen');
-				});
-			}
-		}
-	}
-])
 angular.module('common.header', []);
 
 angular.module('common.header').directive("myHeader", [
@@ -56119,6 +56084,41 @@ angular.module('common.header').directive("myHeader", [
 		}
 	}
 ]);
+/*Load screen, to be used in any Async process*/
+angular.module('common.loadScreen', []);
+/* The directive will work with Angular Events:
+toToggleLoadScreen - Insert a random text and show the screen.
+toHideLoadScreen - Hide the directive*/
+angular.module('common.loadScreen').directive("loadScreen", [
+	'env',
+	function(
+		objConfig
+	){
+		return{
+			restrict: "E",
+			templateUrl: "loadScreen.html",
+			replace: true,
+			link: function (scope, element){
+
+				scope.$on('toShowLoadScreen', function(){
+					scope.randomMessage = objConfig.config.loadScreenCustomMessages[
+						Math.floor(
+							Math.random() * objConfig.config.loadScreenCustomMessages.length
+						)
+					];
+
+					element[0].classList.add('show-load-screen');
+					element[0].classList.remove('hide-load-screen');
+				});
+
+				scope.$on('toHideLoadScreen', function(){
+					element[0].classList.add('hide-load-screen');
+					element[0].classList.remove('show-load-screen');
+				});
+			}
+		}
+	}
+])
 angular.module('common.objData', []);
 
 angular.module('common.objData').factory('dataSRV', function (){
@@ -56524,7 +56524,8 @@ angular.module("common.shareButtons").directive("shareButtons", [
 				}
 
 				// Linkedin Direct Link
-				scope.linkedinShareLink = 'https://www.linkedin.com/cws/share?'
+				scope.linkedinShareLink = 'https://www.linkedin.com/shareArticle?'
+					 + 'mini=true&'
 					 + 'url=' + encodeURI(window.location.href) + '&'
 					 + 'title=' + encodeURI(scope.shareOptions.title) + '&'
 					 + 'summary=' + encodeURI(scope.shareOptions.description) + '&'
@@ -56595,9 +56596,11 @@ angular.module("site.about", []);
 angular.module('site.about').controller('aboutCtrl', [
 	'$scope',
 	'$state',
+	'$rootScope',
 	function(
 		scope,
-		state
+		state,
+		root
 
 	){
 
@@ -56607,7 +56610,6 @@ angular.module('site.about').controller('aboutCtrl', [
 	  		description: 'Conheça um pouco mais sobre mim e sobre esta página.',
 	  		imageName: 'print-about.jpg'
 		}
-
 
 		scope.goHome = function(){
 			scope.$emit('toShowLoadScreen');

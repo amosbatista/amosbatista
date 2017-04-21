@@ -47,7 +47,8 @@ angular.module("common.shareButtons").directive("shareButtons", [
 				}
 
 				// Linkedin Direct Link
-				scope.linkedinShareLink = 'https://www.linkedin.com/cws/share?'
+				scope.linkedinShareLink = 'https://www.linkedin.com/shareArticle?'
+					 + 'mini=true&'
 					 + 'url=' + encodeURI(window.location.href) + '&'
 					 + 'title=' + encodeURI(scope.shareOptions.title) + '&'
 					 + 'summary=' + encodeURI(scope.shareOptions.description) + '&'
