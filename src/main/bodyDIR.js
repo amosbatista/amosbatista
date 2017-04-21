@@ -140,19 +140,20 @@ angular.module("site").directive('body', [
 					easyScrollEvent(direction);
 					footerAndHeaderEvent(direction, lastPosition);
 				}
+
+				scrollEvent.stopPropagation();
 			};
 
 			timeout(function(){
 				
-				/*window.scroll(0,0);*/
-				element[0].scrollTop = 0;
-
 				/* The scroll event listener */
 				document.addEventListener("scroll", eventProcessor);
 				element[0].addEventListener("resize", eventProcessor);
+				element[0].scrollTop = 0;
 
-			}, 500);		
-			
+			}, 100);		
+
+
 		}
 	}
 }]);
