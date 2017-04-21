@@ -1,4 +1,4 @@
-angular.module("common.shareButtons").config([
+/*angular.module("common.shareButtons").config([
 	'LinkedInProvider',
 	function(
 		LinkedInProvider
@@ -14,4 +14,4 @@ angular.module("common.shareButtons").config([
 		});
 
 	}
-])
+])*/

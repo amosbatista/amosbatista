@@ -1,7 +1,7 @@
 angular.module("common.shareButtons").directive("shareButtons", [
-	'LinkedIn',
+	
 	function(
-		linkedinAPI
+		
 	){
 
 		return{
@@ -29,11 +29,11 @@ angular.module("common.shareButtons").directive("shareButtons", [
 						} 
 					};
 
-					var header = {
+					/*var header = {
 						Authorization: 'Bearer ' + linkedinAPI.ENV.auth.anonymous_token
-					}
+					}*/
 
-					linkedinAPI.API.Raw("/people/~/shares?format=json")
+					/*linkedinAPI.API.Raw("/people/~/shares?format=json")
 						.method("POST")
 						.header(JSON.stringify(header))
 						.body(JSON.stringify(payload))
@@ -42,7 +42,7 @@ angular.module("common.shareButtons").directive("shareButtons", [
 						})
 						.error(function(data){
 							console.log("Error", data);
-						});
+						});*/
 
 				}
 
