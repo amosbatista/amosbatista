@@ -76,7 +76,7 @@ gulp.task ('app', function(){
 	return gulp.src(jsOrigin)
 		.pipe(plumber())
   		.pipe(jsConcat('app.js'))
-  		//.pipe(uglify())
+  		.pipe(uglify())
 		.pipe(gulp.dest(destinationFolder + '/main'));
 });
 
